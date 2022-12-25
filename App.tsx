@@ -23,7 +23,6 @@ const App: React.FC = () => {
 
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      console.log(session);
     });
   }, []);
 

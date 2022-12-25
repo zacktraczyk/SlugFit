@@ -13,7 +13,7 @@ Install Expo ?
 
 ## TODO
 
-- [ ] Fix Account Settings Form and API call
+- [x] Fix Account Settings Form and API call
 
 ### Backlog
 

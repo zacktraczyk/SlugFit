@@ -1,9 +1,11 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
   Button,
   KeyboardAvoidingView,
+  Pressable,
   Text,
   TextInput,
   View,
@@ -17,7 +19,7 @@ import Avatar from "./Avatar";
 interface ProfileDetails {
   username: null | string;
   website: null | string;
-  avatar_url: null | string;
+  // avatar_url: null | string;
 }
 
 type AccountSettingsProps = NativeStackScreenProps<
@@ -28,10 +30,19 @@ type AccountSettingsProps = NativeStackScreenProps<
 const AccountSettings: React.FC<AccountSettingsProps> = () => {
   const { session } = useAuth();
 
+  const {
+    control,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      username: "",
+      website: "",
+    },
+  });
+
   const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState<null | string>(null);
-  const [website, setWebsite] = useState<null | string>(null);
-  const [avatar_url, setAvatarUrl] = useState<null | string>(null);
 
   useEffect(() => {
     if (!session) return;
@@ -53,9 +64,8 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
       if (error && status !== 406) throw error;
 
       if (data) {
-        setUsername(data.username);
-        setWebsite(data.website);
-        setAvatarUrl(data.avatar_url);
+        setValue("username", data.username);
+        setValue("website", data.website);
       }
     } catch (error) {
       let message;
@@ -67,8 +77,8 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
     }
   };
 
-  const updateProfile = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
+  const updateProfile = async (data: ProfileDetails) => {
+    const { username, website } = data;
 
     try {
       setLoading(true);
@@ -78,14 +88,15 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
         id: user.id,
         username,
         website,
-        avatar_url,
         updated_at: new Date(),
       };
 
-      let { error } = await supabase.from("profiles").upsert(updates);
+      let { error: AuthError } = await supabase
+        .from("profiles")
+        .upsert(updates);
 
-      if (error) {
-        throw error;
+      if (AuthError) {
+        throw AuthError;
       }
     } catch (error) {
       let message;
@@ -107,14 +118,43 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
             <Text>Email: {session?.user.email}</Text>
             <View>
               <Text>Name</Text>
-              <TextInput style={tw`border-2 mb-2`} returnKeyType="next" />
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    style={tw`border-2 mb-2`}
+                    returnKeyType="next"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="username"
+              />
             </View>
             <View>
               <Text>Website</Text>
-              <TextInput style={tw`border-2 mb-2`} returnKeyType="go" />
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    style={tw`border-2 mb-2`}
+                    returnKeyType="next"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="website"
+              />
             </View>
             <View>
-              <Button title="Update Profile" />
+              <Pressable
+                style={tw`p-2 rounded my-2 w-20 bg-blue-400`}
+                onPress={handleSubmit((data) => updateProfile(data))}
+              >
+                <Text style={tw`text-white text-center`}>Submit</Text>
+              </Pressable>
             </View>
             <Button title="signOut" onPress={() => supabase.auth.signOut()} />
           </>
