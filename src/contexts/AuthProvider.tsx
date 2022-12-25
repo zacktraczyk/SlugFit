@@ -36,7 +36,6 @@ export const AuthProvider: React.FC<AuthProps> = ({ children }) => {
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        console.log("session updateded AuthProvider:", session);
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);

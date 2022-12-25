@@ -13,7 +13,10 @@ Install Expo ?
 
 ## TODO
 
-## Backlog
+- [ ] Fix Account Settings Form and API call
 
+### Backlog
+
+- [ ] session context and auth rendering redundancy
 - [ ] Toast Notifications
 - [ ] Error taken email on register page

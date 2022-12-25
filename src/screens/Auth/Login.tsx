@@ -3,6 +3,7 @@ import { AuthError } from "@supabase/supabase-js";
 import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
+  ActivityIndicator,
   Button,
   Keyboard,
   KeyboardAvoidingView,
@@ -24,6 +25,8 @@ type FormElements = {
 type LoginProps = NativeStackScreenProps<AuthStackParamList, "LoginScreen">;
 
 const Login: React.FC<LoginProps> = ({ navigation }) => {
+  const [loading, setLoading] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -37,6 +40,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
 
   const onSubmit = async (data: FormElements) => {
     try {
+      setLoading(true);
       const { error: AuthError } = await supabase.auth.signInWithPassword(data);
       if (AuthError) throw AuthError;
     } catch (error) {
@@ -44,6 +48,8 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
       if (error instanceof Error) message = error.message;
       else message = String(error);
       alert(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -128,6 +134,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
         </View>
         {/* </TouchableWithoutFeedback> */}
       </KeyboardAvoidingView>
+      {loading && <ActivityIndicator size="large" />}
     </View>
   );
 };
