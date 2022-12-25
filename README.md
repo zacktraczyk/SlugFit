@@ -10,3 +10,10 @@ Install Expo ?
 
 - `yarn ios` to run IOS simulator
 - `yarn run android` to run Android simulator
+
+## TODO
+
+## Backlog
+
+- [ ] Toast Notifications
+- [ ] Error taken email on register page

@@ -42,6 +42,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
     try {
       const { error: AuthError } = await supabase.auth.signUp(data);
       if (AuthError) throw AuthError;
+      alert("Check your email to confirm your account");
       navigation.navigate("LoginScreen");
     } catch (error) {
       let message;
