@@ -1,11 +1,9 @@
 import "react-native-gesture-handler"; // MUST BE AT TOP
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Session } from "@supabase/supabase-js";
-import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
-import tw from "tailwind-react-native-classnames";
 import { AuthProvider } from "./src/contexts/AuthProvider";
 import AuthNavigator from "./src/screens/Auth/AuthNavigator";
 import HomeNavigator from "./src/screens/HomeNavigator";

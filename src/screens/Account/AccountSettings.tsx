@@ -10,7 +10,6 @@ import {
   TextInput,
   View,
 } from "react-native";
-import tw from "tailwind-react-native-classnames";
 import { useAuth } from "../../contexts/AuthProvider";
 import { supabase } from "../../utils/supabaseClient";
 import { HomeStackParamList } from "../HomeNavigator";
@@ -122,7 +121,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    style={tw`border-2 mb-2`}
+                    className="border-2 mb-2"
                     returnKeyType="next"
                     onBlur={onBlur}
                     onChangeText={onChange}
