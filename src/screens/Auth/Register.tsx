@@ -12,7 +12,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import tw from "tailwind-react-native-classnames";
 import { supabase } from "../../utils/supabaseClient";
 import { AuthStackParamList } from "./AuthNavigator";
 
@@ -55,12 +54,12 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
   return (
     <KeyboardAvoidingView behavior="padding">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={tw`flex flex-col h-full p-5 justify-center items-stretch`}>
+        <View className="flex flex-col h-full p-5 justify-center items-stretch">
           {/* Loader */}
 
-          <View style={tw`flex flex-col h-96 justify-evenly items-stretch`}>
+          <View className="flex flex-col h-96 justify-evenly items-stretch">
             <View>
-              <Text style={tw`text-4xl`}>Email</Text>
+              <Text className="text-4xl">Email</Text>
               <Controller
                 control={control}
                 rules={{
@@ -69,7 +68,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    style={tw`text-xl border-b-2 mb-2`}
+                    className="text-xl border-b-2 mb-2"
                     autoCapitalize="none"
                     keyboardType="email-address"
                     returnKeyType="next"
@@ -80,7 +79,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 )}
                 name="email"
               />
-              <Text style={tw`text-red-500`}>
+              <Text className="text-red-500">
                 {errors.email &&
                   (errors.email.type === "required"
                     ? "This field is required."
@@ -88,8 +87,8 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
               </Text>
             </View>
 
-            <View style={tw``}>
-              <Text style={tw`text-3xl`}>Password</Text>
+            <View>
+              <Text className="text-3xl">Password</Text>
               <Controller
                 control={control}
                 rules={{
@@ -98,7 +97,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    style={tw`text-xl border-b-2 mb-2`}
+                    className="text-xl border-b-2 mb-2"
                     secureTextEntry={true}
                     onBlur={onBlur}
                     onChangeText={onChange}
@@ -107,7 +106,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 )}
                 name="password"
               />
-              <Text style={tw`text-red-500`}>
+              <Text className="text-red-500">
                 {errors.password &&
                   (errors.password.type === "required"
                     ? "This is required."
@@ -115,8 +114,8 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
               </Text>
             </View>
 
-            <View style={tw``}>
-              <Text style={tw`text-3xl`}>Confirm Password</Text>
+            <View>
+              <Text className="text-3xl">Confirm Password</Text>
               <Controller
                 control={control}
                 rules={{
@@ -130,7 +129,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    style={tw`text-xl border-b-2 mb-2`}
+                    className="text-xl border-b-2 mb-2"
                     secureTextEntry={true}
                     onBlur={onBlur}
                     onChangeText={onChange}
@@ -139,7 +138,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 )}
                 name="passwordConfirm"
               />
-              <Text style={tw`text-red-500`}>
+              <Text className="text-red-500">
                 {errors.passwordConfirm &&
                   (errors.passwordConfirm.type === "required"
                     ? "This is required."
@@ -149,10 +148,10 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
 
             <View>
               <Pressable
-                style={tw`p-2 rounded my-2 w-20 bg-blue-400`}
+                className="p-2 rounded my-2 w-20 bg-blue-400"
                 onPress={handleSubmit((data) => onSubmit(data))}
               >
-                <Text style={tw`text-white text-center`}>Submit</Text>
+                <Text className="text-white text-center">Submit</Text>
               </Pressable>
             </View>
           </View>
