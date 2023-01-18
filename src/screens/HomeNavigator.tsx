@@ -1,8 +1,5 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { Button, Text, View } from 'react-native';
-import { supabase } from '../utils/supabaseClient';
 import AccountSettings from './Account/AccountSettings';
 import Home from './Home';
 

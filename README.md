@@ -15,12 +15,10 @@ A simple cross platform (IOS and Android) app made with React Native.
 - `yarn ios` to run IOS simulator
 - `yarn android` to run Android simulator
 
-- `yarn lint:ts` to lint code
+- `yarn lint` to lint code
 - `yarn lint:fix` to fix simple linting errors
 - `yarn format` to format code according to style guide
 
 ## TODO:
 
-- Pick Linting library & setup
-- Pick Testing Library & setup
 - Setup pipeline for automated linting, testing, and builds ([example tutorial](https://medium.com/@remi.gallego/automate-react-native-builds-with-github-actions-af54212d26dc))

@@ -13,7 +13,6 @@ import {
 import { useAuth } from '../../contexts/AuthProvider';
 import { supabase } from '../../utils/supabaseClient';
 import { HomeStackParamList } from '../HomeNavigator';
-import Avatar from './Avatar';
 
 interface ProfileDetails {
   username: null | string;
@@ -26,12 +25,7 @@ type AccountSettingsProps = NativeStackScreenProps<HomeStackParamList, 'AccountS
 const AccountSettings: React.FC<AccountSettingsProps> = () => {
   const { session } = useAuth();
 
-  const {
-    control,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { control, setValue, handleSubmit } = useForm({
     defaultValues: {
       username: '',
       website: '',
@@ -49,7 +43,11 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
   const getProfile = async () => {
     try {
       setLoading(true);
-      const user = session!.user;
+      if (!session || !session.user) {
+        throw 'no user session';
+      }
+
+      const user = session.user;
 
       const { data, error, status } = await supabase
         .from('profiles')
@@ -78,7 +76,11 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
 
     try {
       setLoading(true);
-      const user = session!.user;
+      if (!session || !session.user) {
+        throw 'no user session';
+      }
+
+      const user = session.user;
 
       const updates = {
         id: user.id,

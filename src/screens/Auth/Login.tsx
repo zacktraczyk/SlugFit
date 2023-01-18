@@ -1,12 +1,10 @@
 /// <reference types="nativewind/types" />
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { AuthError } from '@supabase/supabase-js';
 import React, { useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
-  Button,
   Keyboard,
   KeyboardAvoidingView,
   Pressable,
@@ -57,80 +55,80 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
   return (
     <View className="flex h-full flex-col items-stretch justify-center p-5">
       <KeyboardAvoidingView behavior="padding">
-        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-        {/* Loader */}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          {/* Loader */}
 
-        <View className="flex h-96 flex-col items-stretch justify-evenly">
-          <View>
-            <Text className="text-4xl">Email</Text>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-                pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  className="mb-2 border-b-2 text-xl"
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                  returnKeyType="next"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="email"
-            />
-            <Text className="text-red-500">
-              {errors.email &&
-                (errors.email.type === 'required'
-                  ? 'This field is required.'
-                  : 'Not a valid email.')}
-            </Text>
+          <View className="flex h-96 flex-col items-stretch justify-evenly">
+            <View>
+              <Text className="text-4xl">Email</Text>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                  pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    className="mb-2 border-b-2 text-xl"
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    returnKeyType="next"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="email"
+              />
+              <Text className="text-red-500">
+                {errors.email &&
+                  (errors.email.type === 'required'
+                    ? 'This field is required.'
+                    : 'Not a valid email.')}
+              </Text>
+            </View>
+
+            <View>
+              <Text className="text-3xl">Password</Text>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                  minLength: 8,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    className="mb-2 border-b-2 text-xl"
+                    secureTextEntry={true}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="password"
+              />
+              <Text className="text-red-500">
+                {errors.password &&
+                  (errors.password.type === 'required'
+                    ? 'This is required.'
+                    : 'Password must be at least 8 characters.')}
+              </Text>
+            </View>
+
+            <View>
+              <Pressable
+                className="my-2 w-20 rounded bg-blue-400 p-2"
+                onPress={handleSubmit((data) => onSubmit(data))}
+              >
+                <Text className="text-center text-white">Submit</Text>
+              </Pressable>
+
+              <Text className="py-2" onPress={() => navigation.navigate('RegisterScreen')}>
+                Don&apos;t Have an Account? Register
+              </Text>
+            </View>
           </View>
-
-          <View>
-            <Text className="text-3xl">Password</Text>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-                minLength: 8,
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  className="mb-2 border-b-2 text-xl"
-                  secureTextEntry={true}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="password"
-            />
-            <Text className="text-red-500">
-              {errors.password &&
-                (errors.password.type === 'required'
-                  ? 'This is required.'
-                  : 'Password must be at least 8 characters.')}
-            </Text>
-          </View>
-
-          <View>
-            <Pressable
-              className="my-2 w-20 rounded bg-blue-400 p-2"
-              onPress={handleSubmit((data) => onSubmit(data))}
-            >
-              <Text className="text-center text-white">Submit</Text>
-            </Pressable>
-
-            <Text className="py-2" onPress={() => navigation.navigate('RegisterScreen')}>
-              Don't Have an Account? Register
-            </Text>
-          </View>
-        </View>
-        {/* </TouchableWithoutFeedback> */}
+        </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
       {loading && <ActivityIndicator size="large" />}
     </View>

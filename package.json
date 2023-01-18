@@ -1,5 +1,5 @@
 {
-  "name": "whentomeetapp",
+  "name": "slugFit",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "engines": {
@@ -10,8 +10,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint:ts": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix"
+    "lint": "eslint App.tsx \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "eslint App.tsx \"src/**/*.{js,jsx,ts,tsx}\" --fix",
+    "format": "prettier --write App.tsx \"src/**/*.{js,jsx,ts,tsx,json}\""
   },
   "dependencies": {
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",

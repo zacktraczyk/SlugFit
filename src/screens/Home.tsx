@@ -22,7 +22,10 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   const getName = async () => {
     try {
       setLoading(true);
-      const user = session!.user;
+      if (!session || !session.user) {
+        throw 'no user session';
+      }
+      const user = session.user;
 
       const { data, error, status } = await supabase
         .from('profiles')

@@ -1,9 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { AuthError } from '@supabase/supabase-js';
-import React, { useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
-  Button,
   Keyboard,
   KeyboardAvoidingView,
   Pressable,
