@@ -10,12 +10,14 @@ A simple cross platform (IOS and Android) app made with React Native.
 4. Install Expo ?
 5. Running `yarn start` will begin the development server
 
-
-
-## Run
+## Commands
 
 - `yarn ios` to run IOS simulator
-- `yarn run android` to run Android simulator
+- `yarn android` to run Android simulator
+
+- `yarn lint:ts` to lint code
+- `yarn lint:fix` to fix simple linting errors
+- `yarn format` to format code according to style guide
 
 ## TODO:
 

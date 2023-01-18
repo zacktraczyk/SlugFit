@@ -1,9 +1,9 @@
 /// <reference types="nativewind/types" />
 
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { AuthError } from "@supabase/supabase-js";
-import React, { useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AuthError } from '@supabase/supabase-js';
+import React, { useState } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
   Button,
@@ -14,16 +14,16 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   View,
-} from "react-native";
-import { supabase } from "../../utils/supabaseClient";
-import { AuthStackParamList } from "./AuthNavigator";
+} from 'react-native';
+import { supabase } from '../../utils/supabaseClient';
+import { AuthStackParamList } from './AuthNavigator';
 
 type FormElements = {
   email: string;
   password: string;
 };
 
-type LoginProps = NativeStackScreenProps<AuthStackParamList, "LoginScreen">;
+type LoginProps = NativeStackScreenProps<AuthStackParamList, 'LoginScreen'>;
 
 const Login: React.FC<LoginProps> = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -34,8 +34,8 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
@@ -55,12 +55,12 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
   };
 
   return (
-    <View className="flex flex-col h-full p-5 justify-center items-stretch">
+    <View className="flex h-full flex-col items-stretch justify-center p-5">
       <KeyboardAvoidingView behavior="padding">
         {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
         {/* Loader */}
 
-        <View className="flex flex-col h-96 justify-evenly items-stretch">
+        <View className="flex h-96 flex-col items-stretch justify-evenly">
           <View>
             <Text className="text-4xl">Email</Text>
             <Controller
@@ -71,7 +71,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className="text-xl border-b-2 mb-2"
+                  className="mb-2 border-b-2 text-xl"
                   autoCapitalize="none"
                   keyboardType="email-address"
                   returnKeyType="next"
@@ -84,9 +84,9 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
             />
             <Text className="text-red-500">
               {errors.email &&
-                (errors.email.type === "required"
-                  ? "This field is required."
-                  : "Not a valid email.")}
+                (errors.email.type === 'required'
+                  ? 'This field is required.'
+                  : 'Not a valid email.')}
             </Text>
           </View>
 
@@ -100,7 +100,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className="text-xl border-b-2 mb-2"
+                  className="mb-2 border-b-2 text-xl"
                   secureTextEntry={true}
                   onBlur={onBlur}
                   onChangeText={onChange}
@@ -111,24 +111,21 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
             />
             <Text className="text-red-500">
               {errors.password &&
-                (errors.password.type === "required"
-                  ? "This is required."
-                  : "Password must be at least 8 characters.")}
+                (errors.password.type === 'required'
+                  ? 'This is required.'
+                  : 'Password must be at least 8 characters.')}
             </Text>
           </View>
 
           <View>
             <Pressable
-              className="p-2 rounded my-2 w-20 bg-blue-400"
+              className="my-2 w-20 rounded bg-blue-400 p-2"
               onPress={handleSubmit((data) => onSubmit(data))}
             >
-              <Text className="text-white text-center">Submit</Text>
+              <Text className="text-center text-white">Submit</Text>
             </Pressable>
 
-            <Text
-              className="py-2"
-              onPress={() => navigation.navigate("RegisterScreen")}
-            >
+            <Text className="py-2" onPress={() => navigation.navigate('RegisterScreen')}>
               Don't Have an Account? Register
             </Text>
           </View>

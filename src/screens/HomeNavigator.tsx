@@ -1,10 +1,10 @@
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
-import { Button, Text, View } from "react-native";
-import { supabase } from "../utils/supabaseClient";
-import AccountSettings from "./Account/AccountSettings";
-import Home from "./Home";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import { Button, Text, View } from 'react-native';
+import { supabase } from '../utils/supabaseClient';
+import AccountSettings from './Account/AccountSettings';
+import Home from './Home';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -21,7 +21,7 @@ function HomeNavigator() {
         name="AccountSettings"
         component={AccountSettings}
         options={{
-          title: "Account Settings",
+          title: 'Account Settings',
         }}
       />
     </Drawer.Navigator>

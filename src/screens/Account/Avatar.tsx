@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
-import { supabase } from "../../utils/supabaseClient";
+import React, { useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
+import { supabase } from '../../utils/supabaseClient';
 
 interface AvatarProps {
   url: null | string;
@@ -18,9 +18,7 @@ const Avatar: React.FC<AvatarProps> = ({ url, size, onUpload }) => {
 
   const downloadImage = async (path: string) => {
     try {
-      const { data, error } = await supabase.storage
-        .from("avatars")
-        .download(path);
+      const { data, error } = await supabase.storage.from('avatars').download(path);
 
       if (error) throw error;
 
@@ -30,7 +28,7 @@ const Avatar: React.FC<AvatarProps> = ({ url, size, onUpload }) => {
       let message;
       if (error instanceof Error) message = error.message;
       else message = String(error);
-      console.log("Error downloading image: ", message);
+      console.log('Error downloading image: ', message);
     }
   };
 
@@ -39,17 +37,15 @@ const Avatar: React.FC<AvatarProps> = ({ url, size, onUpload }) => {
       setUploading(true);
 
       if (!event.target.files || event.target.files.length === 0) {
-        throw new Error("You must select an image to upload.");
+        throw new Error('You must select an image to upload.');
       }
 
       const file = event.target.files[0];
-      const fileExt = file.name.split(".").pop();
+      const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random()}.${fileExt}`;
       const filePath = `${fileName}`;
 
-      let { error: uploadError } = await supabase.storage
-        .from("avatars")
-        .upload(filePath, file);
+      const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
@@ -68,12 +64,12 @@ const Avatar: React.FC<AvatarProps> = ({ url, size, onUpload }) => {
     <View>
       <img
         src={avatarUrl ? avatarUrl : `https://place-hold.it/${size}x${size}`}
-        alt={avatarUrl ? "Avatar" : "No image"}
+        alt={avatarUrl ? 'Avatar' : 'No image'}
         className="avatar image"
         style={{ height: size, width: size }}
       />
       {uploading ? (
-        "Uploading..."
+        'Uploading...'
       ) : (
         <View>
           <Text>Upload an avatar</Text>
