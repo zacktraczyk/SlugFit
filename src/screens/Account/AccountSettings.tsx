@@ -137,7 +137,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    style={tw`border-2 mb-2`}
+                    className="border-2 mb-2"
                     returnKeyType="next"
                     onBlur={onBlur}
                     onChangeText={onChange}
@@ -149,10 +149,10 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
             </View>
             <View>
               <Pressable
-                style={tw`p-2 rounded my-2 w-20 bg-blue-400`}
+                className="p-2 rounded my-2 w-20 bg-blue-400"
                 onPress={handleSubmit((data) => updateProfile(data))}
               >
-                <Text style={tw`text-white text-center`}>Submit</Text>
+                <Text className="text-white text-center">Submit</Text>
               </Pressable>
             </View>
             <Button title="signOut" onPress={() => supabase.auth.signOut()} />
