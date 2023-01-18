@@ -1,6 +1,6 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
   Button,
@@ -9,11 +9,10 @@ import {
   Text,
   TextInput,
   View,
-} from "react-native";
-import { useAuth } from "../../contexts/AuthProvider";
-import { supabase } from "../../utils/supabaseClient";
-import { HomeStackParamList } from "../HomeNavigator";
-import Avatar from "./Avatar";
+} from 'react-native';
+import { useAuth } from '../../contexts/AuthProvider';
+import { supabase } from '../../utils/supabaseClient';
+import { HomeStackParamList } from '../HomeNavigator';
 
 interface ProfileDetails {
   username: null | string;
@@ -21,23 +20,15 @@ interface ProfileDetails {
   // avatar_url: null | string;
 }
 
-type AccountSettingsProps = NativeStackScreenProps<
-  HomeStackParamList,
-  "AccountSettings"
->;
+type AccountSettingsProps = NativeStackScreenProps<HomeStackParamList, 'AccountSettings'>;
 
 const AccountSettings: React.FC<AccountSettingsProps> = () => {
   const { session } = useAuth();
 
-  const {
-    control,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { control, setValue, handleSubmit } = useForm({
     defaultValues: {
-      username: "",
-      website: "",
+      username: '',
+      website: '',
     },
   });
 
@@ -52,19 +43,23 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
   const getProfile = async () => {
     try {
       setLoading(true);
-      const user = session!.user;
+      if (!session || !session.user) {
+        throw 'no user session';
+      }
 
-      let { data, error, status } = await supabase
-        .from("profiles")
+      const user = session.user;
+
+      const { data, error, status } = await supabase
+        .from('profiles')
         .select(`username, website, avatar_url`)
-        .eq("id", user.id)
+        .eq('id', user.id)
         .single();
 
       if (error && status !== 406) throw error;
 
       if (data) {
-        setValue("username", data.username);
-        setValue("website", data.website);
+        setValue('username', data.username);
+        setValue('website', data.website);
       }
     } catch (error) {
       let message;
@@ -81,7 +76,11 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
 
     try {
       setLoading(true);
-      const user = session!.user;
+      if (!session || !session.user) {
+        throw 'no user session';
+      }
+
+      const user = session.user;
 
       const updates = {
         id: user.id,
@@ -90,9 +89,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
         updated_at: new Date(),
       };
 
-      let { error: AuthError } = await supabase
-        .from("profiles")
-        .upsert(updates);
+      const { error: AuthError } = await supabase.from('profiles').upsert(updates);
 
       if (AuthError) {
         throw AuthError;
@@ -121,7 +118,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    className="border-2 mb-2"
+                    className="mb-2 border-2"
                     returnKeyType="next"
                     onBlur={onBlur}
                     onChangeText={onChange}
@@ -137,7 +134,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    className="border-2 mb-2"
+                    className="mb-2 border-2"
                     returnKeyType="next"
                     onBlur={onBlur}
                     onChangeText={onChange}
@@ -149,10 +146,10 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
             </View>
             <View>
               <Pressable
-                className="p-2 rounded my-2 w-20 bg-blue-400"
+                className="my-2 w-20 rounded bg-blue-400 p-2"
                 onPress={handleSubmit((data) => updateProfile(data))}
               >
-                <Text className="text-white text-center">Submit</Text>
+                <Text className="text-center text-white">Submit</Text>
               </Pressable>
             </View>
             <Button title="signOut" onPress={() => supabase.auth.signOut()} />

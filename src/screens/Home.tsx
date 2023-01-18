@@ -1,17 +1,17 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Button, Text, View } from "react-native";
-import { useAuth } from "../contexts/AuthProvider";
-import { supabase } from "../utils/supabaseClient";
-import { HomeStackParamList } from "./HomeNavigator";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Button, Text, View } from 'react-native';
+import { useAuth } from '../contexts/AuthProvider';
+import { supabase } from '../utils/supabaseClient';
+import { HomeStackParamList } from './HomeNavigator';
 
-type HomeProps = NativeStackScreenProps<HomeStackParamList, "Home">;
+type HomeProps = NativeStackScreenProps<HomeStackParamList, 'Home'>;
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { session } = useAuth();
 
   const [loading, setLoading] = useState(true);
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
 
   useEffect(() => {
     if (!session) return;
@@ -22,12 +22,15 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   const getName = async () => {
     try {
       setLoading(true);
-      const user = session!.user;
+      if (!session || !session.user) {
+        throw 'no user session';
+      }
+      const user = session.user;
 
-      let { data, error, status } = await supabase
-        .from("profiles")
+      const { data, error, status } = await supabase
+        .from('profiles')
         .select(`username`)
-        .eq("id", user.id)
+        .eq('id', user.id)
         .single();
 
       if (error && status !== 406) throw error;
@@ -37,6 +40,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
       }
     } catch (error) {
       let message;
+
       if (error instanceof Error) message = error.message;
       else message = String(error);
       alert(message);
@@ -45,7 +49,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
     }
   };
   return (
-    <View className="flex flex-col h-full justify-center items-center">
+    <View className="flex h-full flex-col items-center justify-center">
       <Text>Home Page yay</Text>
       {loading ? <ActivityIndicator /> : <Text>Welcome {name}!</Text>}
       <Text>Yipee</Text>
@@ -53,10 +57,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
       <View className="flex flex-row">
         <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
         <View className="w-5"></View>
-        <Button
-          title="Account"
-          onPress={() => navigation.navigate("AccountSettings")}
-        />
+        <Button title="Account" onPress={() => navigation.navigate('AccountSettings')} />
       </View>
     </View>
   );
