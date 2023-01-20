@@ -55,7 +55,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
   return (
     <View className="flex h-full flex-col items-stretch justify-center p-5">
       <KeyboardAvoidingView behavior="padding">
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
           {/* Loader */}
 
           <View className="flex h-96 flex-col items-stretch justify-evenly">
@@ -69,6 +69,8 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
+                    accessibilityLabel="Text input field"
+                    accessibilityHint="Input email for login"
                     className="mb-2 border-b-2 text-xl"
                     autoCapitalize="none"
                     keyboardType="email-address"
@@ -98,6 +100,8 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
+                    accessibilityLabel="Text input field"
+                    accessibilityHint="Input password for login"
                     className="mb-2 border-b-2 text-xl"
                     secureTextEntry={true}
                     onBlur={onBlur}
@@ -117,6 +121,8 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
 
             <View>
               <Pressable
+                accessibilityRole="button"
+                accessibilityHint="Login to application"
                 className="my-2 w-20 rounded bg-blue-400 p-2"
                 onPress={handleSubmit((data) => onSubmit(data))}
               >

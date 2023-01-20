@@ -118,6 +118,8 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
+                    accessibilityLabel="Text input Input"
+                    accessibilityHint="Input to change account name"
                     className="mb-2 border-2"
                     returnKeyType="next"
                     onBlur={onBlur}
@@ -134,6 +136,8 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
+                    accessibilityLabel="Text input field"
+                    accessibilityHint="Input to change account website"
                     className="mb-2 border-2"
                     returnKeyType="next"
                     onBlur={onBlur}
@@ -146,6 +150,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
             </View>
             <View>
               <Pressable
+                accessibilityRole="button"
                 className="my-2 w-20 rounded bg-blue-400 p-2"
                 onPress={handleSubmit((data) => updateProfile(data))}
               >
