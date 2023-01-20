@@ -51,7 +51,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView behavior="padding">
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
         <View className="flex h-full flex-col items-stretch justify-center p-5">
           {/* Loader */}
 
@@ -66,6 +66,8 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
+                    accessibilityLabel="Text input field"
+                    accessibilityHint="Input email for register"
                     className="mb-2 border-b-2 text-xl"
                     autoCapitalize="none"
                     keyboardType="email-address"
@@ -95,6 +97,8 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
+                    accessibilityLabel="Text input field"
+                    accessibilityHint="Input password for register"
                     className="mb-2 border-b-2 text-xl"
                     secureTextEntry={true}
                     onBlur={onBlur}
@@ -127,6 +131,8 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
+                    accessibilityLabel="Text input field"
+                    accessibilityHint="Input password confirmation for register"
                     className="mb-2 border-b-2 text-xl"
                     secureTextEntry={true}
                     onBlur={onBlur}
@@ -146,6 +152,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
 
             <View>
               <Pressable
+                accessibilityRole="button"
                 className="my-2 w-20 rounded bg-blue-400 p-2"
                 onPress={handleSubmit((data) => onSubmit(data))}
               >
