@@ -60,14 +60,19 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
   };
 
   return (
+
+    
     <View className="flex h-full flex-col items-stretch justify-center p-5">
+      <View>
+      <Text style={{ fontFamily: 'BebasNeue', fontSize: 96 }}>SlugFit</Text>
+      <Text style={{ fontFamily: 'BebasNeue', fontSize: 24 }}>We see mass in your future</Text>
+      </View>
       <KeyboardAvoidingView behavior="padding">
         <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
-          {/* Loader */}
-
+        
           <View className="flex h-96 flex-col items-stretch justify-evenly">
             <View>
-            <Text style={{ fontFamily: 'BebasNeue', fontSize: 30 }}>Test</Text>
+            <Text style={{ fontFamily: 'BebasNeue', fontSize: 30 }}>Email</Text>
               <Controller
                 control={control}
                 rules={{
