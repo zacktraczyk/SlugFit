@@ -3,6 +3,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import * as Font from 'expo-font';
 import {
   ActivityIndicator,
   Keyboard,
@@ -15,6 +16,12 @@ import {
 } from 'react-native';
 import { supabase } from '../../utils/supabaseClient';
 import { AuthStackParamList } from './AuthNavigator';
+
+// Import the font
+Font.loadAsync({
+  'BebasNeue': require('../../assets/fonts/BebasNeue-Regular.ttf')
+})
+
 
 type FormElements = {
   email: string;
@@ -60,7 +67,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
 
           <View className="flex h-96 flex-col items-stretch justify-evenly">
             <View>
-              <Text className="text-4xl">Email</Text>
+            <Text style={{ fontFamily: 'BebasNeue', fontSize: 30 }}>Test</Text>
               <Controller
                 control={control}
                 rules={{
@@ -91,7 +98,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
             </View>
 
             <View>
-              <Text className="text-3xl">Password</Text>
+            <Text style={{ fontFamily: 'BebasNeue', fontSize: 30 }}>Password</Text>
               <Controller
                 control={control}
                 rules={{
