@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { useAuth } from '../../contexts/AuthProvider';
 import { supabase } from '../../utils/supabaseClient';
-import { HomeStackParamList } from '../HomeNavigator';
+import { NavigatorParamList } from '../DrawerNavigator';
 
 interface ProfileDetails {
   username: null | string;
@@ -20,7 +20,7 @@ interface ProfileDetails {
   // avatar_url: null | string;
 }
 
-type AccountSettingsProps = NativeStackScreenProps<HomeStackParamList, 'AccountSettings'>;
+type AccountSettingsProps = NativeStackScreenProps<NavigatorParamList, 'AccountSettings'>;
 
 const AccountSettings: React.FC<AccountSettingsProps> = () => {
   const { session } = useAuth();
