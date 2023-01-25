@@ -6,8 +6,8 @@ import { Session } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 import { AuthProvider } from './src/contexts/AuthProvider';
 import AuthNavigator from './src/screens/Auth/AuthNavigator';
-import HomeNavigator from './src/screens/HomeNavigator';
 import { supabase } from './src/utils/supabaseClient';
+import DrawerNavigator from './src/screens/DrawerNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +31,11 @@ const App: React.FC = () => {
           {!session ? (
             <Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
           ) : (
-            <Stack.Screen name="Main" component={HomeNavigator} options={{ headerShown: false }} />
+            <Stack.Screen
+              name="Main"
+              component={DrawerNavigator}
+              options={{ headerShown: false }}
+            />
           )}
         </Stack.Navigator>
       </NavigationContainer>
