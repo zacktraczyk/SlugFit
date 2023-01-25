@@ -87,7 +87,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                   <TextInput
                     accessibilityLabel="Text input field"
                     accessibilityHint="Input email for login"
-                    className="my-2 mt-0 w-80 rounded-md bg-white-500 border-2 border-gray-200 p-2 text-xl"
+                    className="my-2 mt-0 w-90 rounded-md bg-white-500 border-2 border-gray-200 p-2 text-xl"
                     autoCapitalize="none"
                     keyboardType="email-address"
                     returnKeyType="next"
@@ -118,7 +118,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                   <TextInput
                     accessibilityLabel="Text input field"
                     accessibilityHint="Input password for login"
-                    className="my-2 mt-0 w-80 rounded-md bg-white-500 border-2 border-gray-200 p-2 text-xl"
+                    className="my-2 mt-0 w-90 rounded-md bg-white-500 border-2 border-gray-200 p-2 text-xl"
                     secureTextEntry={true}
                     onBlur={onBlur}
                     onChangeText={onChange}
