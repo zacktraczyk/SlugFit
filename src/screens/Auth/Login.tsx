@@ -22,7 +22,6 @@ Font.loadAsync({
   'BebasNeue': require('../../assets/fonts/BebasNeue-Regular.ttf')
 })
 
-
 type FormElements = {
   email: string;
   password: string;
@@ -59,17 +58,15 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
     }
   };
 
-  return (
 
-    
+  return (
     <View className="flex h-full flex-col items-stretch justify-center p-5">
       <View>
-      <Text style={{ fontFamily: 'BebasNeue', fontSize: 96 }}>SlugFit</Text>
-      <Text style={{ fontFamily: 'BebasNeue', fontSize: 24 }}>We see mass in your future</Text>
+      <Text style={{ textAlign: 'center', fontFamily: 'BebasNeue', fontSize: 96}}>SlugFit</Text>
+      <Text style={{ textAlign: 'center', fontFamily: 'BebasNeue', fontSize: 24 }}>We see mass in your future</Text>
       </View>
       <KeyboardAvoidingView behavior="padding">
         <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
-        
           <View className="flex h-96 flex-col items-stretch justify-evenly">
             <View>
             <Text style={{ fontFamily: 'BebasNeue', fontSize: 30 }}>Email</Text>
@@ -131,18 +128,18 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
               </Text>
             </View>
 
-            <View>
+            <View style={{ alignItems: "center" }}>
               <Pressable
                 accessibilityRole="button"
                 accessibilityHint="Login to application"
-                className="my-2 w-20 rounded bg-blue-400 p-2"
+                className="my-2 w-60 rounded bg-red-400 p-2"
                 onPress={handleSubmit((data) => onSubmit(data))}
               >
-                <Text className="text-center text-white">Submit</Text>
+                <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'BebasNeue', fontSize: 24 }}>Sign In</Text>
               </Pressable>
 
               <Text className="py-2" onPress={() => navigation.navigate('RegisterScreen')}>
-                Don&apos;t Have an Account? Register
+                Don&apos;t Have an Account? Create One
               </Text>
             </View>
           </View>
@@ -152,5 +149,5 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
     </View>
   );
 };
-
+ 
 export default Login;
