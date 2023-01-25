@@ -9,6 +9,8 @@ export type NavigatorParamList = {
   Home: undefined;
   MyWorkouts: undefined;
   MyWorkoutsStack: undefined;
+  EditWorkoutPage: undefined;
+  EditExercisePage: undefined;
   Profile: undefined;
 };
 
