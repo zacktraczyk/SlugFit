@@ -19,8 +19,8 @@ import { AuthStackParamList } from './AuthNavigator';
 
 // Import the font
 Font.loadAsync({
-  'BebasNeue': require('../../assets/fonts/BebasNeue-Regular.ttf')
-})
+  BebasNeue: require('../../assets/fonts/BebasNeue-Regular.ttf'),
+});
 
 type FormElements = {
   email: string;
@@ -58,24 +58,29 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
     }
   };
 
-
   return (
     <View className="flex h-full flex-col items-stretch justify-center p-5">
       <View>
-      <Text style={{ textAlign: 'center', fontFamily: 'BebasNeue', fontSize: 96}}>SlugFit</Text>
-      <Text style={{ lineHeight: 24 * 0.3, 
-                    paddingTop: 24 - (24 * 0.3), 
-                    paddingBottom: 50,
-                    textAlign: 'center', 
-                    fontFamily: 'BebasNeue', 
-                    fontSize: 24,
-                    color: '#3C3A3A' }}>We see mass in your future</Text>
-    </View>
+        <Text style={{ textAlign: 'center', fontFamily: 'BebasNeue', fontSize: 96 }}>SlugFit</Text>
+        <Text
+          style={{
+            lineHeight: 24 * 0.3,
+            paddingTop: 24 - 24 * 0.3,
+            paddingBottom: 50,
+            textAlign: 'center',
+            fontFamily: 'BebasNeue',
+            fontSize: 24,
+            color: '#3C3A3A',
+          }}
+        >
+          We see mass in your future
+        </Text>
+      </View>
       <KeyboardAvoidingView behavior="padding">
         <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
           <View className="flex h-96 flex-col items-stretch justify-evenly">
             <View style={{}}>
-            <Text style={{ fontFamily: 'BebasNeue', fontSize: 18 }}>Email</Text>
+              <Text style={{ fontFamily: 'BebasNeue', fontSize: 18 }}>Email</Text>
               <Controller
                 control={control}
                 rules={{
@@ -83,11 +88,10 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                   pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  
                   <TextInput
                     accessibilityLabel="Text input field"
                     accessibilityHint="Input email for login"
-                    className="my-2 mt-0 w-90 rounded-md bg-white-500 border-2 border-gray-200 p-2 text-xl"
+                    className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
                     autoCapitalize="none"
                     keyboardType="email-address"
                     returnKeyType="next"
@@ -107,7 +111,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
             </View>
 
             <View>
-            <Text style={{ fontFamily: 'BebasNeue', fontSize: 18 }}>Password</Text>
+              <Text style={{ fontFamily: 'BebasNeue', fontSize: 18 }}>Password</Text>
               <Controller
                 control={control}
                 rules={{
@@ -118,7 +122,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                   <TextInput
                     accessibilityLabel="Text input field"
                     accessibilityHint="Input password for login"
-                    className="my-2 mt-0 w-90 rounded-md bg-white-500 border-2 border-gray-200 p-2 text-xl"
+                    className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
                     secureTextEntry={true}
                     onBlur={onBlur}
                     onChangeText={onChange}
@@ -135,19 +139,33 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
               </Text>
             </View>
 
-            <View style={{ alignItems: "center" }}>
+            <View style={{ alignItems: 'center' }}>
               <Pressable
                 accessibilityRole="button"
                 accessibilityHint="Login to application"
                 className="my-2 mt-0 w-60 rounded-lg bg-red-500 p-2"
                 onPress={handleSubmit((data) => onSubmit(data))}
               >
-                <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'BebasNeue', fontSize: 24 }}>Sign In</Text>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: 'white',
+                    fontFamily: 'BebasNeue',
+                    fontSize: 24,
+                  }}
+                >
+                  Sign In
+                </Text>
               </Pressable>
               <Text>
-                <Text>Don&apos;t Have an Account?
-                </Text>
-                <Text style={{fontWeight: "bold"}} className="py-2" onPress={() => navigation.navigate('RegisterScreen')}>{' '}Create One
+                <Text>Don&apos;t Have an Account?</Text>
+                <Text
+                  style={{ fontWeight: 'bold' }}
+                  className="py-2"
+                  onPress={() => navigation.navigate('RegisterScreen')}
+                >
+                  {' '}
+                  Create One
                 </Text>
               </Text>
             </View>
@@ -158,5 +176,5 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
     </View>
   );
 };
- 
+
 export default Login;
