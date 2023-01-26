@@ -6,19 +6,26 @@ import ToggleDrawerButton from '../shared/ToggleDrawerButton';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import EditWorkoutPage from '../EditWorkout/EditWorkoutPage';
 import EditExercisePage from '../EditExercise/EditExercisePage';
+import BreadcrumbHeader from '../../components/BreadcrumbHeader';
 
 type MyWorkoutsStackProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkoutsStack'>;
 
 const Stack = createNativeStackNavigator<NavigatorParamList>();
 
-const MyWorkoutsStack: React.FC<MyWorkoutsStackProps> = ({ navigation }) => {
+const MyWorkoutsStack: React.FC<MyWorkoutsStackProps> = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="MyWorkouts"
-        component={MyWorkouts}
-        options={{ headerLeft: () => <ToggleDrawerButton navigation={navigation} /> }}
-      />
+    <Stack.Navigator
+      screenOptions={({ route, navigation }) => ({
+        headerLeft: () => (
+          <>
+            <ToggleDrawerButton navigation={navigation} />
+            <BreadcrumbHeader navigation={navigation} route={route} />
+          </>
+        ),
+        title: '',
+      })}
+    >
+      <Stack.Screen name="MyWorkouts" component={MyWorkouts} />
       <Stack.Screen name="EditWorkoutPage" component={EditWorkoutPage} />
       <Stack.Screen name="EditExercisePage" component={EditExercisePage} />
     </Stack.Navigator>
