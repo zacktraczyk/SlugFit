@@ -24,11 +24,9 @@ export const SearchBarWorkout: React.FC = () => {
     };
 
     
-    let { data: exercises, error } = await supabase
-    .from('exercises')
-    .select('*')
+    
 
-hi i made this edit on feature temp
+
     const onClickHandler = (event, index) => {
         
     }
