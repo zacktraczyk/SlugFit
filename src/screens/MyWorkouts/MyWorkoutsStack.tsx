@@ -6,7 +6,7 @@ import ToggleDrawerButton from '../../components/ToggleDrawerButton';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import EditWorkoutPage from '../EditWorkout/EditWorkoutPage';
 import EditExercisePage from '../EditExercise/EditExercisePage';
-import BreadcrumbHeader from '../../components/BreadcrumbHeader';
+import BreadcrumbHeader from '../../components/MyWorkoutsBreadcrumbHeader';
 
 type MyWorkoutsStackProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkoutsStack'>;
 
