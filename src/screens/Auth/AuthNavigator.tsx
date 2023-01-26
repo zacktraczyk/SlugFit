@@ -18,6 +18,8 @@ function AuthNavigator() {
         name="RegisterScreen"
         component={Register}
         options={{
+          headerShown: false, // new, hide header
+
           title: 'Register',
           headerStyle: {
             backgroundColor: '#FFF', // background color

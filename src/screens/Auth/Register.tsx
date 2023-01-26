@@ -13,6 +13,12 @@ import {
 import { supabase } from '../../utils/supabaseClient';
 import { AuthStackParamList } from './AuthNavigator';
 
+// new
+
+import Ionicon from '@expo/vector-icons/Ionicons';
+
+// new
+
 type FormElements = {
   email: string;
   password: string;
@@ -52,12 +58,24 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
   return (
     <KeyboardAvoidingView behavior="padding">
       <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
-        <View className="flex h-full flex-col items-stretch justify-center p-5">
+        <View className="flex h-full flex-col items-stretch p-5">
           {/* Loader */}
 
-          <View className="flex h-96 flex-col items-stretch justify-evenly">
+          <View className="flex h-96 flex-col items-stretch pt-2">
             <View>
-              <Text className="text-4xl">Email</Text>
+              <View className="flex-row pt-10">
+                <Ionicon
+                  onPress={() => navigation.navigate('LoginScreen')}
+                  name={'arrow-back'}
+                  size={30}
+                />
+              </View>
+
+              <View className="items-center pb-5">
+                <Text style={{ fontFamily: 'BebasNeue', fontSize: 24 }}>CREATE ACCOUNT</Text>
+              </View>
+
+              <Text style={{ fontFamily: 'BebasNeue', fontSize: 18 }}>EMAIL</Text>
               <Controller
                 control={control}
                 rules={{
@@ -68,7 +86,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                   <TextInput
                     accessibilityLabel="Text input field"
                     accessibilityHint="Input email for register"
-                    className="mb-2 border-b-2 text-xl"
+                    className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
                     autoCapitalize="none"
                     keyboardType="email-address"
                     returnKeyType="next"
@@ -79,7 +97,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 )}
                 name="email"
               />
-              <Text className="text-red-500">
+              <Text className="pb-4 text-red-500">
                 {errors.email &&
                   (errors.email.type === 'required'
                     ? 'This field is required.'
@@ -88,7 +106,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
             </View>
 
             <View>
-              <Text className="text-3xl">Password</Text>
+              <Text style={{ fontFamily: 'BebasNeue', fontSize: 18 }}>PASSWORD</Text>
               <Controller
                 control={control}
                 rules={{
@@ -99,7 +117,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                   <TextInput
                     accessibilityLabel="Text input field"
                     accessibilityHint="Input password for register"
-                    className="mb-2 border-b-2 text-xl"
+                    className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
                     secureTextEntry={true}
                     onBlur={onBlur}
                     onChangeText={onChange}
@@ -108,7 +126,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 )}
                 name="password"
               />
-              <Text className="text-red-500">
+              <Text className="pb-4 text-red-500">
                 {errors.password &&
                   (errors.password.type === 'required'
                     ? 'This is required.'
@@ -117,7 +135,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
             </View>
 
             <View>
-              <Text className="text-3xl">Confirm Password</Text>
+              <Text style={{ fontFamily: 'BebasNeue', fontSize: 18 }}>CONFIRM PASSWORD</Text>
               <Controller
                 control={control}
                 rules={{
@@ -133,7 +151,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                   <TextInput
                     accessibilityLabel="Text input field"
                     accessibilityHint="Input password confirmation for register"
-                    className="mb-2 border-b-2 text-xl"
+                    className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
                     secureTextEntry={true}
                     onBlur={onBlur}
                     onChangeText={onChange}
@@ -142,7 +160,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 )}
                 name="passwordConfirm"
               />
-              <Text className="text-red-500">
+              <Text className="pb-4 text-red-500">
                 {errors.passwordConfirm &&
                   (errors.passwordConfirm.type === 'required'
                     ? 'This is required.'
@@ -150,13 +168,22 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
               </Text>
             </View>
 
-            <View>
+            <View className="items-center">
               <Pressable
                 accessibilityRole="button"
-                className="my-2 w-20 rounded bg-blue-400 p-2"
+                className="w-60 rounded-lg bg-red-500 p-2"
                 onPress={handleSubmit((data) => onSubmit(data))}
               >
-                <Text className="text-center text-white">Submit</Text>
+                <Text
+                  style={{
+                    color: 'white',
+                    textAlign: 'center',
+                    fontFamily: 'BebasNeue',
+                    fontSize: 24,
+                  }}
+                >
+                  REGISTER
+                </Text>
               </Pressable>
             </View>
           </View>
