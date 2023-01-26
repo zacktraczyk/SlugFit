@@ -49,7 +49,7 @@ const SearchBarWorkout: React.FC<SearchBarWorkoutProps> = (prop: SearchBarWorkou
     recentlyUsedExercise.current = item;
     prop.selectedExercise.exercise = item;
     prop.selectedExercise.isOk = true;
-    // <<----- Code to navigate back to parents page goes back here ----->>
+    // <<----- Code to navigate back to parents page goes here ----->>
     //
     //
   };
