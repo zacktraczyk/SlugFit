@@ -10,7 +10,7 @@ interface BreadcrumbHeaderProps {
   route: RouteProp<NavigatorParamList, keyof NavigatorParamList>;
 }
 
-const BreadcrumbHeader: React.FC<BreadcrumbHeaderProps> = ({ route, navigation }) => {
+const MyWorkoutsBreadcrumbHeader: React.FC<BreadcrumbHeaderProps> = ({ route, navigation }) => {
   const [editableWorkoutName] = useEditableWorkout((state) => [state.name]);
 
   const MyWorkoutsLink = useMemo(() => {
@@ -66,4 +66,4 @@ const BreadcrumbHeader: React.FC<BreadcrumbHeaderProps> = ({ route, navigation }
   );
 };
 
-export default BreadcrumbHeader;
+export default MyWorkoutsBreadcrumbHeader;
