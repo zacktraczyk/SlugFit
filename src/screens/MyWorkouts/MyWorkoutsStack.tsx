@@ -2,7 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigatorParamList } from '../DrawerNavigator';
 import MyWorkouts from './MyWorkouts';
-import ToggleDrawerButton from '../shared/ToggleDrawerButton';
+import ToggleDrawerButton from '../../components/ToggleDrawerButton';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import EditWorkoutPage from '../EditWorkout/EditWorkoutPage';
 import EditExercisePage from '../EditExercise/EditExercisePage';
