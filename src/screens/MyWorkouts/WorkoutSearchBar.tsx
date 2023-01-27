@@ -3,15 +3,11 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { supabase } from '../../utils/supabaseClient';
 
-/**
- * @param selectedExercise.exercise //value set to exercise pressed
- * @param selectedExercise.isOk //if true, then value of exercise is valid, otherwise disregard
- */
-export type SearchBarWorkoutProps = {
-  selectedExercise: { exercise: string | undefined; isOk: boolean | undefined };
+export type ExerciseSearchBarProps = {
+  onSelectExercise: (exercise: string) => void;
 };
 
-const SearchBarWorkout: React.FC<SearchBarWorkoutProps> = (prop: SearchBarWorkoutProps) => {
+const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise }) => {
   const [allExercises, setAllExercises] = useState<string[]>([]);
   const [searchInput, setSearchInput] = useState('');
   const recentlyUsedExercise = useRef('');
@@ -47,19 +43,15 @@ const SearchBarWorkout: React.FC<SearchBarWorkoutProps> = (prop: SearchBarWorkou
 
   const onPressHandler = (item: string) => {
     recentlyUsedExercise.current = item;
-    prop.selectedExercise.exercise = item;
-    prop.selectedExercise.isOk = true;
-    // <<----- Code to navigate back to parents page goes here ----->>
-    //
-    //
+    onSelectExercise(item);
   };
 
   return (
-    <View className="h-full w-full items-center bg-slate-50 ">
+    <View className="h-full w-screen items-center bg-slate-50 ">
       <View className="mt-7 h-12  w-11/12 rounded-t  border-x border-t border-slate-200 bg-slate-50">
         <TextInput
-          accessibilityLabel="Text input field"
-          accessibilityHint="Input email for login"
+          accessibilityLabel="Exercise Search Text Field "
+          accessibilityHint="Input characters to search for an exercise"
           className=" text-l my-auto mx-5 border-black"
           autoCapitalize="none"
           placeholder="Search for an exercise"
@@ -68,6 +60,7 @@ const SearchBarWorkout: React.FC<SearchBarWorkoutProps> = (prop: SearchBarWorkou
           onChangeText={(value) => {
             setSearchInput(value);
           }}
+          autoFocus
         />
       </View>
       <View className="divide-y-10 invisible  h-60 w-11/12 overflow-scroll border border-slate-200 bg-slate-50">
@@ -126,4 +119,4 @@ const SearchBarWorkout: React.FC<SearchBarWorkoutProps> = (prop: SearchBarWorkou
   );
 };
 
-export default SearchBarWorkout;
+export default ExerciseSearchBar;
