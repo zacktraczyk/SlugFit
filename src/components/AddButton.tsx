@@ -11,9 +11,9 @@ const AddButton: React.FC<AddButtonProps> = ({ onPress }) => {
     <TouchableOpacity
       accessibilityRole="button"
       onPress={onPress}
-      className="absolute right-8 bottom-8 h-16 w-16 items-center justify-center rounded-lg border-2"
+      className="absolute right-8 bottom-8 h-14 w-14 items-center justify-center rounded-lg border-2 border-slate-600 bg-white"
     >
-      <MaterialIcon name="add" size={36} />
+      <MaterialIcon name="add" size={36} color="rgb(71, 85, 105)" />
     </TouchableOpacity>
   );
 };

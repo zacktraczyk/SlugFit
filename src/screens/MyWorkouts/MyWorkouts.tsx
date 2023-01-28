@@ -1,38 +1,71 @@
-import React, { useState, useRef, LegacyRef } from 'react';
+import React, { useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { KeyboardAvoidingView, FlatList, Platform, TextInput } from 'react-native';
+import { KeyboardAvoidingView, FlatList, Platform, StyleSheet } from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import AddButton from '../../components/AddButton';
 import WorkoutBlock from '../../components/WorkoutBlock';
-import { EditableWorkout } from '../../types/EditableWorkout';
+import { useAuth } from '../../contexts/AuthProvider';
+import {
+  createEditableWorkout,
+  updateEditableWorkout,
+  useMyWorkouts,
+} from '../../hooks/useMyWorkouts';
 
 export type MyWorkoutsProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkouts'>;
 
 const MyWorkouts: React.FC<MyWorkoutsProps> = () => {
-  const [workouts, setWorkouts] = useState<Array<EditableWorkout>>([]);
+  const { session } = useAuth();
+  const { workouts, refresh: refreshWorkouts } = useMyWorkouts(session);
   const [editingWorkout, setEditingWorkout] = useState<string | undefined>(undefined);
 
-  const renderWorkoutBlock = ({ item }) => {
-    return <WorkoutBlock editing={editingWorkout} name={item.name} id={item.id} />;
+  const addWorkoutBlock = async () => {
+    const workout = await createEditableWorkout(session);
+    if (workout) setEditingWorkout(workout.id);
+    if (refreshWorkouts) await refreshWorkouts();
   };
 
-  const addWorkoutBlock = () => {
-    const newWorkout = { id: Math.floor(Math.random() * 1000).toString(), name: 'fake name' };
-    setWorkouts((oldWorkouts) => {
-      return [...oldWorkouts, newWorkout];
-    });
-    setEditingWorkout(newWorkout.id);
+  const updateWorkout = async (payload) => {
+    await updateEditableWorkout(payload);
+    setEditingWorkout(undefined);
+    if (refreshWorkouts) await refreshWorkouts();
+  };
+
+  const renderWorkoutBlock = ({ item }) => {
+    return (
+      <WorkoutBlock
+        editing={editingWorkout}
+        name={item.name}
+        id={item.id}
+        updateName={updateWorkout}
+      />
+    );
   };
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex flex-1 flex-col items-center justify-center bg-white"
+      className="flex w-full flex-1 flex-col items-center justify-center bg-white"
     >
-      <FlatList data={workouts} renderItem={renderWorkoutBlock} keyExtractor={(item) => item.id} />
+      <FlatList
+        data={workouts}
+        renderItem={renderWorkoutBlock}
+        keyExtractor={(item) => item.id}
+        className="w-full"
+        contentContainerStyle={styles.flatList}
+        keyboardShouldPersistTaps="always"
+      />
       <AddButton onPress={addWorkoutBlock} />
     </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  flatList: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+});
 
 export default MyWorkouts;
