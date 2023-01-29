@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { NavigatorParamList } from '../screens/DrawerNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import useEditableWorkout from '../hooks/useEditableWorkout';
+import useMyWorkoutsBreadcrumbNavigation from '../hooks/useMyWorkoutsBreadcrumbNavigation';
 
 interface BreadcrumbHeaderProps {
   navigation: NativeStackNavigationProp<NavigatorParamList, keyof NavigatorParamList, undefined>;
@@ -11,7 +11,10 @@ interface BreadcrumbHeaderProps {
 }
 
 const MyWorkoutsBreadcrumbHeader: React.FC<BreadcrumbHeaderProps> = ({ route, navigation }) => {
-  const [editableWorkoutName] = useEditableWorkout((state) => [state.name]);
+  const [workoutName, exerciseName] = useMyWorkoutsBreadcrumbNavigation((state) => [
+    state.workoutName,
+    state.exerciseName,
+  ]);
 
   const MyWorkoutsLink = useMemo(() => {
     const shouldAbbreviateName = route.name === 'EditExercisePage';
@@ -38,11 +41,11 @@ const MyWorkoutsBreadcrumbHeader: React.FC<BreadcrumbHeaderProps> = ({ route, na
           accessibilityRole="button"
           onPress={() => navigation.navigate('EditWorkoutPage')}
         >
-          <Text>{editableWorkoutName}</Text>
+          <Text>{workoutName}</Text>
         </TouchableOpacity>
       </>
     );
-  }, [route.name, editableWorkoutName]);
+  }, [route.name, workoutName]);
 
   const shouldRenderEditExercisePageLink = route.name === 'EditExercisePage';
 
@@ -52,10 +55,10 @@ const MyWorkoutsBreadcrumbHeader: React.FC<BreadcrumbHeaderProps> = ({ route, na
         <Text>
           {` `}/{` `}
         </Text>
-        <Text>Edit Exercise</Text>
+        <Text>{exerciseName}</Text>
       </>
     );
-  }, [route.name]);
+  }, [route.name, exerciseName]);
 
   return (
     <View className="flex flex-1 flex-row">

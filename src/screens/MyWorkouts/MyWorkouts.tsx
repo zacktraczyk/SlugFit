@@ -10,13 +10,18 @@ import {
   updateEditableWorkout,
   useMyWorkouts,
 } from '../../hooks/useMyWorkouts';
+import useMyWorkoutsBreadcrumbNavigation from '../../hooks/useMyWorkoutsBreadcrumbNavigation';
+import { EditableWorkout } from '../../types/EditableWorkout';
 
 export type MyWorkoutsProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkouts'>;
 
-const MyWorkouts: React.FC<MyWorkoutsProps> = () => {
+const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   const { session } = useAuth();
   const { workouts, refresh: refreshWorkouts } = useMyWorkouts(session);
   const [editingWorkout, setEditingWorkout] = useState<string | undefined>(undefined);
+  const [setBreadcrumbWorkoutName] = useMyWorkoutsBreadcrumbNavigation((state) => [
+    state.setWorkoutName,
+  ]);
 
   const addWorkoutBlock = async () => {
     const workout = await createEditableWorkout(session);
@@ -30,6 +35,11 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = () => {
     if (refreshWorkouts) await refreshWorkouts();
   };
 
+  const navigateToWorkout = (workout: EditableWorkout) => {
+    setBreadcrumbWorkoutName(workout.name);
+    navigation.navigate('EditWorkoutPage', workout);
+  };
+
   const renderWorkoutBlock = ({ item }) => {
     return (
       <WorkoutBlock
@@ -37,6 +47,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = () => {
         name={item.name}
         id={item.id}
         updateName={updateWorkout}
+        onPress={navigateToWorkout}
       />
     );
   };

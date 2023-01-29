@@ -2,6 +2,7 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import TabNavigator from './TabNavigator';
 import AccountSettings from './Account/AccountSettings';
+import { EditableWorkout } from '../types/EditableWorkout';
 
 export type NavigatorParamList = {
   Tabs: undefined;
@@ -9,7 +10,7 @@ export type NavigatorParamList = {
   Home: undefined;
   MyWorkouts: undefined;
   MyWorkoutsStack: undefined;
-  EditWorkoutPage: undefined;
+  EditWorkoutPage: EditableWorkout;
   EditExercisePage: undefined;
   Profile: undefined;
 };

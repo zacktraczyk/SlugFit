@@ -9,9 +9,16 @@ interface WorkoutBlockProps {
   name: string;
   id: string;
   updateName: (payload: EditableWorkout) => Promise<void>;
+  onPress: (w: EditableWorkout) => void;
 }
 
-const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ id, editing, name: propName, updateName }) => {
+const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
+  id,
+  editing,
+  name: propName,
+  updateName,
+  onPress,
+}) => {
   const [name, setName] = useState<string>(propName);
   if (editing === id) {
     return (
@@ -38,7 +45,11 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ id, editing, name: propName
       className="mt-2 flex flex-row items-center rounded border border-slate-200"
       style={styles.container}
     >
-      <TouchableOpacity accessibilityRole="button" className="h-full flex-1 p-2 pt-3 pb-3">
+      <TouchableOpacity
+        accessibilityRole="button"
+        className="h-full flex-1 p-2 pt-3 pb-3"
+        onPress={() => onPress({ id, name })}
+      >
         <Text className="font-medium">{name}</Text>
       </TouchableOpacity>
       <TouchableOpacity
