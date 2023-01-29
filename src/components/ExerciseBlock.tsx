@@ -29,16 +29,18 @@ const ExerciseBlock: React.FC<ExerciseBlockProps> = ({ editing, exercise, update
     <BlockContainer>
       <TouchableOpacity
         accessibilityRole="button"
-        className="h-full flex-1 p-2 pt-3 pb-3"
+        className="h-full flex-1 p-1"
         onPress={() => {
           onPress(exercise);
         }}
+        hitSlop={{ top: 20, left: 20, bottom: 20 }}
       >
-        <Text className="font-medium">{exercise.name}</Text>
+        <Text className="text-base font-medium">{exercise.name}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         accessibilityRole="button"
-        className="flex h-full flex-row items-center justify-center p-2 pl-4"
+        className="flex h-full flex-row items-center justify-center p-1"
+        hitSlop={{ top: 20, bottom: 20, right: 20 }}
       >
         <Ionicon name="ellipsis-horizontal" size={16} />
       </TouchableOpacity>

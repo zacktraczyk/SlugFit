@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Text, TextInput, TouchableOpacity } from 'react-native';
 import DoneButton from './DoneButton';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { EditableWorkout } from '../types/EditableWorkout';
@@ -17,18 +17,16 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ editing, workout, updateNam
   if (editing === workout.id) {
     return (
       <BlockContainer>
-        <View className="flex h-full w-full flex-row p-2">
-          <TextInput
-            accessibilityLabel="Text input field"
-            accessibilityHint="rename workout"
-            autoFocus={true}
-            placeholder="Enter workout name"
-            className="flex-1"
-            value={name}
-            onChangeText={setName}
-          />
-          <DoneButton onPress={() => updateName({ ...workout, name })} />
-        </View>
+        <TextInput
+          accessibilityLabel="Text input field"
+          accessibilityHint="rename workout"
+          autoFocus={true}
+          placeholder="Enter workout name"
+          className="flex-1"
+          value={name}
+          onChangeText={setName}
+        />
+        <DoneButton onPress={() => updateName({ ...workout, name })} />
       </BlockContainer>
     );
   }
@@ -37,14 +35,16 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ editing, workout, updateNam
     <BlockContainer>
       <TouchableOpacity
         accessibilityRole="button"
-        className="h-full flex-1 p-2 pt-3 pb-3"
+        className="flex h-full flex-1 flex-row items-center p-1"
         onPress={() => onPress(workout)}
+        hitSlop={{ top: 20, bottom: 20, left: 20 }}
       >
-        <Text className="font-medium">{name}</Text>
+        <Text className="text-base font-medium">{name}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         accessibilityRole="button"
-        className="flex h-full flex-row items-center justify-center p-2 pl-4"
+        className="flex h-full flex-row items-center justify-center p-1"
+        hitSlop={{ top: 20, bottom: 20, right: 20 }}
       >
         <Ionicon name="ellipsis-horizontal" size={16} />
       </TouchableOpacity>

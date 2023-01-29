@@ -8,7 +8,7 @@ interface BlockContainerProps {
 export const BlockContainer: React.FC<BlockContainerProps> = ({ children }) => {
   return (
     <View
-      className="mt-2 flex flex-row items-center rounded border border-slate-200"
+      className="mt-2 flex flex-row items-center rounded border border-slate-200 p-2"
       style={styles.container}
     >
       {children}

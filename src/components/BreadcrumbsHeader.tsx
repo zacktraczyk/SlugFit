@@ -20,8 +20,11 @@ const BreadcrumbsHeader: React.FC<BreadcrumbsHeaderProps> = ({ route, navigation
       <TouchableOpacity
         accessibilityRole="button"
         onPress={() => navigation.navigate('MyWorkouts')}
+        hitSlop={{ top: 20, bottom: 20 }}
       >
-        <Text>{text}</Text>
+        <Text className={route.name === 'MyWorkouts' ? 'text-sm' : 'text-sm underline'}>
+          {text}
+        </Text>
       </TouchableOpacity>
     );
   }, [navigation, route.name]);
@@ -37,8 +40,9 @@ const BreadcrumbsHeader: React.FC<BreadcrumbsHeaderProps> = ({ route, navigation
         <TouchableOpacity
           accessibilityRole="button"
           onPress={() => navigation.navigate('EditWorkoutPage')}
+          hitSlop={{ top: 20, bottom: 20 }}
         >
-          <Text>{workout?.name}</Text>
+          <Text className="text-sm underline">{workout?.name}</Text>
         </TouchableOpacity>
       </>
     );
@@ -52,7 +56,7 @@ const BreadcrumbsHeader: React.FC<BreadcrumbsHeaderProps> = ({ route, navigation
         <Text>
           {` `}/{` `}
         </Text>
-        <Text>{exercise?.name}</Text>
+        <Text className="text-sm">{exercise?.name}</Text>
       </>
     );
   }, [route.name, exercise]);
