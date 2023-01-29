@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { NavigatorParamList } from '../screens/DrawerNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import useMyWorkoutsBreadcrumbNavigation from '../hooks/useMyWorkoutsBreadcrumbNavigation';
+import useSelectedWorkout from '../hooks/useSelectedWorkout';
 
 interface BreadcrumbHeaderProps {
   navigation: NativeStackNavigationProp<NavigatorParamList, keyof NavigatorParamList, undefined>;
@@ -11,14 +11,11 @@ interface BreadcrumbHeaderProps {
 }
 
 const MyWorkoutsBreadcrumbHeader: React.FC<BreadcrumbHeaderProps> = ({ route, navigation }) => {
-  const [workoutName, exerciseName] = useMyWorkoutsBreadcrumbNavigation((state) => [
-    state.workoutName,
-    state.exerciseName,
-  ]);
+  const [workout, exercise] = useSelectedWorkout((state) => [state.workout, state.exercise]);
 
   const MyWorkoutsLink = useMemo(() => {
     const shouldAbbreviateName = route.name === 'EditExercisePage';
-    const text = shouldAbbreviateName ? 'My...' : 'My Workouts';
+    const text = shouldAbbreviateName ? '...' : 'My Workouts';
     return (
       <TouchableOpacity
         accessibilityRole="button"
@@ -41,11 +38,11 @@ const MyWorkoutsBreadcrumbHeader: React.FC<BreadcrumbHeaderProps> = ({ route, na
           accessibilityRole="button"
           onPress={() => navigation.navigate('EditWorkoutPage')}
         >
-          <Text>{workoutName}</Text>
+          <Text>{workout?.name}</Text>
         </TouchableOpacity>
       </>
     );
-  }, [route.name, workoutName]);
+  }, [route.name, workout]);
 
   const shouldRenderEditExercisePageLink = route.name === 'EditExercisePage';
 
@@ -55,10 +52,10 @@ const MyWorkoutsBreadcrumbHeader: React.FC<BreadcrumbHeaderProps> = ({ route, na
         <Text>
           {` `}/{` `}
         </Text>
-        <Text>{exerciseName}</Text>
+        <Text>{exercise?.name}</Text>
       </>
     );
-  }, [route.name, exerciseName]);
+  }, [route.name, exercise]);
 
   return (
     <View className="flex flex-1 flex-row">

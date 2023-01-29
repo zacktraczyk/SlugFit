@@ -1,31 +1,22 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, TextInput, TouchableOpacity } from 'react-native';
 import DoneButton from './DoneButton';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { EditableWorkout } from '../types/EditableWorkout';
+import { BlockContainer } from './BlockContainer';
 
 interface WorkoutBlockProps {
   editing?: string;
-  name: string;
-  id: string;
+  workout: EditableWorkout;
   updateName: (payload: EditableWorkout) => Promise<void>;
   onPress: (w: EditableWorkout) => void;
 }
 
-const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
-  id,
-  editing,
-  name: propName,
-  updateName,
-  onPress,
-}) => {
-  const [name, setName] = useState<string>(propName);
-  if (editing === id) {
+const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ editing, workout, updateName, onPress }) => {
+  const [name, setName] = useState<string>(workout.name || '');
+  if (editing === workout.id) {
     return (
-      <View
-        className="mt-1 flex flex-row rounded border border-slate-200 p-3"
-        style={styles.container}
-      >
+      <BlockContainer>
         <TextInput
           accessibilityLabel="Text input field"
           accessibilityHint="rename workout"
@@ -35,20 +26,17 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
           value={name}
           onChangeText={setName}
         />
-        <DoneButton onPress={() => updateName({ id, name })} />
-      </View>
+        <DoneButton onPress={() => updateName({ ...workout, name })} />
+      </BlockContainer>
     );
   }
 
   return (
-    <View
-      className="mt-2 flex flex-row items-center rounded border border-slate-200"
-      style={styles.container}
-    >
+    <BlockContainer>
       <TouchableOpacity
         accessibilityRole="button"
         className="h-full flex-1 p-2 pt-3 pb-3"
-        onPress={() => onPress({ id, name })}
+        onPress={() => onPress(workout)}
       >
         <Text className="font-medium">{name}</Text>
       </TouchableOpacity>
@@ -58,16 +46,8 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
       >
         <Ionicon name="ellipsis-horizontal" size={16} />
       </TouchableOpacity>
-    </View>
+    </BlockContainer>
   );
 };
-
-const { width } = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-  container: {
-    width: (width / 12) * 11,
-  },
-});
 
 export default WorkoutBlock;

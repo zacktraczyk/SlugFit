@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import { supabase } from '../../utils/supabaseClient';
+import { supabase } from '../utils/supabaseClient';
 
 export type ExerciseSearchBarProps = {
   onSelectExercise: (exercise: string) => void;
@@ -64,7 +64,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
         />
       </View>
       <View className="divide-y-10 invisible  h-60 w-11/12 overflow-scroll border border-slate-200 bg-slate-50">
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="always">
           {searchInput.length <= 0 ? (
             <View className="mx-5 ">
               {recentlyUsedExercise.current.length > 0 ? (

@@ -5,13 +5,10 @@ import { NavigatorParamList } from '../DrawerNavigator';
 import AddButton from '../../components/AddButton';
 import WorkoutBlock from '../../components/WorkoutBlock';
 import { useAuth } from '../../contexts/AuthProvider';
-import {
-  createEditableWorkout,
-  updateEditableWorkout,
-  useMyWorkouts,
-} from '../../hooks/useMyWorkouts';
-import useMyWorkoutsBreadcrumbNavigation from '../../hooks/useMyWorkoutsBreadcrumbNavigation';
+import { useMyWorkouts } from '../../hooks/useMyWorkouts';
+import { createEditableWorkout, updateEditableWorkout } from '../../hooks/useEditableWorkout';
 import { EditableWorkout } from '../../types/EditableWorkout';
+import useSelectedWorkout from '../../hooks/useSelectedWorkout';
 
 export type MyWorkoutsProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkouts'>;
 
@@ -19,9 +16,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   const { session } = useAuth();
   const { workouts, refresh: refreshWorkouts } = useMyWorkouts(session);
   const [editingWorkout, setEditingWorkout] = useState<string | undefined>(undefined);
-  const [setBreadcrumbWorkoutName] = useMyWorkoutsBreadcrumbNavigation((state) => [
-    state.setWorkoutName,
-  ]);
+  const [setSelectedWorkout] = useSelectedWorkout((state) => [state.setWorkout]);
 
   const addWorkoutBlock = async () => {
     const workout = await createEditableWorkout(session);
@@ -36,16 +31,15 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   };
 
   const navigateToWorkout = (workout: EditableWorkout) => {
-    setBreadcrumbWorkoutName(workout.name);
-    navigation.navigate('EditWorkoutPage', workout);
+    setSelectedWorkout(workout);
+    navigation.navigate('EditWorkoutPage');
   };
 
   const renderWorkoutBlock = ({ item }) => {
     return (
       <WorkoutBlock
         editing={editingWorkout}
-        name={item.name}
-        id={item.id}
+        workout={item}
         updateName={updateWorkout}
         onPress={navigateToWorkout}
       />
