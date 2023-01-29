@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { Session, User } from '@supabase/supabase-js';
 import { EditableWorkout } from '../types/EditableWorkout';

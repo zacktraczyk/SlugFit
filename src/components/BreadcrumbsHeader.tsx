@@ -5,12 +5,12 @@ import { NavigatorParamList } from '../screens/DrawerNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import useSelectedWorkout from '../hooks/useSelectedWorkout';
 
-interface BreadcrumbHeaderProps {
+interface BreadcrumbsHeaderProps {
   navigation: NativeStackNavigationProp<NavigatorParamList, keyof NavigatorParamList, undefined>;
   route: RouteProp<NavigatorParamList, keyof NavigatorParamList>;
 }
 
-const MyWorkoutsBreadcrumbHeader: React.FC<BreadcrumbHeaderProps> = ({ route, navigation }) => {
+const BreadcrumbsHeader: React.FC<BreadcrumbsHeaderProps> = ({ route, navigation }) => {
   const [workout, exercise] = useSelectedWorkout((state) => [state.workout, state.exercise]);
 
   const MyWorkoutsLink = useMemo(() => {
@@ -66,4 +66,4 @@ const MyWorkoutsBreadcrumbHeader: React.FC<BreadcrumbHeaderProps> = ({ route, na
   );
 };
 
-export default MyWorkoutsBreadcrumbHeader;
+export default BreadcrumbsHeader;
