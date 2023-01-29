@@ -34,7 +34,6 @@ export const useUserData = (session: Session | null) => {
         setUserData(data);
       }
     } catch (error) {
-      setError;
       let message;
 
       if (error instanceof Error) message = error.message;
