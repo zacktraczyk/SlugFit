@@ -13,7 +13,7 @@ interface WorkoutBlockProps {
   deleteName: (id:string)=>Promise<void>;
 }
 
-const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ id, editing, name: propName, updateName,removeName }) => {
+const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ id, editing, name: propName, updateName,deleteName }) => {
   const [name, setName] = useState<string>(propName);
   if (editing === id) {
     return (
