@@ -1,22 +1,23 @@
 import React from 'react';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Button, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 interface DraggableCardProps {
   title: string;
-  collapsable: boolean;
+  // collapsable: boolean;
   children: React.ReactNode;
 }
 
-const Card: React.FC<DraggableCardProps> = ({ title, collapsable, children }) => {
-  const options = [];
-
+const Card: React.FC<DraggableCardProps> = ({ title, children }) => {
   // <++> TODO: Add arrow collapse functionallity
-  // <++> TODO: Add ... functionality
+  // const [collapsed, setCollapsed] = useState(true)
+
+  // <++> TODO: Add vertical dots functionality
+  // const options = [];
 
   return (
-    <View className="flex flex-row items-center justify-evenly space-x-10 rounded border bg-lightgray p-10 py-3">
+    <View className="bg-lightgray flex flex-row items-center justify-evenly space-x-10 rounded border p-10 py-3">
       <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
       <Text className="mr-2">{title}</Text>
       <View className="flex flex-row items-center space-x-2">{children}</View>

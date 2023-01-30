@@ -2,18 +2,18 @@ import React from 'react';
 import { TextInput } from 'react-native';
 import Card from './Card';
 
-interface SetCard {
-  reps: number;
-  setReps: Function;
-  pre: number;
-  setPre: Function;
-  orm: number;
-  setOrm: Function;
+interface SetCardProps {
+  reps: string;
+  setReps: (val: string) => void;
+  pre: string;
+  setPre: (val: string) => void;
+  orm: string;
+  setOrm: (val: string) => void;
 }
 
-const SetCard = ({ reps, setReps, pre, setPre, orm, setOrm }) => {
+const SetCard: React.FC<SetCardProps> = ({ reps, setReps, pre, setPre, orm, setOrm }) => {
   return (
-    <Card title="Set" collapsable={false}>
+    <Card title="Set">
       <TextInput
         accessibilityLabel="Text input Input"
         accessibilityHint="Input to change account name"
