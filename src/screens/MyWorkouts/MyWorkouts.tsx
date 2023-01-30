@@ -7,6 +7,7 @@ import WorkoutBlock from '../../components/WorkoutBlock';
 import { useAuth } from '../../contexts/AuthProvider';
 import {
   createEditableWorkout,
+  deleteEditableWorkout,
   updateEditableWorkout,
   useMyWorkouts,
 } from '../../hooks/useMyWorkouts';
@@ -23,7 +24,11 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = () => {
     if (workout) setEditingWorkout(workout.id);
     if (refreshWorkouts) await refreshWorkouts();
   };
-
+  const deleteWorkoutBlock =async (id) =>{
+    await deleteEditableWorkout(id);
+    setEditingWorkout(undefined);
+    if (refreshWorkouts) await refreshWorkouts();
+  }
   const updateWorkout = async (payload) => {
     await updateEditableWorkout(payload);
     setEditingWorkout(undefined);
@@ -37,6 +42,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = () => {
         name={item.name}
         id={item.id}
         updateName={updateWorkout}
+        deleteName={deleteWorkoutBlock}
       />
     );
   };
@@ -55,6 +61,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = () => {
         keyboardShouldPersistTaps="always"
       />
       <AddButton onPress={addWorkoutBlock} />
+      
     </KeyboardAvoidingView>
   );
 };

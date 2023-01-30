@@ -3,15 +3,17 @@ import { View, Text, TextInput, Dimensions, StyleSheet, TouchableOpacity } from 
 import DoneButton from './DoneButton';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { EditableWorkout } from '../types/EditableWorkout';
+import { deleteEditableWorkout } from '../hooks/useMyWorkouts';
 
 interface WorkoutBlockProps {
   editing?: string;
   name: string;
   id: string;
   updateName: (payload: EditableWorkout) => Promise<void>;
+  deleteName: (id:string)=>Promise<void>;
 }
 
-const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ id, editing, name: propName, updateName }) => {
+const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ id, editing, name: propName, updateName,removeName }) => {
   const [name, setName] = useState<string>(propName);
   if (editing === id) {
     return (
@@ -45,7 +47,8 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ id, editing, name: propName
         accessibilityRole="button"
         className="flex h-full flex-row items-center justify-center p-2 pl-4"
       >
-        <Ionicon name="ellipsis-horizontal" size={16} />
+        
+        <Ionicon onPress={()=> deleteName(id)} name="ellipsis-horizontal" size={16} />
       </TouchableOpacity>
     </View>
   );
