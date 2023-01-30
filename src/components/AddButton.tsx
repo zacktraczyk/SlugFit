@@ -1,19 +1,20 @@
 import React from 'react';
-import { Pressable, Text } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import MaterialIcon from '@expo/vector-icons/MaterialIcons';
 
 interface AddButtonProps {
-  onClick: () => void;
+  onPress: () => void;
 }
 
-const AddButton: React.FC<AddButtonProps> = ({ onClick }) => {
+const AddButton: React.FC<AddButtonProps> = ({ onPress }) => {
   return (
-    <Pressable
+    <TouchableOpacity
       accessibilityRole="button"
-      onPress={() => onClick()}
-      className="absolute bottom-5 right-5 flex h-20 w-20 items-center justify-center rounded-xl border-2 bg-white shadow"
+      onPress={onPress}
+      className="absolute right-8 bottom-8 h-14 w-14 items-center justify-center rounded-lg border-2 border-slate-600 bg-white"
     >
-      <Text className="text-4xl">+</Text>
-    </Pressable>
+      <MaterialIcon name="add" size={36} color="rgb(71, 85, 105)" />
+    </TouchableOpacity>
   );
 };
 
