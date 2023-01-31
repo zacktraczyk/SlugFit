@@ -4,20 +4,15 @@ import { Controller, useForm } from 'react-hook-form';
 import {
   Keyboard,
   KeyboardAvoidingView,
-  Pressable,
   Text,
   TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { supabase } from '../../utils/supabaseClient';
 import { AuthStackParamList } from './AuthNavigator';
-
-// new
-
 import Ionicon from '@expo/vector-icons/Ionicons';
-
-// new
 
 type FormElements = {
   email: string;
@@ -72,10 +67,18 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
               </View>
 
               <View className="items-center pb-5">
-                <Text style={{ fontFamily: 'BebasNeue', fontSize: 24 }}>CREATE ACCOUNT</Text>
+                <Text 
+                  className="text-2xl"
+                  style={{ fontFamily: 'BebasNeue' }}>
+                    CREATE ACCOUNT
+                </Text>
               </View>
 
-              <Text style={{ fontFamily: 'BebasNeue', fontSize: 18 }}>EMAIL</Text>
+              <Text 
+                className="text-lg"
+                style={{ fontFamily: 'BebasNeue' }}>
+                  EMAIL
+              </Text>
               <Controller
                 control={control}
                 rules={{
@@ -106,7 +109,11 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
             </View>
 
             <View>
-              <Text style={{ fontFamily: 'BebasNeue', fontSize: 18 }}>PASSWORD</Text>
+              <Text 
+                className="text-lg"
+                style={{ fontFamily: 'BebasNeue' }}>
+                  PASSWORD
+              </Text>
               <Controller
                 control={control}
                 rules={{
@@ -135,7 +142,11 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
             </View>
 
             <View>
-              <Text style={{ fontFamily: 'BebasNeue', fontSize: 18 }}>CONFIRM PASSWORD</Text>
+              <Text 
+                className="text-lg"
+                style={{ fontFamily: 'BebasNeue' }}>
+                  CONFIRM PASSWORD
+              </Text>
               <Controller
                 control={control}
                 rules={{
@@ -169,22 +180,20 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
             </View>
 
             <View className="items-center">
-              <Pressable
+              <TouchableOpacity
                 accessibilityRole="button"
                 className="w-60 rounded-lg bg-red-500 p-2"
                 onPress={handleSubmit((data) => onSubmit(data))}
               >
-                <Text
+                <Text 
+                  className="text-center text-white text-2xl"
                   style={{
-                    color: 'white',
-                    textAlign: 'center',
                     fontFamily: 'BebasNeue',
-                    fontSize: 24,
                   }}
                 >
-                  REGISTER
+                    REGISTER
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
