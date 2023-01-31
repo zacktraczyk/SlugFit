@@ -5,16 +5,15 @@ import { NavigatorParamList } from '../DrawerNavigator';
 import AddButton from '../../components/AddButton';
 import WorkoutBlock from '../../components/WorkoutBlock';
 import { useAuth } from '../../contexts/AuthProvider';
-
+import { useMyWorkouts } from '../../hooks/useMyWorkouts';
 import {
   createEditableWorkout,
   deleteEditableWorkout,
   updateEditableWorkout,
-  useMyWorkouts,
-} from '../../hooks/useMyWorkouts';
+ 
+} from '../../hooks/useEditableWorkout';
 
 
-import { useMyWorkouts } from '../../hooks/useMyWorkouts';
 
 import { EditableWorkout } from '../../types/EditableWorkout';
 import useSelectedWorkout from '../../hooks/useSelectedWorkout';

@@ -59,7 +59,7 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ editing, workout, updateNam
         
             <View>
               <StatusBar style="light"/>
-              {modalVisible && <BlockActionsModal deleteWorkout={()=>deleteName(id)}/>}
+              {modalVisible && <BlockActionsModal deleteWorkout={()=>deleteName(workout.id)}/>}
             </View>
           </GestureHandlerRootView>
       </TouchableOpacity>
