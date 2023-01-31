@@ -18,13 +18,13 @@ function AuthNavigator() {
         name="RegisterScreen"
         component={Register}
         options={{
-          headerShown: false, 
+          headerShown: false,
 
           title: 'Register',
           headerStyle: {
-            backgroundColor: '#FFF', 
+            backgroundColor: '#FFF',
           },
-          headerTintColor: '#000', 
+          headerTintColor: '#000',
         }}
       />
     </Stack.Navigator>

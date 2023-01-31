@@ -67,17 +67,13 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
               </View>
 
               <View className="items-center pb-5">
-                <Text 
-                  className="text-2xl"
-                  style={{ fontFamily: 'BebasNeue' }}>
-                    CREATE ACCOUNT
+                <Text className="text-2xl" style={{ fontFamily: 'BebasNeue' }}>
+                  CREATE ACCOUNT
                 </Text>
               </View>
 
-              <Text 
-                className="text-lg"
-                style={{ fontFamily: 'BebasNeue' }}>
-                  EMAIL
+              <Text className="text-lg" style={{ fontFamily: 'BebasNeue' }}>
+                EMAIL
               </Text>
               <Controller
                 control={control}
@@ -109,10 +105,8 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
             </View>
 
             <View>
-              <Text 
-                className="text-lg"
-                style={{ fontFamily: 'BebasNeue' }}>
-                  PASSWORD
+              <Text className="text-lg" style={{ fontFamily: 'BebasNeue' }}>
+                PASSWORD
               </Text>
               <Controller
                 control={control}
@@ -142,10 +136,8 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
             </View>
 
             <View>
-              <Text 
-                className="text-lg"
-                style={{ fontFamily: 'BebasNeue' }}>
-                  CONFIRM PASSWORD
+              <Text className="text-lg" style={{ fontFamily: 'BebasNeue' }}>
+                CONFIRM PASSWORD
               </Text>
               <Controller
                 control={control}
@@ -185,13 +177,13 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 className="w-60 rounded-lg bg-red-500 p-2"
                 onPress={handleSubmit((data) => onSubmit(data))}
               >
-                <Text 
-                  className="text-center text-white text-2xl"
+                <Text
+                  className="text-center text-2xl text-white"
                   style={{
                     fontFamily: 'BebasNeue',
                   }}
                 >
-                    REGISTER
+                  REGISTER
                 </Text>
               </TouchableOpacity>
             </View>
