@@ -5,24 +5,28 @@ import { NavigatorParamList } from '../DrawerNavigator';
 import AddButton from '../../components/AddButton';
 import WorkoutBlock from '../../components/WorkoutBlock';
 import { useAuth } from '../../contexts/AuthProvider';
+
 import {
   createEditableWorkout,
   deleteEditableWorkout,
   updateEditableWorkout,
   useMyWorkouts,
 } from '../../hooks/useMyWorkouts';
-import  ModalPopup from '../../components/BlockActionsModal';
-import Animated from 'react-native-reanimated';
-import { GestureHandlerRootView, TouchableOpacity } from 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
-import { Modal } from 'react-native';
+
+
+import { useMyWorkouts } from '../../hooks/useMyWorkouts';
+
+import { EditableWorkout } from '../../types/EditableWorkout';
+import useSelectedWorkout from '../../hooks/useSelectedWorkout';
+
 
 export type MyWorkoutsProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkouts'>;
 
-const MyWorkouts: React.FC<MyWorkoutsProps> = () => {
+const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   const { session } = useAuth();
   const { workouts, refresh: refreshWorkouts } = useMyWorkouts(session);
   const [editingWorkout, setEditingWorkout] = useState<string | undefined>(undefined);
+  const [setSelectedWorkout] = useSelectedWorkout((state) => [state.setWorkout]);
 
   const addWorkoutBlock = async () => {
     const workout = await createEditableWorkout(session);
@@ -41,14 +45,21 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = () => {
   };
 
 
+  const navigateToWorkout = (workout: EditableWorkout) => {
+    setSelectedWorkout(workout);
+    navigation.navigate('EditWorkoutPage');
+  };
+
+
   const renderWorkoutBlock = ({ item }) => {
     return (
       <WorkoutBlock
         editing={editingWorkout}
-        name={item.name}
-        id={item.id}
+        workout={item}
         updateName={updateWorkout}
         deleteName={deleteWorkoutBlock}
+        onPress={navigateToWorkout}
+
       />
     );
   };

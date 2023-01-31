@@ -1,32 +1,31 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, TextInput, TouchableOpacity } from 'react-native';
 import DoneButton from './DoneButton';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { EditableWorkout } from '../types/EditableWorkout';
+
 import { deleteEditableWorkout } from '../hooks/useMyWorkouts';
-import { JsxAttribute } from 'typescript';
+
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 
 import BlockActionsModal from './BlockActionsModal';
 
+
 interface WorkoutBlockProps {
   editing?: string;
-  name: string;
-  id: string;
+  workout: EditableWorkout;
   updateName: (payload: EditableWorkout) => Promise<void>;
+  onPress: (w: EditableWorkout) => void;
   deleteName: (id:string) => Promise<void>;
 }
 
-const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ id, editing, name: propName, updateName,deleteName }) => {
+const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ id, editing, name: propName, updateName,onPress,deleteName }) => {
   const [name, setName] = useState<string>(propName);
   const [modalVisible, setModalVisible] = useState(false);
   if (editing === id) {
     return (
-      <View
-        className="mt-1 flex flex-row rounded border border-slate-200 p-3"
-        style={styles.container}
-      >
+      <BlockContainer>
         <TextInput
           accessibilityLabel="Text input field"
           accessibilityHint="rename workout"
@@ -36,22 +35,25 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ id, editing, name: propName
           value={name}
           onChangeText={setName}
         />
-        <DoneButton onPress={() => updateName({ id, name })} />
-      </View>
+        <DoneButton onPress={() => updateName({ ...workout, name })} />
+      </BlockContainer>
     );
   }
 
   return (
-    <View
-      className="mt-2 flex flex-row items-center rounded border border-slate-200"
-      style={styles.container}
-    >
-      <TouchableOpacity accessibilityRole="button" className="h-full flex-1 p-2 pt-3 pb-3">
-        <Text className="font-medium">{name}</Text>
+    <BlockContainer>
+      <TouchableOpacity
+        accessibilityRole="button"
+        className="flex h-full flex-1 flex-row items-center p-1"
+        onPress={() => onPress(workout)}
+        hitSlop={{ top: 20, bottom: 20, left: 20 }}
+      >
+        <Text className="text-base font-medium">{name}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         accessibilityRole="button"
-        className="flex h-full flex-row items-center justify-center p-2 pl-4"
+        className="flex h-full flex-row items-center justify-center p-1"
+        hitSlop={{ top: 20, bottom: 20, right: 20 }}
       >
         
         <Ionicon onPress={()=> setModalVisible(true)} name="ellipsis-horizontal" size={16} />
@@ -63,16 +65,8 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ id, editing, name: propName
             </View>
           </GestureHandlerRootView>
       </TouchableOpacity>
-    </View>
+    </BlockContainer>
   );
 };
-
-const { width } = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-  container: {
-    width: (width / 12) * 11,
-  },
-});
 
 export default WorkoutBlock;
