@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { KeyboardAvoidingView, FlatList, Platform, StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, FlatList, Platform, StyleSheet, View,Text, Dimensions} from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import AddButton from '../../components/AddButton';
 import WorkoutBlock from '../../components/WorkoutBlock';
@@ -11,6 +11,11 @@ import {
   updateEditableWorkout,
   useMyWorkouts,
 } from '../../hooks/useMyWorkouts';
+import  ModalPopup from '../../components/BlockActionsModal';
+import Animated from 'react-native-reanimated';
+import { GestureHandlerRootView, TouchableOpacity } from 'react-native-gesture-handler';
+import { StatusBar } from 'expo-status-bar';
+import { Modal } from 'react-native';
 
 export type MyWorkoutsProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkouts'>;
 
@@ -35,6 +40,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = () => {
     if (refreshWorkouts) await refreshWorkouts();
   };
 
+
   const renderWorkoutBlock = ({ item }) => {
     return (
       <WorkoutBlock
@@ -48,10 +54,12 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = () => {
   };
 
   return (
+    
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex w-full flex-1 flex-col items-center justify-center bg-white"
     >
+      
       <FlatList
         data={workouts}
         renderItem={renderWorkoutBlock}
@@ -62,6 +70,10 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = () => {
       />
       <AddButton onPress={addWorkoutBlock} />
       
+      
+      
+
+     
     </KeyboardAvoidingView>
   );
 };
@@ -73,6 +85,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  
+  
 });
 
 export default MyWorkouts;
