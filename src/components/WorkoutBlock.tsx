@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { Text, TextInput, TouchableOpacity } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DoneButton from './DoneButton';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { EditableWorkout } from '../types/EditableWorkout';
-
-import { deleteEditableWorkout } from '../hooks/useMyWorkouts';
-
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 
 import BlockActionsModal from './BlockActionsModal';
+import { BlockContainer } from './BlockContainer';
 
 
 interface WorkoutBlockProps {
@@ -20,10 +18,10 @@ interface WorkoutBlockProps {
   deleteName: (id:string) => Promise<void>;
 }
 
-const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ id, editing, name: propName, updateName,onPress,deleteName }) => {
-  const [name, setName] = useState<string>(propName);
+const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ editing, workout, updateName,onPress,deleteName }) => {
+  const [name, setName] = useState<string>(workout.name || '');
   const [modalVisible, setModalVisible] = useState(false);
-  if (editing === id) {
+  if (editing === workout.id) {
     return (
       <BlockContainer>
         <TextInput
