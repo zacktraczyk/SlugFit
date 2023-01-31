@@ -9,16 +9,21 @@ import { StatusBar } from 'expo-status-bar';
 import BlockActionsModal from './BlockActionsModal';
 import { BlockContainer } from './BlockContainer';
 
-
 interface WorkoutBlockProps {
   editing?: string;
   workout: EditableWorkout;
   updateName: (payload: EditableWorkout) => Promise<void>;
   onPress: (w: EditableWorkout) => void;
-  deleteName: (id:string) => Promise<void>;
+  deleteName: (id: string) => Promise<void>;
 }
 
-const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ editing, workout, updateName,onPress,deleteName }) => {
+const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
+  editing,
+  workout,
+  updateName,
+  onPress,
+  deleteName,
+}) => {
   const [name, setName] = useState<string>(workout.name || '');
   const [modalVisible, setModalVisible] = useState(false);
   if (editing === workout.id) {
@@ -53,15 +58,13 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ editing, workout, updateNam
         className="flex h-full flex-row items-center justify-center p-1"
         hitSlop={{ top: 20, bottom: 20, right: 20 }}
       >
-        
-        <Ionicon onPress={()=> setModalVisible(true)} name="ellipsis-horizontal" size={16} />
-          <GestureHandlerRootView style={{ flex: 1 }}>
-        
-            <View>
-              <StatusBar style="light"/>
-              {modalVisible && <BlockActionsModal deleteWorkout={()=>deleteName(workout.id)}/>}
-            </View>
-          </GestureHandlerRootView>
+        <Ionicon onPress={() => setModalVisible(true)} name="ellipsis-horizontal" size={16} />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <View>
+            <StatusBar style="light" />
+            {modalVisible && <BlockActionsModal deleteWorkout={() => deleteName(workout.id)} />}
+          </View>
+        </GestureHandlerRootView>
       </TouchableOpacity>
     </BlockContainer>
   );

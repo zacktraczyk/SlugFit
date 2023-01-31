@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { KeyboardAvoidingView, FlatList, Platform, StyleSheet, View,Text, Dimensions} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  FlatList,
+  Platform,
+  StyleSheet,
+  View,
+  Text,
+  Dimensions,
+} from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import AddButton from '../../components/AddButton';
 import WorkoutBlock from '../../components/WorkoutBlock';
@@ -10,14 +18,10 @@ import {
   createEditableWorkout,
   deleteEditableWorkout,
   updateEditableWorkout,
- 
 } from '../../hooks/useEditableWorkout';
-
-
 
 import { EditableWorkout } from '../../types/EditableWorkout';
 import useSelectedWorkout from '../../hooks/useSelectedWorkout';
-
 
 export type MyWorkoutsProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkouts'>;
 
@@ -32,23 +36,21 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
     if (workout) setEditingWorkout(workout.id);
     if (refreshWorkouts) await refreshWorkouts();
   };
-  const deleteWorkoutBlock =async (id) =>{
+  const deleteWorkoutBlock = async (id) => {
     await deleteEditableWorkout(id);
     setEditingWorkout(undefined);
     if (refreshWorkouts) await refreshWorkouts();
-  }
+  };
   const updateWorkout = async (payload) => {
     await updateEditableWorkout(payload);
     setEditingWorkout(undefined);
     if (refreshWorkouts) await refreshWorkouts();
   };
 
-
   const navigateToWorkout = (workout: EditableWorkout) => {
     setSelectedWorkout(workout);
     navigation.navigate('EditWorkoutPage');
   };
-
 
   const renderWorkoutBlock = ({ item }) => {
     return (
@@ -58,18 +60,15 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
         updateName={updateWorkout}
         deleteName={deleteWorkoutBlock}
         onPress={navigateToWorkout}
-
       />
     );
   };
 
   return (
-    
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex w-full flex-1 flex-col items-center justify-center bg-white"
     >
-      
       <FlatList
         data={workouts}
         renderItem={renderWorkoutBlock}
@@ -79,11 +78,6 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
         keyboardShouldPersistTaps="always"
       />
       <AddButton onPress={addWorkoutBlock} />
-      
-      
-      
-
-     
     </KeyboardAvoidingView>
   );
 };
@@ -95,8 +89,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  
-  
 });
 
 export default MyWorkouts;
