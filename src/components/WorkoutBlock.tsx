@@ -3,9 +3,6 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DoneButton from './DoneButton';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { EditableWorkout } from '../types/EditableWorkout';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
-
 import BlockActionsModal from './BlockActionsModal';
 import { BlockContainer } from './BlockContainer';
 
@@ -47,7 +44,7 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
     <BlockContainer>
       <TouchableOpacity
         accessibilityRole="button"
-        className="flex h-full flex-1 flex-row items-center p-1"
+        className="flex flex-row items-center flex-1 h-full p-1"
         onPress={() => onPress(workout)}
         hitSlop={{ top: 20, bottom: 20, left: 20 }}
       >
@@ -55,16 +52,18 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
       </TouchableOpacity>
       <TouchableOpacity
         accessibilityRole="button"
-        className="flex h-full flex-row items-center justify-center p-1"
+        className="flex flex-row items-center justify-center h-full p-1"
         hitSlop={{ top: 20, bottom: 20, right: 20 }}
       >
         <Ionicon onPress={() => setModalVisible(true)} name="ellipsis-horizontal" size={16} />
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <View>
-            <StatusBar style="light" />
-            {modalVisible && <BlockActionsModal deleteWorkout={() => deleteWorkout(workout.id)} />}
-          </View>
-        </GestureHandlerRootView>
+        <View>
+          {modalVisible && (
+            <BlockActionsModal
+              deleteWorkout={() => deleteWorkout(workout.id)}
+              modalVisibility={() => setModalVisible(false)}
+            />
+          )}
+        </View>
       </TouchableOpacity>
     </BlockContainer>
   );
