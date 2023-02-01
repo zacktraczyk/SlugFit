@@ -1,21 +1,23 @@
 import { Text, TouchableOpacity } from 'react-native';
 import { View } from 'react-native';
 import Modal from 'react-native-modal';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface BlockActionsModalProps {
   deleteWorkout: () => void;
-  modalVisibility: () => void;
+  setModalVisible: (bool: boolean) => void;
 }
 const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
   deleteWorkout,
-  modalVisibility,
+  setModalVisible,
 }) => {
   return (
     <Modal
-      onSwipeComplete={modalVisibility}
+      style={{ margin: 0 }}
+      isVisible={true}
+      onBackdropPress={() => setModalVisible(false)}
+      onSwipeComplete={() => setModalVisible(false)}
       swipeDirection="down"
-      onBackdropPress={modalVisibility}
     >
       <View className="absolute w-full h-full bg-white border-2 top-3/4 rounded-t-3xl ">
         <View className="self-center w-16 h-1 my-3 bg-gray-400 rounded-lg"></View>

@@ -60,7 +60,7 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
           {modalVisible && (
             <BlockActionsModal
               deleteWorkout={() => deleteWorkout(workout.id)}
-              modalVisibility={() => setModalVisible(false)}
+              setModalVisible={(bool: boolean) => setModalVisible(bool)}
             />
           )}
         </View>
