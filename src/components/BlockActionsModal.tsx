@@ -1,8 +1,7 @@
-import { Modal, Dimensions, Text, TouchableOpacity } from 'react-native';
-import { StyleSheet, View } from 'react-native';
+import { Modal, Text, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 interface BlockActionsModalProps {
   deleteWorkout: () => void;
 }

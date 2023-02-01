@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import {
-  KeyboardAvoidingView,
-  FlatList,
-  Platform,
-  StyleSheet,
-
-} from 'react-native';
+import { KeyboardAvoidingView, FlatList, Platform, StyleSheet } from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import AddButton from '../../components/AddButton';
 import WorkoutBlock from '../../components/WorkoutBlock';
@@ -65,7 +59,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex flex-col items-center justify-center flex-1 w-full bg-white"
+      className="flex w-full flex-1 flex-col items-center justify-center bg-white"
     >
       <FlatList
         data={workouts}
