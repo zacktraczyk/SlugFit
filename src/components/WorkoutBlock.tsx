@@ -44,7 +44,7 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
     <BlockContainer>
       <TouchableOpacity
         accessibilityRole="button"
-        className="flex flex-row items-center flex-1 h-full p-1"
+        className="flex h-full flex-1 flex-row items-center p-1"
         onPress={() => onPress(workout)}
         hitSlop={{ top: 20, bottom: 20, left: 20 }}
       >
@@ -52,7 +52,7 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
       </TouchableOpacity>
       <TouchableOpacity
         accessibilityRole="button"
-        className="flex flex-row items-center justify-center h-full p-1"
+        className="flex h-full flex-row items-center justify-center p-1"
         hitSlop={{ top: 20, bottom: 20, right: 20 }}
       >
         <Ionicon onPress={() => setModalVisible(true)} name="ellipsis-horizontal" size={16} />
