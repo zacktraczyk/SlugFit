@@ -1,13 +1,7 @@
-import {
-  Modal,
-  Dimensions,
-  Text,
-  
-  TouchableOpacity,
-  
-} from 'react-native';
+import { Modal, Dimensions, Text, TouchableOpacity } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
+
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 interface BlockActionsModalProps {
   deleteWorkout: () => void;
@@ -15,14 +9,11 @@ interface BlockActionsModalProps {
 const BlockActionsModal: React.FC<BlockActionsModalProps> = ({ deleteWorkout }) => {
   return (
     <Modal animationType="slide" transparent={true}>
-      <View>
-        <View style={styles.bottomSheetContainer}>
-          <View style={styles.line}></View>
-
-          <TouchableOpacity accessibilityRole="button" onPress={deleteWorkout}>
-            <Text style={styles.delete}>Delete</Text>
-          </TouchableOpacity>
-        </View>
+      <View className="absolute w-full h-full bg-white border-2 top-3/4 rounded-t-3xl ">
+        <View className="self-center w-16 h-1 my-3 bg-gray-400 rounded-lg"></View>
+        <TouchableOpacity accessibilityRole="button" onPress={deleteWorkout}>
+          <Text className="text-lg font-bold text-center">Delete</Text>
+        </TouchableOpacity>
       </View>
     </Modal>
   );
@@ -37,18 +28,6 @@ const styles = StyleSheet.create({
     top: SCREEN_HEIGHT / 1.5,
     borderWidth: 1,
     borderRadius: 25,
-  },
-  line: {
-    width: 75,
-    height: 4,
-    backgroundColor: 'grey',
-    alignSelf: 'center',
-    marginVertical: 15,
-    borderRadius: 2,
-  },
-  delete: {
-    fontSize: '18%',
-    left: '43%',
   },
 });
 export default BlockActionsModal;
