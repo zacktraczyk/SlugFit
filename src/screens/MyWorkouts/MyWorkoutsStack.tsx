@@ -7,7 +7,7 @@ import { View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import EditWorkoutPage from '../EditWorkout/EditWorkoutPage';
 import EditExercisePage from '../EditExercise/EditExercisePage';
-import BreadcrumbHeader from '../../components/MyWorkoutsBreadcrumbHeader';
+import BreadcrumbHeader from '../../components/BreadcrumbsHeader';
 
 type MyWorkoutsStackProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkoutsStack'>;
 
