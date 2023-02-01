@@ -6,6 +6,9 @@ import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatli
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AddButton from '../../components/AddButton';
 import SetCard from '../../components/SetCard';
+import { updateExerciseInWorkout, useEditableWorkout } from '../../hooks/useEditableWorkout';
+import useSelectedWorkout from '../../hooks/useSelectedWorkout';
+import { Exercise } from '../../types/Exercise';
 import { NavigatorParamList } from '../DrawerNavigator';
 
 type EditExercisePageProps = NativeStackScreenProps<NavigatorParamList, 'EditExercisePage'>;
@@ -26,8 +29,28 @@ const initialData: Item[] = [
   },
 ];
 
-const EditExercisePage: React.FC<EditExercisePageProps> = () => {
+const EditExercisePage: React.FC<EditExercisePageProps> = ({ navigation, route }) => {
+  // console.log(route.);
   const [sets, setSets] = useState<Item[]>(initialData);
+
+  const [selectedWorkout, setSelectedExercise] = useSelectedWorkout((state) => [
+    state.workout,
+    state.setExercise,
+  ]);
+
+  const { workout } = useEditableWorkout(selectedWorkout?.id);
+  const [editingExercise, setEditingExercise] = useState<string | undefined>(undefined);
+
+  const updateExercise = (identifier: string, exercise: Exercise) => {
+    if (workout) {
+      try {
+        updateExerciseInWorkout(identifier, exercise, workout);
+      } catch (error) {
+        console.error(error);
+        alert(error.message);
+      }
+    }
+  };
 
   const updateSet = (key, property, val) => {
     setSets((_sets) =>
@@ -44,6 +67,17 @@ const EditExercisePage: React.FC<EditExercisePageProps> = () => {
 
   const appendEmptySet = () => {
     setSets([...sets, { key: sets.length, reps: '', pre: '', orm: '' }]);
+  };
+
+  const editExerciseBlock = async () => {
+    if (selectedWorkout) {
+      await updateExerciseInWorkout(
+        PLACEHOLDER_EXERCISE_NAME,
+        { name: PLACEHOLDER_EXERCISE_NAME, sets: [] },
+        selectedWorkout
+      );
+      setEditingExercise(PLACEHOLDER_EXERCISE_NAME);
+    }
   };
 
   const renderItem = ({ item, drag, isActive }) => {
@@ -78,7 +112,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = () => {
           {/* <Button title="new set" onPress={() => appendSet()} /> */}
         </View>
       </TouchableWithoutFeedback>
-      <AddButton onClick={() => appendEmptySet()} />
+      <AddButton onPress={() => appendEmptySet()} />
     </>
   );
 };
