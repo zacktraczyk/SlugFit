@@ -19,15 +19,4 @@ const BlockActionsModal: React.FC<BlockActionsModalProps> = ({ deleteWorkout }) 
   );
 };
 
-const styles = StyleSheet.create({
-  bottomSheetContainer: {
-    height: SCREEN_HEIGHT,
-    width: '100%',
-    backgroundColor: 'white',
-    position: 'absolute',
-    top: SCREEN_HEIGHT / 1.5,
-    borderWidth: 1,
-    borderRadius: 25,
-  },
-});
 export default BlockActionsModal;

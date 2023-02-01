@@ -56,7 +56,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
         editing={editingWorkout}
         workout={item}
         updateName={updateWorkout}
-        deleteName={deleteWorkoutBlock}
+        deleteWorkout={deleteWorkoutBlock}
         onPress={navigateToWorkout}
       />
     );
@@ -65,7 +65,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex w-full flex-1 flex-col items-center justify-center bg-white"
+      className="flex flex-col items-center justify-center flex-1 w-full bg-white"
     >
       <FlatList
         data={workouts}
