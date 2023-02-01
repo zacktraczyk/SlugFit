@@ -1,24 +1,13 @@
 import {
   Modal,
   Dimensions,
-  TouchableWithoutFeedback,
   Text,
-  Pressable,
+  
   TouchableOpacity,
-  Button,
+  
 } from 'react-native';
 import { StyleSheet, View } from 'react-native';
-import React, { useCallback, useEffect, useImperativeHandle, useState } from 'react';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, {
-  Extrapolate,
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming,
-} from 'react-native-reanimated';
-import MyWorkouts from '../screens/MyWorkouts/MyWorkouts';
+import React from 'react';
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 interface BlockActionsModalProps {
   deleteWorkout: () => void;

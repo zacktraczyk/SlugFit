@@ -5,9 +5,7 @@ import {
   FlatList,
   Platform,
   StyleSheet,
-  View,
-  Text,
-  Dimensions,
+
 } from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import AddButton from '../../components/AddButton';
