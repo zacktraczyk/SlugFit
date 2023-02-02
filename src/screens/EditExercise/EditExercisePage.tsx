@@ -1,84 +1,60 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Keyboard, TouchableOpacity, View } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AddButton from '../../components/AddButton';
 import SetCard from '../../components/SetCard';
-import { updateExerciseInWorkout, useEditableWorkout } from '../../hooks/useEditableWorkout';
-import useSelectedWorkout from '../../hooks/useSelectedWorkout';
-import { Exercise } from '../../types/Exercise';
+import { getExerciseInWorkout, updateExerciseInWorkout } from '../../hooks/useEditableWorkout';
 import { NavigatorParamList } from '../DrawerNavigator';
 
 type EditExercisePageProps = NativeStackScreenProps<NavigatorParamList, 'EditExercisePage'>;
 
-type Item = {
+export type Set = {
   key: number;
   reps: string;
   pre: string;
   orm: string;
 };
 
-const initialData: Item[] = [
-  {
-    key: 0,
-    reps: '',
-    pre: '',
-    orm: '',
-  },
-];
+const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
+  const { exerciseName, workoutId } = route.params;
 
-const EditExercisePage: React.FC<EditExercisePageProps> = ({ navigation, route }) => {
-  // console.log(route.);
-  const [sets, setSets] = useState<Item[]>(initialData);
+  const [sets, setSets] = useState<Set[]>([]);
 
-  const [selectedWorkout, setSelectedExercise] = useSelectedWorkout((state) => [
-    state.workout,
-    state.setExercise,
-  ]);
-
-  const { workout } = useEditableWorkout(selectedWorkout?.id);
-  const [editingExercise, setEditingExercise] = useState<string | undefined>(undefined);
-
-  const updateExercise = (identifier: string, exercise: Exercise) => {
-    if (workout) {
-      try {
-        updateExerciseInWorkout(identifier, exercise, workout);
-      } catch (error) {
-        console.error(error);
-        alert(error.message);
+  const updateSet = async (key, property, val) => {
+    const _sets = sets.map((set) => {
+      if (set.key === key) {
+        const _set = { ...set };
+        _set[property] = val;
+        return _set;
       }
-    }
-  };
+      return set;
+    });
 
-  const updateSet = (key, property, val) => {
-    setSets((_sets) =>
-      _sets.map((set) => {
-        if (set.key === key) {
-          const _set = { ...set };
-          _set[property] = val;
-          return _set;
-        }
-        return set;
-      })
-    );
+    setSets(_sets);
+    updateExerciseInWorkout(exerciseName, { name: exerciseName, sets: _sets }, workoutId);
   };
 
   const appendEmptySet = () => {
     setSets([...sets, { key: sets.length, reps: '', pre: '', orm: '' }]);
+    // Doesn't update Supabase with empty sets
   };
 
-  const editExerciseBlock = async () => {
-    if (selectedWorkout) {
-      await updateExerciseInWorkout(
-        PLACEHOLDER_EXERCISE_NAME,
-        { name: PLACEHOLDER_EXERCISE_NAME, sets: [] },
-        selectedWorkout
-      );
-      setEditingExercise(PLACEHOLDER_EXERCISE_NAME);
-    }
+  const reorderSets = (reorder: Set[]) => {
+    setSets(reorder);
+    updateExerciseInWorkout(exerciseName, { name: exerciseName, sets: reorder }, workoutId);
   };
+
+  useEffect(() => {
+    const fetchSets = async () => {
+      const exercise = await getExerciseInWorkout(exerciseName, workoutId);
+      setSets(exercise ? exercise.sets : []);
+    };
+
+    fetchSets().catch(console.error);
+  }, []);
 
   const renderItem = ({ item, drag, isActive }) => {
     return (
@@ -105,11 +81,10 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ navigation, route }
         <View className="h-full p-10 px-5">
           <DraggableFlatList
             data={sets}
-            onDragEnd={({ data }) => setSets(data)}
+            onDragEnd={({ data }) => reorderSets(data)}
             keyExtractor={(item) => '' + item.key}
             renderItem={renderItem}
           />
-          {/* <Button title="new set" onPress={() => appendSet()} /> */}
         </View>
       </TouchableWithoutFeedback>
       <AddButton onPress={() => appendEmptySet()} />
