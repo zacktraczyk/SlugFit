@@ -3,7 +3,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import * as Font from 'expo-font';
+// import Google font through expo
+import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
+
 import {
   ActivityIndicator,
   Keyboard,
@@ -16,11 +18,6 @@ import {
 } from 'react-native';
 import { supabase } from '../../utils/supabaseClient';
 import { AuthStackParamList } from './AuthNavigator';
-
-// Import the font
-Font.loadAsync({
-  BebasNeue: require('../../assets/fonts/BebasNeue-Regular.ttf'),
-});
 
 type FormElements = {
   email: string;
@@ -58,21 +55,20 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
     }
   };
 
+  // Load font
+  const [fontsLoaded] = useFonts({
+    BebasNeue_400Regular,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <View className="flex h-full flex-col items-stretch justify-center p-5">
       <View>
-        <Text style={{ textAlign: 'center', fontFamily: 'BebasNeue', fontSize: 96 }}>SlugFit</Text>
-        <Text
-          style={{
-            lineHeight: 24 * 0.3,
-            paddingTop: 24 - 24 * 0.3,
-            paddingBottom: 50,
-            textAlign: 'center',
-            fontFamily: 'BebasNeue',
-            fontSize: 24,
-            color: '#3C3A3A',
-          }}
-        >
+        <Text className="pt-1 text-center font-bebas text-8xl">SlugFit</Text>
+        <Text className="text-center font-bebas text-2xl text-stone-700">
           We see mass in your future
         </Text>
       </View>
@@ -80,7 +76,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
         <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
           <View className="flex h-96 flex-col items-stretch justify-evenly">
             <View style={{}}>
-              <Text style={{ fontFamily: 'BebasNeue', fontSize: 18 }}>Email</Text>
+              <Text className="font-bebas text-xl">Email</Text>
               <Controller
                 control={control}
                 rules={{
@@ -111,7 +107,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
             </View>
 
             <View>
-              <Text style={{ fontFamily: 'BebasNeue', fontSize: 18 }}>Password</Text>
+              <Text className="font-bebas text-xl">Password</Text>
               <Controller
                 control={control}
                 rules={{
@@ -146,22 +142,12 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                 className="my-2 mt-0 w-60 rounded-lg bg-red-500 p-2"
                 onPress={handleSubmit((data) => onSubmit(data))}
               >
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: 'white',
-                    fontFamily: 'BebasNeue',
-                    fontSize: 24,
-                  }}
-                >
-                  Sign In
-                </Text>
+                <Text className="text-center font-bebas text-2xl text-white">Sign In</Text>
               </Pressable>
               <Text>
-                <Text>Don&apos;t Have an Account?</Text>
+                <Text className="text-sm">Don&apos;t Have an Account?</Text>
                 <Text
-                  style={{ fontWeight: 'bold' }}
-                  className="py-2"
+                  className="text-sm font-bold"
                   onPress={() => navigation.navigate('RegisterScreen')}
                 >
                   {' '}
