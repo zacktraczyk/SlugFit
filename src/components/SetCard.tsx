@@ -16,7 +16,7 @@ const SetCard: React.FC<SetCardProps> = ({ reps, setReps, pre, setPre, orm, setO
     <Card title="Set">
       <TextInput
         accessibilityLabel="Text input Input"
-        accessibilityHint="Input to change account name"
+        accessibilityHint="Input to change reps in set"
         className="w-[60px] rounded border p-1"
         placeholder="Reps"
         returnKeyType="next"
@@ -25,7 +25,7 @@ const SetCard: React.FC<SetCardProps> = ({ reps, setReps, pre, setPre, orm, setO
       />
       <TextInput
         accessibilityLabel="Text input Input"
-        accessibilityHint="Input to change account name"
+        accessibilityHint="Input to change pre in set"
         className="w-[60px] rounded border p-1"
         returnKeyType="next"
         placeholder="PRE"
@@ -34,7 +34,7 @@ const SetCard: React.FC<SetCardProps> = ({ reps, setReps, pre, setPre, orm, setO
       />
       <TextInput
         accessibilityLabel="Text input Input"
-        accessibilityHint="Input to change account name"
+        accessibilityHint="Input to change orm in set"
         className="w-[60px] rounded border p-1"
         returnKeyType="next"
         placeholder="%1RM"

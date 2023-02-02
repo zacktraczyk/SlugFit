@@ -18,6 +18,7 @@ export type Set = {
   orm: string;
 };
 
+// TODO: Append rests or sets, not just sets
 const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
   const { exerciseName, workoutId } = route.params;
 
