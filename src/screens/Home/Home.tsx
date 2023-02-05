@@ -5,6 +5,7 @@ import { useAuth } from '../../contexts/AuthProvider';
 import { supabase } from '../../utils/supabaseClient';
 import { useUserData } from '../../hooks/useUserData';
 import { NavigatorParamList } from '../DrawerNavigator';
+import ExerciseCard from '../../components/ExerciseCard';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;
 
@@ -19,16 +20,8 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   }, [userData]);
 
   return (
-    <View className="flex h-full flex-col items-center justify-center">
-      <Text>Home Page yay</Text>
-      {loading ? <ActivityIndicator /> : <Text>Welcome {name}!</Text>}
-      <Text>Yipee</Text>
-      <View className="h-10"></View>
-      <View className="flex flex-row">
-        <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
-        <View className="w-5"></View>
-        <Button title="Account" onPress={() => navigation.navigate('AccountSettings')} />
-      </View>
+    <View className="flex h-full flex-col items-center">
+      <ExerciseCard/>
     </View>
   );
 };
