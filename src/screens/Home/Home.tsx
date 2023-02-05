@@ -21,7 +21,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
 
   return (
     <View className="flex h-full flex-col items-center">
-      <ExerciseCard/>
+      <ExerciseCard />
     </View>
   );
 };

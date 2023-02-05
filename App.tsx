@@ -29,7 +29,11 @@ const App: React.FC = () => {
       <NavigationContainer>
         <Stack.Navigator>
           {!session ? (
-            <Stack.Screen name="Auth" component={DrawerNavigator} options={{ headerShown: false }} />
+            <Stack.Screen
+              name="Auth"
+              component={DrawerNavigator}
+              options={{ headerShown: false }}
+            />
           ) : (
             <Stack.Screen
               name="Main"
