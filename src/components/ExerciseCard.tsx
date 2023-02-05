@@ -28,9 +28,7 @@ const styling = StyleSheet.create({
         backgroundColor: '#B92916',
         color: '#BADEFB',
     },
-    fontA: {
-        fontFamily: 'Bebas Neue'
-    },
+   
 }); 
 
 const ExerciseCard = () => {
