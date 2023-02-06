@@ -68,8 +68,8 @@ const ExerciseCard = () => {
                         Warmup Sets
                     </Text>
                 </View>
+                {/**SET BLOCK*/}
                 <Text className="text-stone-700 font-extralight font-bebas ml-1 mt-2">WARMUP SET {1}</Text>
-
                 <View className="flex flex-row -2 h-8 rounded-md bg-gray-200">
                     <View className="h-8 w-6 rounded-l-lg bor bg-gray-300">
                         <Text className="ml-1 font-bebas font-bold text-xl my-auto">DO</Text>
@@ -113,8 +113,10 @@ const ExerciseCard = () => {
                     </View>
                     <Text className="font-bebas font-bold text-xs my-auto"> LB</Text>
                 </View>
+                {/**END OF SET BLOCK*/}
             </View>
             {/** END OF WARMUP SET BLOCK*/}
+
             {/**Working SET BLOCK*/}
             <View className="mx-2 mt-3 ">
                 <View style={styling.workingSetBackground} className="h-8 rounded-lg">
@@ -122,7 +124,7 @@ const ExerciseCard = () => {
                         Working Sets
                     </Text>
                 </View>
-                
+                {/**SET BLOCK*/}
                 <Text className="text-stone-700 font-extralight font-bebas ml-1 mt-2">SET {1}</Text>
                 <View className="flex flex-row -2 h-8 rounded-md bg-gray-200">
                     <View className="h-8 w-6 rounded-l-lg bor bg-gray-300">
@@ -167,9 +169,69 @@ const ExerciseCard = () => {
                     </View>
                     <Text className="font-bebas font-bold text-xs my-auto"> LB</Text>
                 </View>
-                
-                
+                {/**END OF SET BLOCK*/}
+
+                {/**Rest Block */}
+                <View className="flex flex-row -2 h-8 mt-3 rounded-md bg-gray-200">
+                    <View className="h-8 w-10 rounded-l-lg bor bg-gray-300">
+                        <Text className="ml-1 font-bebas font-bold text-xl my-auto">REST</Text>
+                    </View>
+                    <Text className="ml-3 font-bebas font-bold text-xl my-auto">{3}</Text>
+                    <Text className="font-bebas font-bold text-xs mt-3"> MINUTES</Text>
+                    <Text className="ml-3 font-bebas font-bold text-xl my-auto">{30}</Text>
+                    <Text className="font-bebas font-bold text-xs mt-3"> SECONDS</Text>
+                </View>
+                {/**END OF REST BLOCK */}
+
+                {/**SET BLOCK*/}
+                <Text className="text-stone-700 font-extralight font-bebas ml-1 mt-2">SET {2}</Text>
+                <View className="flex flex-row -2 h-8 rounded-md bg-gray-200">
+                    <View className="h-8 w-6 rounded-l-lg bor bg-gray-300">
+                        <Text className="ml-1 font-bebas font-bold text-xl my-auto">DO</Text>
+                    </View>
+                    <Text className="ml-3 font-bebas font-bold text-xl my-auto">{4}-{6}</Text>
+                    <Text className="font-bebas font-bold text-xs mt-3"> REPS</Text>
+                    <Text className="ml-6 font-bebas font-bold text-xl my-auto">{9}</Text>
+                    <Text className="font-bebas font-bold text-xs mt-3"> RPE</Text>
+                    <Text className="ml-6 font-bebas font-bold text-xl my-auto">{95}</Text>
+                    <Text className="font-bebas font-bold text-xs mt-3"> %1RM</Text>
+                </View>
+
+                <View className="mt-0.5 flex flex-row -2 h-8 rounded-md bg-gray-200">
+                    <View className="h-8 w-14 rounded-l-lg bor bg-gray-300">
+                        <Text className="ml-1 font-bebas font-bold text-xl my-auto">RECORD</Text>
+                    </View>
+                    <View className="bg-slate-50 h-5/6 ml-1 my-auto rounded-md w-24">
+                        <TextInput
+                            accessibilityLabel="Exercise Search Text Field "
+                            accessibilityHint="Input characters to search for an exercise"
+                            className=" text-xs my-auto mx-auto w-auto"
+                            autoCapitalize="none"
+                            placeholder="Reps you did"
+                            returnKeyType="next"
+                            onChangeText={() => {}}
+                            autoFocus
+                        />
+                    </View>
+                    <Text className="mr-1 font-bebas font-bold text-xs my-auto"> REPS</Text>
+                    <View className="bg-slate-50 h-5/6 ml-1 my-auto rounded-md w-16">
+                        <TextInput
+                            accessibilityLabel="Exercise Search Text Field "
+                            accessibilityHint="Input characters to search for an exercise"
+                            className=" text-xs my-auto mx-auto w-auto"
+                            autoCapitalize="none"
+                            placeholder="Weight"
+                            returnKeyType="next"
+                            onChangeText={() => {}}
+                            autoFocus
+                        />
+                    </View>
+                    <Text className="font-bebas font-bold text-xs my-auto"> LB</Text>
+                </View>
+                {/**END OF SET BLOCK*/}
+
             </View>
+            {/**Working SET BLOCK*/}
 
         </ScrollView>
       </View>
