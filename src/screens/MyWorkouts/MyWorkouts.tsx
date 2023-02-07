@@ -48,6 +48,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
     return (
       <WorkoutBlock
         editing={editingWorkout}
+        setEditing={setEditingWorkout}
         workout={item}
         updateName={updateWorkout}
         deleteWorkout={deleteWorkoutBlock}

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable prettier/prettier */
+import React, { SetStateAction, useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DoneButton from './DoneButton';
 import Ionicon from '@expo/vector-icons/Ionicons';
@@ -8,14 +9,17 @@ import { BlockContainer } from './BlockContainer';
 
 interface WorkoutBlockProps {
   editing?: string;
+  setEditing: React.Dispatch<SetStateAction<string | undefined>>;
   workout: EditableWorkout;
   updateName: (payload: EditableWorkout) => Promise<void>;
   onPress: (w: EditableWorkout) => void;
   deleteWorkout: (id: string) => Promise<void>;
+  
 }
 
 const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
   editing,
+  setEditing,
   workout,
   updateName,
   onPress,
@@ -23,6 +27,7 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
 }) => {
   const [name, setName] = useState<string>(workout.name || '');
   const [modalVisible, setModalVisible] = useState(false);
+  
   if (editing === workout.id) {
     return (
       <BlockContainer>
@@ -61,6 +66,7 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
             <BlockActionsModal
               deleteWorkout={() => deleteWorkout(workout.id)}
               setModalVisible={(bool: boolean) => setModalVisible(bool)}
+              renameWorkout={() => setEditing(workout.id)}
             />
           )}
         </View>
@@ -70,3 +76,5 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
 };
 
 export default WorkoutBlock;
+
+

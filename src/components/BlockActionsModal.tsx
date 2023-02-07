@@ -6,10 +6,12 @@ import React from 'react';
 interface BlockActionsModalProps {
   deleteWorkout: () => void;
   setModalVisible: (bool: boolean) => void;
+  renameWorkout: () => void;
 }
 const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
   deleteWorkout,
   setModalVisible,
+  renameWorkout,
 }) => {
   return (
     <Modal
@@ -23,6 +25,15 @@ const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
         <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
         <TouchableOpacity accessibilityRole="button" onPress={deleteWorkout}>
           <Text className="text-center text-lg font-bold">Delete</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          accessibilityRole="button"
+          onPress={() => {
+            setModalVisible(false);
+            renameWorkout();
+          }}
+        >
+          <Text className="text-center text-lg font-bold">Rename</Text>
         </TouchableOpacity>
       </View>
     </Modal>
