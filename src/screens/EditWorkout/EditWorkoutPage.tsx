@@ -21,7 +21,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
   const updateExercise = (identifier: string, exercise: Exercise) => {
     if (workout) {
       try {
-        updateExerciseInWorkout(identifier, exercise, workout);
+        updateExerciseInWorkout(identifier, exercise, workout.id);
       } catch (error) {
         console.error(error);
         alert(error.message);
@@ -34,7 +34,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
       await updateExerciseInWorkout(
         PLACEHOLDER_EXERCISE_NAME,
         { name: PLACEHOLDER_EXERCISE_NAME, sets: [] },
-        selectedWorkout
+        selectedWorkout.id
       );
       setEditingExercise(PLACEHOLDER_EXERCISE_NAME);
     }
@@ -42,7 +42,14 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
 
   const navigateToExercise = (exercise: Exercise) => {
     setSelectedExercise(exercise);
-    navigation.navigate('EditExercisePage');
+    if (!workout) {
+      console.error('navigateToExercise: current workout is undefined');
+      return;
+    }
+    navigation.navigate('EditExercisePage', {
+      workoutId: workout.id,
+      exerciseName: exercise.name,
+    });
   };
 
   const renderExerciseBlock = ({ item }) => {
