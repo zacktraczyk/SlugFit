@@ -10,7 +10,7 @@ export type NavigatorParamList = {
   MyWorkouts: undefined;
   MyWorkoutsStack: undefined;
   EditWorkoutPage: undefined;
-  EditExercisePage: undefined;
+  EditExercisePage: { workoutId: string; exerciseName: string };
   Profile: undefined;
 };
 

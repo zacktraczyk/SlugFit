@@ -67,14 +67,10 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
               </View>
 
               <View className="items-center pb-5">
-                <Text className="text-2xl" style={{ fontFamily: 'BebasNeue' }}>
-                  CREATE ACCOUNT
-                </Text>
+                <Text className="text-center font-bebas text-4xl">Create Account</Text>
               </View>
 
-              <Text className="text-lg" style={{ fontFamily: 'BebasNeue' }}>
-                EMAIL
-              </Text>
+              <Text className="font-bebas text-xl">Email</Text>
               <Controller
                 control={control}
                 rules={{
@@ -105,9 +101,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
             </View>
 
             <View>
-              <Text className="text-lg" style={{ fontFamily: 'BebasNeue' }}>
-                PASSWORD
-              </Text>
+              <Text className="font-bebas text-xl">Password</Text>
               <Controller
                 control={control}
                 rules={{
@@ -136,9 +130,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
             </View>
 
             <View>
-              <Text className="text-lg" style={{ fontFamily: 'BebasNeue' }}>
-                CONFIRM PASSWORD
-              </Text>
+              <Text className="font-bebas text-xl">Confirm Password</Text>
               <Controller
                 control={control}
                 rules={{
@@ -177,14 +169,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                 className="w-60 rounded-lg bg-red-500 p-2"
                 onPress={handleSubmit((data) => onSubmit(data))}
               >
-                <Text
-                  className="text-center text-2xl text-white"
-                  style={{
-                    fontFamily: 'BebasNeue',
-                  }}
-                >
-                  REGISTER
-                </Text>
+                <Text className="text-center font-bebas text-2xl text-white">Register</Text>
               </TouchableOpacity>
             </View>
           </View>

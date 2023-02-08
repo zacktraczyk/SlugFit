@@ -73,9 +73,9 @@ export const createEditableWorkout = async (
   }
 };
 
-export const deleteEditableWorkout = async (id: string) => {
+export const deleteEditableWorkout = async (workoutId: string) => {
   try {
-    const { error } = await supabase.from('workouts').delete().eq('id', id);
+    const { error } = await supabase.from('workouts').delete().eq('id', workoutId);
     if (error) throw error;
   } catch (error) {
     console.error(error);
@@ -91,12 +91,12 @@ export const updateEditableWorkout = async (payload: EditableWorkout) => {
   }
 };
 
-export const getExercisesInWorkout = async (workout: EditableWorkout): Promise<Array<Exercise>> => {
+export const getExercisesInWorkout = async (workoutId: string): Promise<Array<Exercise>> => {
   try {
     const { error, data } = await supabase
       .from('workouts')
       .select('exercises')
-      .eq('id', workout.id)
+      .eq('id', workoutId)
       .single();
 
     if (error) throw error;
@@ -134,6 +134,19 @@ const insertOrUpdateExercise: (id: string, e: Exercise, es: Array<Exercise>) => 
   return exercises;
 };
 
+export const getExerciseInWorkout = async (exerciseName: string, workoutId: string) => {
+  const exercises: Array<Exercise> = await getExercisesInWorkout(workoutId);
+
+  for (let i = 0; i < exercises.length; i++) {
+    if (exercises[i].name === exerciseName) {
+      return exercises[i];
+    }
+  }
+
+  console.error(`Cannot find exercise in current workout`);
+  return undefined;
+};
+
 /**
  *
  * @param identifier name of exercise before change, used to find the current one in supabase
@@ -143,14 +156,14 @@ const insertOrUpdateExercise: (id: string, e: Exercise, es: Array<Exercise>) => 
 export const updateExerciseInWorkout = async (
   identifier: string,
   exercise: Exercise,
-  workout: EditableWorkout
+  workoutId: string
 ) => {
-  let exercises: Array<Exercise> = await getExercisesInWorkout(workout);
+  let exercises: Array<Exercise> = await getExercisesInWorkout(workoutId);
 
   exercises = insertOrUpdateExercise(identifier, exercise, exercises);
 
   try {
-    const { error } = await supabase.from('workouts').update({ exercises }).eq('id', workout.id);
+    const { error } = await supabase.from('workouts').update({ exercises }).eq('id', workoutId);
     if (error) throw error;
   } catch (error) {
     console.error(error);
