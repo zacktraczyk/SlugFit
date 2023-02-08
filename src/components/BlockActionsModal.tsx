@@ -7,11 +7,13 @@ interface BlockActionsModalProps {
   deleteWorkout: () => void;
   setModalVisible: (bool: boolean) => void;
   renameWorkout: () => void;
+  copyWorkout: () => void;
 }
 const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
   deleteWorkout,
   setModalVisible,
   renameWorkout,
+  copyWorkout,
 }) => {
   return (
     <Modal
@@ -34,6 +36,15 @@ const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
           }}
         >
           <Text className="text-center text-lg font-bold">Rename</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          accessibilityRole="button"
+          onPress={() => {
+            setModalVisible(false);
+            copyWorkout();
+          }}
+        >
+          <Text className="text-center text-lg font-bold">Duplicate</Text>
         </TouchableOpacity>
       </View>
     </Modal>

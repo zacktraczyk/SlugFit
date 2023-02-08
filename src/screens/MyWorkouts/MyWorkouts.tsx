@@ -33,6 +33,20 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
     setEditingWorkout(undefined);
     if (refreshWorkouts) await refreshWorkouts();
   };
+  const duplicateWorkoutBlock = async (payload: EditableWorkout) => {
+    const workout = await createEditableWorkout(session);
+    if (workout) {
+      setEditingWorkout(workout.id);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, ...rest } = payload;
+      const duplicate: EditableWorkout = {
+        ...workout,
+        ...rest,
+      };
+      console.log(duplicate);
+      updateWorkout(duplicate);
+    }
+  };
   const updateWorkout = async (payload) => {
     await updateEditableWorkout(payload);
     setEditingWorkout(undefined);
@@ -52,6 +66,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
         workout={item}
         updateName={updateWorkout}
         deleteWorkout={deleteWorkoutBlock}
+        duplicateWorkout={duplicateWorkoutBlock}
         onPress={navigateToWorkout}
       />
     );

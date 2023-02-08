@@ -14,7 +14,7 @@ interface WorkoutBlockProps {
   updateName: (payload: EditableWorkout) => Promise<void>;
   onPress: (w: EditableWorkout) => void;
   deleteWorkout: (id: string) => Promise<void>;
-  
+  duplicateWorkout: (payload: EditableWorkout) => Promise<void>
 }
 
 const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
@@ -24,10 +24,11 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
   updateName,
   onPress,
   deleteWorkout,
+  duplicateWorkout,
 }) => {
   const [name, setName] = useState<string>(workout.name || '');
   const [modalVisible, setModalVisible] = useState(false);
-  
+
   if (editing === workout.id) {
     return (
       <BlockContainer>
@@ -67,6 +68,7 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
               deleteWorkout={() => deleteWorkout(workout.id)}
               setModalVisible={(bool: boolean) => setModalVisible(bool)}
               renameWorkout={() => setEditing(workout.id)}
+              copyWorkout={()=>duplicateWorkout(workout)}
             />
           )}
         </View>
