@@ -57,6 +57,8 @@ export interface ConsumableWorkout {
   id: string;
   name?: string;
   created_by?: string;
+  started_at?: Date;
+  ended_at?: Date;
   exercises: ConsumableExercise[];
 }
 
