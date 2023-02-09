@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Text, TextInput, TouchableOpacity } from 'react-native';
+import { TextInput } from 'react-native';
 import DoneButton from './DoneButton';
-import Ionicon from '@expo/vector-icons/Ionicons';
-import { EditableWorkout } from '../types/EditableWorkout';
+import { EditableWorkout } from '../types';
+import Block from './Block';
 import { BlockContainer } from './BlockContainer';
 
 interface WorkoutBlockProps {
@@ -32,23 +32,12 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({ editing, workout, updateNam
   }
 
   return (
-    <BlockContainer>
-      <TouchableOpacity
-        accessibilityRole="button"
-        className="flex h-full flex-1 flex-row items-center p-1"
-        onPress={() => onPress(workout)}
-        hitSlop={{ top: 20, bottom: 20, left: 20 }}
-      >
-        <Text className="text-base font-medium">{name}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        accessibilityRole="button"
-        className="flex h-full flex-row items-center justify-center p-1"
-        hitSlop={{ top: 20, bottom: 20, right: 20 }}
-      >
-        <Ionicon name="ellipsis-horizontal" size={16} />
-      </TouchableOpacity>
-    </BlockContainer>
+    <Block
+      title={name}
+      onPress={() => {
+        onPress(workout);
+      }}
+    />
   );
 };
 

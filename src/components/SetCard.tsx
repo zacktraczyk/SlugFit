@@ -5,13 +5,13 @@ import Card from './Card';
 interface SetCardProps {
   reps: string;
   setReps: (val: string) => void;
-  pre: string;
-  setPre: (val: string) => void;
+  rpe: string;
+  setRpe: (val: string) => void;
   orm: string;
   setOrm: (val: string) => void;
 }
 
-const SetCard: React.FC<SetCardProps> = ({ reps, setReps, pre, setPre, orm, setOrm }) => {
+const SetCard: React.FC<SetCardProps> = ({ reps, setReps, rpe, setRpe, orm, setOrm }) => {
   return (
     <Card title="Set">
       <TextInput
@@ -25,12 +25,12 @@ const SetCard: React.FC<SetCardProps> = ({ reps, setReps, pre, setPre, orm, setO
       />
       <TextInput
         accessibilityLabel="Text input Input"
-        accessibilityHint="Input to change pre in set"
+        accessibilityHint="Input to change rpe in set"
         className="w-[60px] rounded border p-1"
         returnKeyType="next"
-        placeholder="PRE"
-        value={pre}
-        onChangeText={setPre}
+        placeholder="RPE"
+        value={rpe}
+        onChangeText={setRpe}
       />
       <TextInput
         accessibilityLabel="Text input Input"

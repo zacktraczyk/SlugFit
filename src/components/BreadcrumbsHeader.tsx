@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { NavigatorParamList } from '../screens/DrawerNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import useSelectedWorkout from '../hooks/useSelectedWorkout';
+import useBreadcrumbHistory from '../hooks/useBreadcrumbHistory';
 
 interface BreadcrumbsHeaderProps {
   navigation: NativeStackNavigationProp<NavigatorParamList, keyof NavigatorParamList, undefined>;
@@ -11,7 +11,7 @@ interface BreadcrumbsHeaderProps {
 }
 
 const BreadcrumbsHeader: React.FC<BreadcrumbsHeaderProps> = ({ route, navigation }) => {
-  const [workout, exercise] = useSelectedWorkout((state) => [state.workout, state.exercise]);
+  const [workout, exercise] = useBreadcrumbHistory((state) => [state.workout, state.exercise]);
 
   const MyWorkoutsLink = useMemo(() => {
     const shouldAbbreviateName = route.name === 'EditExercisePage';

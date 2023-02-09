@@ -6,17 +6,11 @@ import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatli
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AddButton from '../../components/AddButton';
 import SetCard from '../../components/SetCard';
-import { getExerciseInWorkout, updateExerciseInWorkout } from '../../hooks/useEditableWorkout';
+import { getExerciseInWorkout, updateExerciseInWorkout } from '../../utils/workouts';
 import { NavigatorParamList } from '../DrawerNavigator';
+import { Set } from '../../types';
 
 type EditExercisePageProps = NativeStackScreenProps<NavigatorParamList, 'EditExercisePage'>;
-
-export type Set = {
-  key: number;
-  reps: string;
-  pre: string;
-  orm: string;
-};
 
 // TODO: Append rests or sets, not just sets
 const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
@@ -35,17 +29,17 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
     });
 
     setSets(_sets);
-    updateExerciseInWorkout(exerciseName, { name: exerciseName, sets: _sets }, workoutId);
+    updateExerciseInWorkout({ name: exerciseName, sets: _sets }, workoutId);
   };
 
   const appendEmptySet = () => {
-    setSets([...sets, { key: sets.length, reps: '', pre: '', orm: '' }]);
+    setSets([...sets, { key: sets.length, reps: '', rpe: '', orm: '' }]);
     // Doesn't update Supabase with empty sets
   };
 
   const reorderSets = (reorder: Set[]) => {
     setSets(reorder);
-    updateExerciseInWorkout(exerciseName, { name: exerciseName, sets: reorder }, workoutId);
+    updateExerciseInWorkout({ name: exerciseName, sets: reorder }, workoutId);
   };
 
   useEffect(() => {
@@ -65,8 +59,8 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
             <SetCard
               reps={item.reps}
               setReps={(val) => updateSet(item.key, 'reps', val)}
-              pre={item.pre}
-              setPre={(val) => updateSet(item.key, 'pre', val)}
+              rpe={item.rpe}
+              setRpe={(val) => updateSet(item.key, 'rpe', val)}
               orm={item.orm}
               setOrm={(val) => updateSet(item.key, 'orm', val)}
             />
@@ -79,7 +73,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
   return (
     <>
       <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
-        <View className="h-full p-10 px-5">
+        <View className="h-full bg-white p-10 px-5">
           <DraggableFlatList
             data={sets}
             onDragEnd={({ data }) => reorderSets(data)}
