@@ -22,7 +22,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   const { workouts, fetch: refreshWorkouts } = useMyWorkouts(session);
   const [editingWorkout, setEditingWorkout] = useState<string | undefined>(undefined);
   const [setSelectedWorkout] = useBreadcrumbHistory((state) => [state.setWorkout]);
-  
+
   const addWorkoutBlock = async () => {
     const workout = await createEditableWorkout(session);
     if (workout) setEditingWorkout(workout.id);
@@ -42,7 +42,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   const duplicateWorkoutBlock = async (workoutId: string) => {
     const workout = await createEditableWorkout(session);
     const editableWorkout = getEditableWorkout(workoutId);
-   
+
     if (workout) {
       setEditingWorkout(workout.id);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -76,7 +76,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex flex-col items-center justify-center flex-1 w-full bg-white"
+      className="flex w-full flex-1 flex-col items-center justify-center bg-white"
     >
       <FlatList
         data={workouts}

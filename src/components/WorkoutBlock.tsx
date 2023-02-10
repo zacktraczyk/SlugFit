@@ -1,11 +1,10 @@
 import React, { SetStateAction, useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { TextInput } from 'react-native';
 import DoneButton from './DoneButton';
 import { EditableWorkout } from '../types';
 import Block from './Block';
 import { BlockContainer } from './BlockContainer';
 import BlockActionsModal from './BlockActionsModal';
-import { useEditableWorkout } from '../hooks/useEditableWorkout';
 
 interface WorkoutBlockProps {
   editing?: string;
