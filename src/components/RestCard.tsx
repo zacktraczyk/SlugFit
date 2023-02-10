@@ -11,11 +11,11 @@ interface RestCardProps {
 
 const RestCard: React.FC<RestCardProps> = ({ minutes, setMinutes, seconds, setSeconds }) => {
   return (
-    <Card title="Set">
+    <Card title="Rest">
       <TextInput
         accessibilityLabel="Text input Input"
         accessibilityHint="Input to change minutes in rest"
-        className="w-[60px] rounded border p-1"
+        className="w-[92px] rounded border p-1"
         placeholder="Minutes"
         returnKeyType="next"
         value={minutes}
@@ -24,9 +24,9 @@ const RestCard: React.FC<RestCardProps> = ({ minutes, setMinutes, seconds, setSe
       <TextInput
         accessibilityLabel="Text input Input"
         accessibilityHint="Input to change seconds in rest"
-        className="w-[60px] rounded border p-1"
+        className="w-[92px] rounded border p-1"
         returnKeyType="next"
-        placeholder=""
+        placeholder="Seconds"
         value={seconds}
         onChangeText={setSeconds}
       />
