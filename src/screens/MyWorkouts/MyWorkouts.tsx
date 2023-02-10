@@ -38,7 +38,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
     setEditingWorkout(undefined);
     if (refreshWorkouts) await refreshWorkouts();
   };
-  const duplicateWorkoutBlock = async (payload: EditableWorkout | undefined) => {
+  const duplicateWorkoutBlock = async (payload: EditableWorkout) => {
     const workout = await createEditableWorkout(session);
     if (workout) {
       setEditingWorkout(workout.id);
@@ -48,7 +48,6 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
         ...workout,
         ...rest,
       };
-      console.log(duplicate);
       updateWorkout(duplicate);
     }
   };
