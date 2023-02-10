@@ -8,13 +8,13 @@ interface BlockActionsModalProps {
   deleteWorkout: () => void;
   setModalVisible: (bool: boolean) => void;
   renameWorkout: () => void;
-  copyWorkout: () => void;
+  duplicateWorkout: () => void;
 }
 const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
   deleteWorkout,
   setModalVisible,
   renameWorkout,
-  copyWorkout,
+  duplicateWorkout,
 }) => {
   return (
     <Modal
@@ -24,40 +24,37 @@ const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
       onSwipeComplete={() => setModalVisible(false)}
       swipeDirection="down"
     >
-      <View className="absolute top-3/4 h-full w-full rounded-t-3xl border-2 bg-white ">
-        <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
+      <View className="absolute w-full h-full bg-white divide-y top-3/4 rounded-t-3xl">
+        <View className="self-center w-16 h-1 my-3 bg-gray-400 rounded-lg"></View>
         <TouchableOpacity
           accessibilityRole="button"
-          className="justify-left ml-9 flex flex-row items-center space-x-4 p-1"
-          hitSlop={{ top: 20, bottom: 20, right: 20 }}
+          className="flex flex-row items-center p-2 space-x-4 border-gray-400"
           onPress={deleteWorkout}
         >
           <Ionicon name="trash" size={16} />
-          <Text className="text-center text-lg font-bold">Delete</Text>
+          <Text className="text-lg font-bold text-center">Delete</Text>
         </TouchableOpacity>
         <TouchableOpacity
           accessibilityRole="button"
-          className="justify-left ml-9 flex flex-row items-center space-x-4 p-1"
-          hitSlop={{ top: 20, bottom: 20, right: 20 }}
+          className="flex flex-row items-center p-2 space-x-4 border-gray-400"
           onPress={() => {
             setModalVisible(false);
             renameWorkout();
           }}
         >
           <Ionicon name="pencil" size={16} />
-          <Text className="text-center text-lg font-bold">Rename</Text>
+          <Text className="text-lg font-bold text-center">Rename</Text>
         </TouchableOpacity>
         <TouchableOpacity
           accessibilityRole="button"
-          className="justify-left ml-9 flex flex-row items-center space-x-4 p-1"
-          hitSlop={{ top: 20, bottom: 20, right: 20 }}
+          className="flex flex-row items-center p-2 space-x-4 border-gray-400"
           onPress={() => {
             setModalVisible(false);
-            copyWorkout();
+            duplicateWorkout();
           }}
         >
           <Ionicon name="duplicate" size={16} />
-          <Text className="text-center text-lg font-bold">Duplicate</Text>
+          <Text className="text-lg font-bold text-center">Duplicate</Text>
         </TouchableOpacity>
       </View>
     </Modal>
