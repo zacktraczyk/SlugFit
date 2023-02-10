@@ -47,7 +47,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
   };
 
   return (
-    <View className="h-full w-screen items-center bg-slate-50 ">
+    <View className="h-full w-screen items-center bg-white">
       <View className="mt-7 h-12  w-11/12 rounded-t  border-x border-t border-slate-200 bg-slate-50">
         <TextInput
           accessibilityLabel="Exercise Search Text Field "
