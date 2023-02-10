@@ -7,7 +7,7 @@ import { NavigatorParamList } from '../DrawerNavigator';
 type ProfileProps = NativeStackScreenProps<NavigatorParamList, 'Profile'>;
 
 type ConsumedWorkout = {
-  name: String;
+  name: string;
   exercises: Exercise[];
   created_at: number;
   started_at: number;
@@ -63,7 +63,7 @@ const WorkoutSummary: React.FC<ProfileProps> = () => {
       {workout &&
         workout.exercises.map((exercise, i) => {
           return (
-            <View className="py-10">
+            <View className="py-10" key={i}>
               <View className="mb-5 flex flex-row items-center gap-2">
                 <Text className="w-20 text-right">{exercise.name}</Text>
                 <View className="h-0 w-[110px] border"></View>
@@ -73,7 +73,7 @@ const WorkoutSummary: React.FC<ProfileProps> = () => {
               </View>
               {exercise.sets.map((set, j) => {
                 return (
-                  <View className="flex flex-row items-center gap-2 py-4">
+                  <View className="flex flex-row items-center gap-2 py-4" key={j}>
                     <Text className="w-20 text-right">Set {j + 1}</Text>
                     <View className="w-[110px]"></View>
                     <Text className="w-10 text-center">{set.reps}</Text>
