@@ -6,17 +6,17 @@ import AddButton from '../../components/AddButton';
 import WorkoutBlock from '../../components/WorkoutBlock';
 import { useAuth } from '../../contexts/AuthProvider';
 import { useMyWorkouts } from '../../hooks/useMyWorkouts';
-import { createEditableWorkout, updateEditableWorkout } from '../../hooks/useEditableWorkout';
-import { EditableWorkout } from '../../types/EditableWorkout';
-import useSelectedWorkout from '../../hooks/useSelectedWorkout';
+import { createEditableWorkout, updateEditableWorkout } from '../../utils/workouts';
+import useBreadcrumbHistory from '../../hooks/useBreadcrumbHistory';
+import { EditableWorkout } from '../../types';
 
 export type MyWorkoutsProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkouts'>;
 
 const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   const { session } = useAuth();
-  const { workouts, refresh: refreshWorkouts } = useMyWorkouts(session);
+  const { workouts, fetch: refreshWorkouts } = useMyWorkouts(session);
   const [editingWorkout, setEditingWorkout] = useState<string | undefined>(undefined);
-  const [setSelectedWorkout] = useSelectedWorkout((state) => [state.setWorkout]);
+  const [setSelectedWorkout] = useBreadcrumbHistory((state) => [state.setWorkout]);
 
   const addWorkoutBlock = async () => {
     const workout = await createEditableWorkout(session);
@@ -25,7 +25,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   };
 
   const updateWorkout = async (payload) => {
-    await updateEditableWorkout(payload);
+    await updateEditableWorkout(payload.id, payload);
     setEditingWorkout(undefined);
     if (refreshWorkouts) await refreshWorkouts();
   };

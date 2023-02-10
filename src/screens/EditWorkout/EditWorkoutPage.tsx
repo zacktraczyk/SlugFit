@@ -3,25 +3,43 @@ import React, { useState } from 'react';
 import { FlatList, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import AddButton from '../../components/AddButton';
 import { NavigatorParamList } from '../DrawerNavigator';
-import { Exercise, PLACEHOLDER_EXERCISE_NAME } from '../../types/Exercise';
+import { Exercise, PLACEHOLDER_EXERCISE_NAME } from '../../types/';
 import ExerciseBlock from '../../components/ExerciseBlock';
-import { updateExerciseInWorkout, useEditableWorkout } from '../../hooks/useEditableWorkout';
-import useSelectedWorkout from '../../hooks/useSelectedWorkout';
+import { useEditableWorkout } from '../../hooks/useEditableWorkout';
+import {
+  insertExerciseIntoWorkout,
+  updateExerciseInWorkout,
+  deleteExerciseInWorkout,
+} from '../../utils/workouts';
+import useBreadcrumbHistory from '../../hooks/useBreadcrumbHistory';
 
 type EditWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'EditWorkoutPage'>;
 
 const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
-  const [selectedWorkout, setSelectedExercise] = useSelectedWorkout((state) => [
+  const [selectedWorkout, setSelectedExercise] = useBreadcrumbHistory((state) => [
     state.workout,
     state.setExercise,
   ]);
-  const { workout } = useEditableWorkout(selectedWorkout?.id);
+  const { workout } = useEditableWorkout(selectedWorkout?.id, true);
   const [editingExercise, setEditingExercise] = useState<string | undefined>(undefined);
 
-  const updateExercise = (identifier: string, exercise: Exercise) => {
+  /**
+   * Update an exercise or insert one if just created, alert if an error
+   * We need to take in the `currentName` param to see if it's a placeholder or not
+   * @param currentName
+   * @param exercise
+   */
+  const updateOrInsertExercise = async (currentName: string, exercise: Exercise) => {
     if (workout) {
       try {
-        updateExerciseInWorkout(identifier, exercise, workout);
+        // If currentName is the placeholder, we need to delete the placeholder and
+        // then insert the new exercise with the selected name
+        if (currentName === PLACEHOLDER_EXERCISE_NAME) {
+          await deleteExerciseInWorkout(PLACEHOLDER_EXERCISE_NAME, workout.id);
+          await insertExerciseIntoWorkout(exercise.name, workout.id);
+        } else {
+          await updateExerciseInWorkout(exercise, workout.id);
+        }
       } catch (error) {
         console.error(error);
         alert(error.message);
@@ -31,18 +49,26 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
 
   const addExerciseBlock = async () => {
     if (selectedWorkout) {
-      await updateExerciseInWorkout(
-        PLACEHOLDER_EXERCISE_NAME,
-        { name: PLACEHOLDER_EXERCISE_NAME, sets: [] },
-        selectedWorkout
-      );
-      setEditingExercise(PLACEHOLDER_EXERCISE_NAME);
+      try {
+        insertExerciseIntoWorkout(PLACEHOLDER_EXERCISE_NAME, selectedWorkout.id);
+        setEditingExercise(PLACEHOLDER_EXERCISE_NAME);
+      } catch (error) {
+        console.error(error);
+        alert(error.message);
+      }
     }
   };
 
   const navigateToExercise = (exercise: Exercise) => {
     setSelectedExercise(exercise);
-    navigation.navigate('EditExercisePage');
+    if (!workout) {
+      console.error('navigateToExercise: current workout is undefined');
+      return;
+    }
+    navigation.navigate('EditExercisePage', {
+      workoutId: workout.id,
+      exerciseName: exercise.name,
+    });
   };
 
   const renderExerciseBlock = ({ item }) => {
@@ -50,7 +76,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
       <ExerciseBlock
         exercise={item}
         editing={editingExercise}
-        update={updateExercise}
+        update={updateOrInsertExercise}
         onPress={navigateToExercise}
       />
     );

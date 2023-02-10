@@ -1,43 +1,41 @@
-import { useState, useCallback, useEffect } from 'react';
-import { supabase } from '../utils/supabaseClient';
+import { useState, useEffect } from 'react';
 import { Session, User } from '@supabase/supabase-js';
-import { EditableWorkout } from '../types/EditableWorkout';
+import { EditableWorkout } from '../types/';
+import { getEditableWorkoutsByUserId } from '../utils/workouts';
 
+/**
+ * Hooks into the user's workouts
+ * @param session Current session from AuthProvider
+ * @returns An array of the user's EditableWorkouts
+ */
 export const useMyWorkouts = (session: Session | null) => {
   const [workouts, setWorkouts] = useState<Array<EditableWorkout>>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | undefined>(undefined);
 
   if (session === undefined || session === null) return {};
 
   const user: User = session.user;
 
-  const refresh = useCallback(async () => {
+  const fetch = async () => {
     try {
       setLoading(true);
-      const { data, error, status } = await supabase
-        .from('workouts')
-        .select(`id, name`)
-        .eq('created_by', user.id);
 
-      if (error && status !== 406) throw error;
+      const data = await getEditableWorkoutsByUserId(user.id);
 
       if (data) setWorkouts(data);
-    } catch (error) {
-      let message;
 
-      if (error instanceof Error) message = error.message;
-      else message = String(error);
+      setError(undefined);
+    } catch (error) {
       setError(error);
-      alert(message);
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  };
 
   useEffect(() => {
-    refresh();
+    fetch();
   }, [user]);
 
-  return { workouts, loading, error, refresh };
+  return { workouts, loading, error, fetch };
 };
