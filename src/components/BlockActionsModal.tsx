@@ -2,6 +2,7 @@ import { Text, TouchableOpacity } from 'react-native';
 import { View } from 'react-native';
 import Modal from 'react-native-modal';
 import React from 'react';
+import Ionicon from '@expo/vector-icons/Ionicons';
 
 interface BlockActionsModalProps {
   deleteWorkout: () => void;
@@ -25,25 +26,37 @@ const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
     >
       <View className="absolute top-3/4 h-full w-full rounded-t-3xl border-2 bg-white ">
         <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
-        <TouchableOpacity accessibilityRole="button" onPress={deleteWorkout}>
+        <TouchableOpacity
+          accessibilityRole="button"
+          className="justify-left ml-9 flex flex-row items-center space-x-4 p-1"
+          hitSlop={{ top: 20, bottom: 20, right: 20 }}
+          onPress={deleteWorkout}
+        >
+          <Ionicon name="trash" size={16} />
           <Text className="text-center text-lg font-bold">Delete</Text>
         </TouchableOpacity>
         <TouchableOpacity
           accessibilityRole="button"
+          className="justify-left ml-9 flex flex-row items-center space-x-4 p-1"
+          hitSlop={{ top: 20, bottom: 20, right: 20 }}
           onPress={() => {
             setModalVisible(false);
             renameWorkout();
           }}
         >
+          <Ionicon name="pencil" size={16} />
           <Text className="text-center text-lg font-bold">Rename</Text>
         </TouchableOpacity>
         <TouchableOpacity
           accessibilityRole="button"
+          className="justify-left ml-9 flex flex-row items-center space-x-4 p-1"
+          hitSlop={{ top: 20, bottom: 20, right: 20 }}
           onPress={() => {
             setModalVisible(false);
             copyWorkout();
           }}
         >
+          <Ionicon name="duplicate" size={16} />
           <Text className="text-center text-lg font-bold">Duplicate</Text>
         </TouchableOpacity>
       </View>
