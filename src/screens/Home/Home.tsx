@@ -19,11 +19,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   // render each workout for CompletedWorkoutBlock
 
   const renderWorkoutBlock = ({ item }) => {
-    return (
-      <CompletedWorkoutBlock
-        workout={item}
-      />
-    );
+    return <CompletedWorkoutBlock workout={item} />;
   };
 
   useEffect(() => {
@@ -31,55 +27,59 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
     else setName('');
   }, [userData]);
 
-  // checks if there's any completed workouts 
+  // checks if there's any completed workouts
   // iterates through workouts, checking for at least one "ended_at" attribute
 
-  function existCompletedWorkouts(){
-
-    if(dummyData.length == 0){
-      return false
+  function existCompletedWorkouts() {
+    if (dummyData.length == 0) {
+      return false;
     }
-  
-    dummyData.map((currWorkout) => {
-      if(currWorkout.ended_at){
-        return true
-      }
-    })
 
-    return false
+    dummyData.map((currWorkout) => {
+      if (currWorkout.ended_at) {
+        return true;
+      }
+    });
+
+    return false;
   }
 
   return (
     <View className="flex h-full bg-white">
-
       <View>
-        <View className="flex-row px-3 pt-3.5 justify-between"> 
-          <Text className="font-bebas text-base pt-1">Completed Workouts</Text>
+        <View className="flex-row justify-between px-3 pt-3.5">
+          <Text className="pt-1 font-bebas text-base">Completed Workouts</Text>
 
           <TouchableOpacity accessibilityRole="button">
-            <Ionicon name={'calendar-sharp'} size={24} color={'#323232'}/>
+            <Ionicon name={'calendar-sharp'} size={24} color={'#323232'} />
           </TouchableOpacity>
         </View>
 
-        {existCompletedWorkouts()  
-          ? <View className="items-center pt-3.5 pb-6">
-              <Text className="font-bebas text-xl text-gray-400">No completed workouts.</Text> 
-            </View>
-          : <FlatList
-              data={(dummyData.filter((item)=> item.ended_at != null)).sort((a, b) => b.ended_at.localeCompare(a.ended_at))}
-              renderItem={renderWorkoutBlock}
-              keyExtractor={(item) => item.id}
-              horizontal={true}
-              keyboardShouldPersistTaps="always"
-              className="pt-3.5 pb-6"
-            />
-        }
+        {existCompletedWorkouts() ? (
+          <View className="items-center pt-3.5 pb-6">
+            <Text className="font-bebas text-xl text-gray-400">No completed workouts.</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={dummyData
+              .filter((item) => item.ended_at != null)
+              .sort((a, b) => b.ended_at.localeCompare(a.ended_at))}
+            renderItem={renderWorkoutBlock}
+            keyExtractor={(item) => item.id}
+            horizontal={true}
+            keyboardShouldPersistTaps="always"
+            className="pt-3.5 pb-6"
+          />
+        )}
       </View>
 
       <View className="flex-col items-center justify-center pt-12">
-        <TouchableOpacity accessibilityRole="button" className="my-2 mt-0 w-60 rounded-lg bg-red-500 p-2">
+        <TouchableOpacity
+          accessibilityRole="button"
+          className="my-2 mt-0 w-60 rounded-lg bg-red-500 p-2"
+        >
           <Text className="text-center font-bebas text-2xl text-white">Start A Workout</Text>
-        </TouchableOpacity> 
+        </TouchableOpacity>
 
         <View className="h-10"></View>
 
@@ -93,7 +93,6 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
           <Button title="Account" onPress={() => navigation.navigate('AccountSettings')} />
         </View>
       </View>
-
     </View>
   );
 };

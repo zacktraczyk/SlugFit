@@ -1,220 +1,220 @@
 [
-{
+  {
     "id": "xC12ilA201A",
     "name": "Back & Biceps",
     "created_by": "uid12345",
     "started_at": "1/16/2023",
     "ended_at": "2022-11-30T20:55:25.625Z",
     "exercises": [
-        {
-            "name": "Lat Pull Downs",
-            "sets": [
-                {
-                    "reps": 12,
-                    "weight": 100,
-                    "bodyweight": false,
-                    "ref": {
-                        "key": 0,
-                        "reps": 12,
-                        "rpe": 7,
-                        "orm": 75
-                    }
-                },
-                {
-                    "reps": 10,
-                    "weight": 100,
-                    "bodyweight": false,
-                    "ref": {
-                        "key": 1,
-                        "reps": 12,
-                        "rpe": 7,
-                        "orm": 75
-                    }
-                }
-            ]
-        },
-        {
-            "name": "Bicep Curls",
-            "sets": [
-                {
-                    "reps": 8,
-                    "weight": 25,
-                    "bodyweight": false,
-                    "ref": {
-                        "key": 0,
-                        "reps": 12,
-                        "rpe": 7,
-                        "orm": 75
-                    }
-                },
-                {
-                    "reps": 0,
-                    "weight": 25,
-                    "bodyweight": false,
-                    "ref": {
-                        "key": 1,
-                        "reps": 12,
-                        "rpe": 7,
-                        "orm": 75
-                    }
-                }
-            ]
-        }
+      {
+        "name": "Lat Pull Downs",
+        "sets": [
+          {
+            "reps": 12,
+            "weight": 100,
+            "bodyweight": false,
+            "ref": {
+              "key": 0,
+              "reps": 12,
+              "rpe": 7,
+              "orm": 75
+            }
+          },
+          {
+            "reps": 10,
+            "weight": 100,
+            "bodyweight": false,
+            "ref": {
+              "key": 1,
+              "reps": 12,
+              "rpe": 7,
+              "orm": 75
+            }
+          }
+        ]
+      },
+      {
+        "name": "Bicep Curls",
+        "sets": [
+          {
+            "reps": 8,
+            "weight": 25,
+            "bodyweight": false,
+            "ref": {
+              "key": 0,
+              "reps": 12,
+              "rpe": 7,
+              "orm": 75
+            }
+          },
+          {
+            "reps": 0,
+            "weight": 25,
+            "bodyweight": false,
+            "ref": {
+              "key": 1,
+              "reps": 12,
+              "rpe": 7,
+              "orm": 75
+            }
+          }
+        ]
+      }
     ]
-},
-{
+  },
+  {
     "id": "xC12ilA201B",
     "name": "Chest & Triceps",
     "created_by": "uid12345",
     "started_at": "1/16/2023",
     "ended_at": "2023-01-21T20:55:25.625Z",
     "exercises": [
-        {
-            "name": "Incline Bench Press",
-            "sets": [
-                {
-                    "reps": 8,
-                    "weight": 135,
-                    "bodyweight": false,
-                    "ref": {
-                        "key": 0,
-                        "reps": 8,
-                        "rpe": 7,
-                        "orm": 75
-                    }
-                }
-            ]
-        },
-        {
-            "name": "Scull Crushers",
-            "sets": [
-                {
-                    "reps": 10,
-                    "weight": 35,
-                    "bodyweight": false,
-                    "ref": {
-                        "key": 0,
-                        "reps": 12,
-                        "rpe": 7,
-                        "orm": 75
-                    }
-                }
-            ]
-        }
+      {
+        "name": "Incline Bench Press",
+        "sets": [
+          {
+            "reps": 8,
+            "weight": 135,
+            "bodyweight": false,
+            "ref": {
+              "key": 0,
+              "reps": 8,
+              "rpe": 7,
+              "orm": 75
+            }
+          }
+        ]
+      },
+      {
+        "name": "Scull Crushers",
+        "sets": [
+          {
+            "reps": 10,
+            "weight": 35,
+            "bodyweight": false,
+            "ref": {
+              "key": 0,
+              "reps": 12,
+              "rpe": 7,
+              "orm": 75
+            }
+          }
+        ]
+      }
     ]
-},
-{
+  },
+  {
     "id": "xC12ilA201C",
     "name": "Legs & Shoulders",
     "created_by": "uid12345",
     "started_at": "1/16/2023",
     "exercises": [
-        {
-            "name": "Seated Leg Curls",
-            "sets": [
-                {
-                    "reps": 12,
-                    "weight": 185,
-                    "bodyweight": false,
-                    "ref": {
-                        "key": 0,
-                        "reps": 12,
-                        "rpe": 7,
-                        "orm": 75
-                    }
-                },
-                {
-                    "reps": 0,
-                    "weight": 185,
-                    "bodyweight": false,
-                    "ref": {
-                        "key": 1,
-                        "reps": 12,
-                        "rpe": 7,
-                        "orm": 75
-                    }
-                }
-            ]
-        },
-        {
-            "name": "Lateral Raises",
-            "sets": [
-                {
-                    "reps": 12,
-                    "weight": 15,
-                    "bodyweight": false,
-                    "ref": {
-                        "key": 0,
-                        "reps": 12,
-                        "rpe": 7,
-                        "orm": 75
-                    }
-                }
-            ]
-        }
+      {
+        "name": "Seated Leg Curls",
+        "sets": [
+          {
+            "reps": 12,
+            "weight": 185,
+            "bodyweight": false,
+            "ref": {
+              "key": 0,
+              "reps": 12,
+              "rpe": 7,
+              "orm": 75
+            }
+          },
+          {
+            "reps": 0,
+            "weight": 185,
+            "bodyweight": false,
+            "ref": {
+              "key": 1,
+              "reps": 12,
+              "rpe": 7,
+              "orm": 75
+            }
+          }
+        ]
+      },
+      {
+        "name": "Lateral Raises",
+        "sets": [
+          {
+            "reps": 12,
+            "weight": 15,
+            "bodyweight": false,
+            "ref": {
+              "key": 0,
+              "reps": 12,
+              "rpe": 7,
+              "orm": 75
+            }
+          }
+        ]
+      }
     ]
-},
-{
+  },
+  {
     "id": "xC12ilA201D",
     "name": "ABS",
     "created_by": "uid12345",
     "started_at": "1/16/2023",
     "ended_at": "2023-02-02T20:55:25.625Z",
     "exercises": [
-        {
-            "name": "Crunches",
-            "sets": [
-                {
-                    "reps": 20,
-                    "weight": 0,
-                    "bodyweight": true,
-                    "ref": {
-                        "key": 0,
-                        "reps": 20,
-                        "rpe": 7,
-                        "orm": 75
-                    }
-                },
-                {
-                    "reps": 15,
-                    "weight": 0,
-                    "bodyweight": true,
-                    "ref": {
-                        "key": 1,
-                        "reps": 20,
-                        "rpe": 7,
-                        "orm": 75
-                    }
-                }
-            ]
-        },
-        {
-            "name": "Sit Ups",
-            "sets": [
-                {
-                    "reps": 15,
-                    "weight": 0,
-                    "bodyweight": true,
-                    "ref": {
-                        "key": 0,
-                        "reps": 20,
-                        "rpe": 7,
-                        "orm": 75
-                    }
-                },
-                {
-                    "reps": 10,
-                    "weight": 0,
-                    "bodyweight": true,
-                    "ref": {
-                        "key": 1,
-                        "reps": 20,
-                        "rpe": 7,
-                        "orm": 75
-                    }
-                }
-            ]
-        }
+      {
+        "name": "Crunches",
+        "sets": [
+          {
+            "reps": 20,
+            "weight": 0,
+            "bodyweight": true,
+            "ref": {
+              "key": 0,
+              "reps": 20,
+              "rpe": 7,
+              "orm": 75
+            }
+          },
+          {
+            "reps": 15,
+            "weight": 0,
+            "bodyweight": true,
+            "ref": {
+              "key": 1,
+              "reps": 20,
+              "rpe": 7,
+              "orm": 75
+            }
+          }
+        ]
+      },
+      {
+        "name": "Sit Ups",
+        "sets": [
+          {
+            "reps": 15,
+            "weight": 0,
+            "bodyweight": true,
+            "ref": {
+              "key": 0,
+              "reps": 20,
+              "rpe": 7,
+              "orm": 75
+            }
+          },
+          {
+            "reps": 10,
+            "weight": 0,
+            "bodyweight": true,
+            "ref": {
+              "key": 1,
+              "reps": 20,
+              "rpe": 7,
+              "orm": 75
+            }
+          }
+        ]
+      }
     ]
-}
+  }
 ]
