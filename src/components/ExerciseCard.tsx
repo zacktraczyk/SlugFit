@@ -4,6 +4,7 @@ import { EditableWorkout } from '../types/EditableWorkout';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import { TextInput } from 'react-native-gesture-handler';
+import Checkbox from './CustomCheckBox'
 
 interface ExerciseCardProps {
     editableWorkout?: EditableWorkout | undefined,
@@ -43,7 +44,8 @@ const styling = StyleSheet.create({
 
 const ExerciseCard = () => {
     const [workoutDone, setWorkoutDone] = React.useState<boolean>(false);
-    let IS_WORKINGSET = true;
+    const [checked, setChecked] = React.useState<boolean>(false);
+    const IS_WORKINGSET = true;
   
  // Load font
  const [fontsLoaded] = useFonts({
@@ -114,6 +116,8 @@ const ExerciseCard = () => {
                         />
                     </View>
                     <Text className="font-bebas font-bold text-xs my-auto"> LB</Text>
+                    <View className="ml-1"><Checkbox checked={checked} onPress={()=>{setChecked(!checked)}}/></View>
+                    
                 </View>
                  {/**End of Warmup Set Block */}
 
