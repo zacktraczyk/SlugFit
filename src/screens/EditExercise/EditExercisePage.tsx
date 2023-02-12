@@ -5,12 +5,13 @@ import { Keyboard, TouchableOpacity, View } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AddButton from '../../components/AddButton';
-import SetCard from '../../components/SetCard';
+import SetCard from '../../components/blocks/SetCard';
 import { getExerciseInWorkout, updateExerciseInWorkout } from '../../utils/workouts';
 import { NavigatorParamList } from '../DrawerNavigator';
 import { ExerciseItem } from '../../types';
-import RestCard from '../../components/RestCard';
-import NoteCard from '../../components/NoteCard';
+import RestCard from '../../components/blocks/RestCard';
+import NoteCard from '../../components/blocks/NoteCard';
+import CardCreationModal from '../../components/modals/CardCreationModal';
 
 type EditExercisePageProps = NativeStackScreenProps<NavigatorParamList, 'EditExercisePage'>;
 
@@ -31,10 +32,12 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
   const { exerciseName, workoutId } = route.params;
 
   const [exerciseItems, setExerciseItems] = useState<ExerciseItem[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const updateCard = async (key, property, val) => {
+  // Card Operations
+  const updateCard = async (id, property, val) => {
     const _exerciseItems = exerciseItems.map((item) => {
-      if (item.id === key) {
+      if (item.id === id) {
         const _set = { ...item };
         _set[property] = val;
         return _set;
@@ -45,6 +48,51 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
     setExerciseItems(_exerciseItems);
     updateExerciseInWorkout({ name: exerciseName, items: _exerciseItems }, workoutId);
   };
+
+  const duplicateCard = (id) => {
+    if (id === undefined) {
+      throw 'ExerciseItem id not given';
+    }
+    const _exerciseItems: ExerciseItem[] = [];
+    let acc = 0;
+    for (let i = 0; i < exerciseItems.length; i++) {
+      const item = exerciseItems[i];
+      if (item.id === id) {
+        item.id = acc;
+        _exerciseItems.push({ ...exerciseItems[i] });
+        acc++;
+      }
+
+      item.id = acc;
+      _exerciseItems.push(exerciseItems[i]);
+      acc++;
+    }
+    setExerciseItems(_exerciseItems);
+    updateExerciseInWorkout({ name: exerciseName, items: _exerciseItems }, workoutId);
+  };
+
+  const deleteCard = (id) => {
+    if (id === undefined) {
+      throw 'ExerciseItem id not given';
+    }
+
+    const _exerciseItems: ExerciseItem[] = [];
+    let acc = 0;
+    for (let i = 0; i < exerciseItems.length; i++) {
+      const item = exerciseItems[i];
+      if (item.id === id) {
+        continue;
+      }
+
+      item.id = acc;
+      _exerciseItems.push(exerciseItems[i]);
+      acc++;
+    }
+    setExerciseItems(_exerciseItems);
+    updateExerciseInWorkout({ name: exerciseName, items: _exerciseItems }, workoutId);
+  };
+
+  const cardProps = { deleteCard, duplicateCard };
 
   const appendEmptySet = () =>
     setExerciseItems([...exerciseItems, createEmptySet(exerciseItems.length)]);
@@ -81,6 +129,8 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
           setRpe={(val) => updateCard(item.id, 'rpe', val)}
           orm={item.orm}
           setOrm={(val) => updateCard(item.id, 'orm', val)}
+          id={item.id}
+          {...cardProps}
         />
       );
     } else if (item.minutes !== undefined) {
@@ -90,10 +140,19 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
           setMinutes={(val) => updateCard(item.id, 'minutes', val)}
           seconds={item.seconds}
           setSeconds={(val) => updateCard(item.id, 'seconds', val)}
+          id={item.id}
+          {...cardProps}
         />
       );
     } else if (item.text !== undefined) {
-      Card = <NoteCard text={item.text} setText={(val) => updateCard(item.id, 'text', val)} />;
+      Card = (
+        <NoteCard
+          text={item.text}
+          setText={(val) => updateCard(item.id, 'text', val)}
+          id={item.id}
+          {...cardProps}
+        />
+      );
     } else {
       throw "Can't identify ExerciseItem in renderItem";
     }
@@ -119,9 +178,14 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
           />
         </View>
       </TouchableWithoutFeedback>
-      <AddButton onPress={() => appendEmptySet()} />
-      {/* <AddButton onPress={() => appendEmptyRest()} /> */}
-      {/* <AddButton onPress={() => appendEmptyNote()} /> */}
+      <AddButton onPress={() => setModalVisible(true)} />
+      <CardCreationModal
+        visible={modalVisible}
+        setVisible={setModalVisible}
+        newNote={appendEmptyNote}
+        newRest={appendEmptyRest}
+        newSet={appendEmptySet}
+      />
     </>
   );
 };

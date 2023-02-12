@@ -2,9 +2,9 @@ import React, { SetStateAction, useState } from 'react';
 import { TextInput } from 'react-native';
 import DoneButton from './DoneButton';
 import { EditableWorkout } from '../types';
-import Block from './Block';
-import { BlockContainer } from './BlockContainer';
-import BlockActionsModal from './BlockActionsModal';
+import Block from './blocks/Block';
+import { BlockContainer } from './blocks/BlockContainer';
+import BlockActionsModal from './modals/BlockActionsModal';
 
 interface WorkoutBlockProps {
   editing?: string;

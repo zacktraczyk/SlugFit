@@ -7,11 +7,20 @@ interface RestCardProps {
   setMinutes: (val: string) => void;
   seconds: string;
   setSeconds: (val: string) => void;
+  id: number;
+  deleteCard: (id) => void;
+  duplicateCard: (id) => void;
 }
 
-const RestCard: React.FC<RestCardProps> = ({ minutes, setMinutes, seconds, setSeconds }) => {
+const RestCard: React.FC<RestCardProps> = ({
+  minutes,
+  setMinutes,
+  seconds,
+  setSeconds,
+  ...cardProps
+}) => {
   return (
-    <Card title="Rest">
+    <Card title="Rest" {...cardProps}>
       <TextInput
         accessibilityLabel="Text input Input"
         accessibilityHint="Input to change minutes in rest"
