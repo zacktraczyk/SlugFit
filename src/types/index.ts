@@ -11,6 +11,7 @@ export interface Set {
   reps: string;
   rpe: string; // Rating of Perceived Exertion
   orm: string; // One Rep Max
+  warmup: boolean;
 }
 
 export interface Rest {
