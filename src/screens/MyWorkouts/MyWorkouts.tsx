@@ -6,7 +6,12 @@ import AddButton from '../../components/AddButton';
 import WorkoutBlock from '../../components/WorkoutBlock';
 import { useAuth } from '../../contexts/AuthProvider';
 import { useMyWorkouts } from '../../hooks/useMyWorkouts';
-import { createEditableWorkout, updateEditableWorkout } from '../../utils/workouts';
+import {
+  createEditableWorkout,
+  deleteEditableWorkout,
+  getEditableWorkout,
+  updateEditableWorkout,
+} from '../../utils/workouts';
 import useBreadcrumbHistory from '../../hooks/useBreadcrumbHistory';
 import { EditableWorkout } from '../../types';
 
@@ -29,7 +34,26 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
     setEditingWorkout(undefined);
     if (refreshWorkouts) await refreshWorkouts();
   };
+  const deleteWorkoutBlock = async (id) => {
+    await deleteEditableWorkout(id);
+    setEditingWorkout(undefined);
+    if (refreshWorkouts) await refreshWorkouts();
+  };
+  const duplicateWorkoutBlock = async (workoutId: string) => {
+    const workout = await createEditableWorkout(session);
+    const editableWorkout = getEditableWorkout(workoutId);
 
+    if (workout) {
+      setEditingWorkout(workout.id);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, ...rest } = await editableWorkout;
+      const duplicate: EditableWorkout = {
+        ...workout,
+        ...rest,
+      };
+      await updateWorkout(duplicate);
+    }
+  };
   const navigateToWorkout = (workout: EditableWorkout) => {
     setSelectedWorkout(workout);
     navigation.navigate('EditWorkoutPage');
@@ -39,8 +63,11 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
     return (
       <WorkoutBlock
         editing={editingWorkout}
+        setEditing={setEditingWorkout}
         workout={item}
         updateName={updateWorkout}
+        deleteWorkout={deleteWorkoutBlock}
+        duplicateWorkout={duplicateWorkoutBlock}
         onPress={navigateToWorkout}
       />
     );
