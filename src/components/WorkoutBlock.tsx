@@ -1,11 +1,10 @@
 import React, { SetStateAction, useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { TextInput } from 'react-native';
 import DoneButton from './DoneButton';
 import { EditableWorkout } from '../types';
 import Block from './Block';
 import { BlockContainer } from './BlockContainer';
 import BlockActionsModal from './BlockActionsModal';
-import { useEditableWorkout } from '../hooks/useEditableWorkout';
 
 interface WorkoutBlockProps {
   editing?: string;
@@ -14,7 +13,7 @@ interface WorkoutBlockProps {
   updateName: (payload: EditableWorkout) => Promise<void>;
   onPress: (w: EditableWorkout) => void;
   deleteWorkout: (id: string) => Promise<void>;
-  duplicateWorkout: (payload: EditableWorkout | undefined) => Promise<void>;
+  duplicateWorkout: (id: string) => Promise<void>;
 }
 
 const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
@@ -28,7 +27,6 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
 }) => {
   const [name, setName] = useState<string>(workout.name || '');
   const [modalVisible, setModalVisible] = useState(false);
-  const editableWorkout = useEditableWorkout(workout.id, true);
   if (editing === workout.id) {
     return (
       <BlockContainer>
@@ -47,7 +45,7 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
   }
 
   return (
-    <View>
+    <>
       <Block
         title={name}
         onPress={() => {
@@ -57,20 +55,18 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
           setModalVisible(true);
         }}
       />
-      <View>
-        {modalVisible && (
-          <BlockActionsModal
-            deleteWorkout={() => deleteWorkout(workout.id)}
-            setModalVisible={(bool: boolean) => setModalVisible(bool)}
-            renameWorkout={() => setEditing(workout.id)}
-            copyWorkout={() => {
-              editableWorkout.fetch?.();
-              duplicateWorkout(editableWorkout.workout);
-            }}
-          />
-        )}
-      </View>
-    </View>
+
+      {modalVisible && (
+        <BlockActionsModal
+          deleteWorkout={() => deleteWorkout(workout.id)}
+          setModalVisible={(bool: boolean) => setModalVisible(bool)}
+          renameWorkout={() => setEditing(workout.id)}
+          duplicateWorkout={() => {
+            duplicateWorkout(workout.id);
+          }}
+        />
+      )}
+    </>
   );
 };
 

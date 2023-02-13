@@ -8,13 +8,13 @@ interface BlockActionsModalProps {
   deleteWorkout: () => void;
   setModalVisible: (bool: boolean) => void;
   renameWorkout: () => void;
-  copyWorkout: () => void;
+  duplicateWorkout: () => void;
 }
 const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
   deleteWorkout,
   setModalVisible,
   renameWorkout,
-  copyWorkout,
+  duplicateWorkout,
 }) => {
   return (
     <Modal
@@ -24,12 +24,11 @@ const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
       onSwipeComplete={() => setModalVisible(false)}
       swipeDirection="down"
     >
-      <View className="absolute top-3/4 h-full w-full rounded-t-3xl border-2 bg-white ">
+      <View className="absolute top-3/4 h-full w-full divide-y rounded-t-3xl bg-white">
         <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
         <TouchableOpacity
           accessibilityRole="button"
-          className="justify-left ml-9 flex flex-row items-center space-x-4 p-1"
-          hitSlop={{ top: 20, bottom: 20, right: 20 }}
+          className="flex flex-row items-center space-x-4 border-gray-200 p-2"
           onPress={deleteWorkout}
         >
           <Ionicon name="trash" size={16} />
@@ -37,8 +36,7 @@ const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
         </TouchableOpacity>
         <TouchableOpacity
           accessibilityRole="button"
-          className="justify-left ml-9 flex flex-row items-center space-x-4 p-1"
-          hitSlop={{ top: 20, bottom: 20, right: 20 }}
+          className="flex flex-row items-center space-x-4 border-gray-200 p-2"
           onPress={() => {
             setModalVisible(false);
             renameWorkout();
@@ -49,11 +47,10 @@ const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
         </TouchableOpacity>
         <TouchableOpacity
           accessibilityRole="button"
-          className="justify-left ml-9 flex flex-row items-center space-x-4 p-1"
-          hitSlop={{ top: 20, bottom: 20, right: 20 }}
+          className="flex flex-row items-center space-x-4 border-gray-200 p-2"
           onPress={() => {
             setModalVisible(false);
-            copyWorkout();
+            duplicateWorkout();
           }}
         >
           <Ionicon name="duplicate" size={16} />

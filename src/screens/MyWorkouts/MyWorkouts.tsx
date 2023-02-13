@@ -9,6 +9,7 @@ import { useMyWorkouts } from '../../hooks/useMyWorkouts';
 import {
   createEditableWorkout,
   deleteEditableWorkout,
+  getEditableWorkout,
   updateEditableWorkout,
 } from '../../utils/workouts';
 import useBreadcrumbHistory from '../../hooks/useBreadcrumbHistory';
@@ -38,17 +39,19 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
     setEditingWorkout(undefined);
     if (refreshWorkouts) await refreshWorkouts();
   };
-  const duplicateWorkoutBlock = async (payload: EditableWorkout) => {
+  const duplicateWorkoutBlock = async (workoutId: string) => {
     const workout = await createEditableWorkout(session);
+    const editableWorkout = getEditableWorkout(workoutId);
+
     if (workout) {
       setEditingWorkout(workout.id);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { id, ...rest } = payload;
+      const { id, ...rest } = await editableWorkout;
       const duplicate: EditableWorkout = {
         ...workout,
         ...rest,
       };
-      updateWorkout(duplicate);
+      await updateWorkout(duplicate);
     }
   };
   const navigateToWorkout = (workout: EditableWorkout) => {
