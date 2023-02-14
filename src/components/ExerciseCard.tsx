@@ -14,7 +14,7 @@ import {isSet, isNote, isRest} from '../utils/typeCheck';
  */
 export interface ExerciseCardProps {
     exercise: Exercise;
-    getUserRecordedSets: () => (RecordedValue[] | undefined);
+    getUserRecordedSets: (recordedValues : (RecordedValue[] | undefined)) => void;
 }
 
 
