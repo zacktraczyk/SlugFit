@@ -12,6 +12,7 @@ import {
   deleteExerciseInWorkout,
 } from '../../utils/workouts';
 import useBreadcrumbHistory from '../../hooks/useBreadcrumbHistory';
+import LoadingWheel from '../../components/LoadingWheel';
 
 type EditWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'EditWorkoutPage'>;
 
@@ -20,7 +21,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
     state.workout,
     state.setExercise,
   ]);
-  const { workout } = useEditableWorkout(selectedWorkout?.id, true);
+  const { workout, listening } = useEditableWorkout(selectedWorkout?.id, true);
   const [editingExercise, setEditingExercise] = useState<string | undefined>(undefined);
 
   /**
@@ -85,7 +86,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex w-full flex-1 flex-col items-center justify-center bg-white"
+      className="flex flex-col items-center justify-center flex-1 w-full bg-white"
     >
       <FlatList
         data={workout?.exercises}
@@ -96,6 +97,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
         keyboardShouldPersistTaps="always"
       />
       <AddButton onPress={addExerciseBlock} />
+      {listening && <LoadingWheel listening={listening} />}
     </KeyboardAvoidingView>
   );
 };
