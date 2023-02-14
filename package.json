@@ -29,6 +29,8 @@
     "expo-app-loading": "~2.1.1",
     "expo-font": "~11.0.1",
     "expo-status-bar": "~1.4.2",
+    "lottie-ios": "3.2.3",
+    "lottie-react-native": "5.1.5",
     "nativewind": "^2.0.11",
     "postcss": "^8.0.9",
     "react": "18.1.0",
