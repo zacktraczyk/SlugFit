@@ -14,7 +14,6 @@ import RestCard from '../../components/blocks/RestCard';
 import NoteCard from '../../components/blocks/NoteCard';
 import CardCreationModal from '../../components/modals/CardCreationModal';
 
-
 type EditExercisePageProps = NativeStackScreenProps<NavigatorParamList, 'EditExercisePage'>;
 
 // const emptySet = {};
@@ -115,7 +114,6 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
       const exercise = await getExerciseInWorkout(exerciseName, workoutId);
       setExerciseItems(exercise ? exercise.items : []);
       setLoading(false);
-
     };
 
     fetchSets().catch(console.error);
