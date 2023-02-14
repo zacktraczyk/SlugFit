@@ -4,7 +4,7 @@ import { FlatList, KeyboardAvoidingView, Platform, StyleSheet } from 'react-nati
 import AddButton from '../../components/AddButton';
 import { NavigatorParamList } from '../DrawerNavigator';
 import { Exercise, PLACEHOLDER_EXERCISE_NAME } from '../../types/';
-import ExerciseBlock from '../../components/ExerciseBlock';
+import ExerciseBlock from '../../components/blocks/ExerciseBlock';
 import { useEditableWorkout } from '../../hooks/useEditableWorkout';
 import {
   insertExerciseIntoWorkout,

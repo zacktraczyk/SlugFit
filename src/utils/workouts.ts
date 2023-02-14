@@ -155,7 +155,7 @@ export const insertExerciseIntoWorkout = async (exerciseName: string, workoutId:
 
   const exerciseToInsert = {
     name: exerciseName,
-    sets: [],
+    items: [],
   } as Exercise;
 
   exercises.push(exerciseToInsert);
