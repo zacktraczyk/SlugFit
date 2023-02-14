@@ -14,7 +14,7 @@ import {
 } from '../../utils/workouts';
 import useBreadcrumbHistory from '../../hooks/useBreadcrumbHistory';
 import { EditableWorkout } from '../../types';
-import LoadingWheel from '../../components/LoadingWheel';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 export type MyWorkoutsProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkouts'>;
 
@@ -77,7 +77,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex flex-col items-center justify-center flex-1 w-full bg-white"
+      className="flex w-full flex-1 flex-col items-center justify-center bg-white"
       enabled={!loading}
     >
       <FlatList
@@ -90,7 +90,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
       />
       <AddButton onPress={addWorkoutBlock} />
 
-      {loading && <LoadingWheel listening={loading} />}
+      <Spinner visible={loading} />
     </KeyboardAvoidingView>
   );
 };

@@ -9,6 +9,7 @@ import SetCard from '../../components/SetCard';
 import { getExerciseInWorkout, updateExerciseInWorkout } from '../../utils/workouts';
 import { NavigatorParamList } from '../DrawerNavigator';
 import { Set } from '../../types';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 type EditExercisePageProps = NativeStackScreenProps<NavigatorParamList, 'EditExercisePage'>;
 
@@ -17,7 +18,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
   const { exerciseName, workoutId } = route.params;
 
   const [sets, setSets] = useState<Set[]>([]);
-
+  const [loading, setLoading] = useState<boolean>(false);
   const updateSet = async (key, property, val) => {
     const _sets = sets.map((set) => {
       if (set.key === key) {
@@ -44,8 +45,10 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
 
   useEffect(() => {
     const fetchSets = async () => {
+      setLoading(true);
       const exercise = await getExerciseInWorkout(exerciseName, workoutId);
       setSets(exercise ? exercise.sets : []);
+      setLoading(false);
     };
 
     fetchSets().catch(console.error);
@@ -81,6 +84,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
             renderItem={renderItem}
           />
         </View>
+        <Spinner visible={loading} />
       </TouchableWithoutFeedback>
       <AddButton onPress={() => appendEmptySet()} />
     </>
