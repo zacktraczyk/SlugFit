@@ -59,7 +59,9 @@ export interface ConsumableWorkout {
   created_by?: string;
   started_at?: Date;
   ended_at?: Date;
-  exercises: ConsumableExercise[];
+  exercises?: ConsumableExercise[];
 }
+
+export type ConsumableWorkoutTemplate = Omit<ConsumableWorkout, 'id'>;
 
 export const PLACEHOLDER_EXERCISE_NAME = 'placeholder';
