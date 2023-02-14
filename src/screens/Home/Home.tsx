@@ -42,7 +42,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
 
   const tempExercise: Exercise = {
     name: 'Pull-ups',
-    items: [tempWarmUpSet, tempWorkingSet, tempNote, tempRest],
+    items: [tempWarmUpSet,tempWarmUpSet ,tempWarmUpSet, tempWarmUpSet,tempNote, tempRest],
   };
 
   /** END OF TESTING DATA */

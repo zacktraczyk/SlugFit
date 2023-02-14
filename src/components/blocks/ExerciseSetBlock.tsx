@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import { TextInput } from 'react-native-gesture-handler';
 import Checkbox from '../CustomCheckBox';
+import { RecordedSet } from '../../types';
 
 interface SetBlockProps {
   setNumber: number;
@@ -10,7 +11,8 @@ interface SetBlockProps {
   rpe: string;
   orm: string;
   warmup: boolean;
-  getUserRecordedValue?: (reps: string, weight: string) => void;
+  recordIndex: number;
+  getUserRecordedValue?: (value: RecordedSet) => void;
 }
 const SetBlock: React.FC<SetBlockProps> = ({
   setNumber,
@@ -18,17 +20,19 @@ const SetBlock: React.FC<SetBlockProps> = ({
   rpe,
   orm,
   warmup,
+  recordIndex,
   getUserRecordedValue,
 }) => {
   const [isBodyWeight, setIsBodyWeight] = React.useState<boolean>(false);
   const [userInputReps, setUserInputReps] = React.useState<string>('');
   const [userInputWeight, setUserInputWeight] = React.useState<string>('');
-  /** 
-  React.useEffect(() => {
-    getUserRecordedValue(userInputReps, userInputWeight);
-  }, [userInputReps, userInputWeight]);
-*/
+  let value: RecordedSet = { warmup: warmup, reps: '', weight: '' };
+  getUserRecordedValue(value, recordIndex);
 
+  if (userInputReps.length > 0 && userInputWeight.length > 0) {
+    value = { warmup: warmup, reps: userInputReps, weight: userInputWeight };
+    getUserRecordedValue(value, recordIndex);
+  }
   // Load font
   const [fontsLoaded] = useFonts({
     BebasNeue_400Regular,
@@ -41,14 +45,14 @@ const SetBlock: React.FC<SetBlockProps> = ({
   return (
     <View className="mx-2 mt-2 ">
       <Text className="ml-1 font-bebas font-extralight text-stone-700">
-        {warmup ? '' : 'WARMUP'} SET {setNumber}
+        {warmup ? 'WARMUP' : ''} SET {setNumber}
       </Text>
       <View
-        style={warmup ? styling.workingBackground1 : styling.warmUpBackground1}
+        style={warmup ? styling.warmUpBackground1 : styling.workingBackground1} 
         className="-2 flex h-8 flex-row rounded-md"
       >
         <View
-          style={warmup ? styling.workingBackground2 : styling.warmUpBackground2}
+          style={warmup ? styling.warmUpBackground2 : styling.workingBackground2}
           className="h-8 w-6 rounded-l-lg"
         >
           <Text className="my-auto ml-1 font-bebas text-xl font-bold">DO</Text>
@@ -61,10 +65,10 @@ const SetBlock: React.FC<SetBlockProps> = ({
         <Text className="mt-3 font-bebas text-xs font-bold"> %1RM</Text>
         <View className="flex flex-grow flex-row justify-end border-solid">
           <Text
-            style={warmup ? styling.workingFontColor : styling.warmUpFontColor}
+            style={warmup ? styling.warmUpFontColor : styling.workingFontColor}
             className="my-auto mx-4 ml-1 font-bebas text-xl font-bold"
           >
-            {warmup ? 'WORKING' : 'WARMUP'}
+            {warmup ? 'WARMUP':'WORKING'}
           </Text>
         </View>
       </View>

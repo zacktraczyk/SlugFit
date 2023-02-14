@@ -25,7 +25,8 @@ export interface Note {
   text: string;
 }
 
-export interface RecordedValue {
+export interface RecordedSet {
+  warmup: boolean;
   reps: string;
   weight: string;
 }
