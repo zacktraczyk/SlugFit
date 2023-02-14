@@ -37,7 +37,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   const tempRest: Rest = {
     id: 123,
     minutes: '99',
-    seconds: '99',
+    seconds: '30',
   };
 
   const tempExercise: Exercise = {
@@ -45,7 +45,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
     items: [tempWarmUpSet, tempWorkingSet, tempNote, tempRest],
   };
 
-   /** END OF TESTING DATA */
+  /** END OF TESTING DATA */
   useEffect(() => {
     if (userData?.username) setName(userData.username);
     else setName('');
@@ -53,7 +53,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
 
   return (
     <View className="flex h-full flex-col items-center">
-      <ExerciseCard exercise={tempExercise}/>
+      <ExerciseCard exercise={tempExercise} />
     </View>
   );
 };

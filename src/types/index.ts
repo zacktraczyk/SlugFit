@@ -25,6 +25,10 @@ export interface Note {
   text: string;
 }
 
+export interface RecordedValue {
+  reps: string;
+  weight: string;
+}
 export interface EditableWorkout {
   id: string;
   name?: string;

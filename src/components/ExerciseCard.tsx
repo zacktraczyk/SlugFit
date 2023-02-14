@@ -5,11 +5,16 @@ import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import NoteBlock from './blocks/ExerciseNoteBlock';
 import RestBlock from './blocks/ExerciseRestBlock';
 import SetBlock from './blocks/ExerciseSetBlock';
-import { Exercise, ExerciseItem, Set, Note, Rest } from '../../types';
+import { Exercise, ExerciseItem, RecordedValue } from '../../types';
 import {isSet, isNote, isRest} from '../utils/typeCheck';
 {/**WILL CHANGE PROPS*/}
+/**
+ * @param exercise inputs value to a card
+ * @param getUserRecordedValue returns array of user input RecordedValue or undefined if user fails to fil out all values
+ */
 export interface ExerciseCardProps {
     exercise: Exercise;
+    getUserRecordedSets: () => (RecordedValue[] | undefined);
 }
 
 
@@ -17,10 +22,10 @@ export interface ExerciseCardProps {
 const ExerciseCard:React.FC<ExerciseCardProps> = ({exercise}) => {
     const maxSets = React.useRef(calculateNumWorkingSets(exercise.items));
     const [currentSetsDone, setCurrentSetDone] = React.useState<number>(0);
-    
     const [userInputReps, setUserInputReps] = React.useState<string>('');
     const [userInputWeight, setUserInputWeight] = React.useState<string>('');
-
+    let workingSetIndex = 1;
+    let warmUpSetIndex = 1;
     React.useEffect(() => {maxSets.current = calculateNumWorkingSets(exercise.items);},[exercise]);
     
     // Load font
@@ -42,15 +47,15 @@ const ExerciseCard:React.FC<ExerciseCardProps> = ({exercise}) => {
             {/** TEST CODE, WILL REMOVE LATER */}
             {exercise.items.map((item, index) => { 
                 if(isSet(item)) {
-                    return(<SetBlock setNumber={index} reps={item.reps} rpe={item.rpe} orm={item.orm} warmup={item.warmup}/>);
+                    return(<SetBlock key={index} setNumber={(item.warmup?warmUpSetIndex++:workingSetIndex++)} reps={item.reps} rpe={item.rpe} orm={item.orm} warmup={item.warmup}/>);
                 }
                 else if(isRest(item)) {
-                    return(<RestBlock minutes={item.minutes} seconds={item.seconds}/>);
+                    return(<RestBlock key={index} minutes={item.minutes} seconds={item.seconds}/>);
                 }
                 else if(isNote(item)) {
-                    return(<NoteBlock note={item.text}/>);
+                    return(<NoteBlock key={index} note={item.text}/>);
                 } else {
-                    return(<View className='flex flex-grow border h-10'>
+                    return(<View key={index} className='flex flex-grow border h-10'>
                             <Text className="font-bold text-red-700 text-center my-auto">**Item Failed to Load**</Text>
                         </View>);
                 }

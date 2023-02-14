@@ -23,7 +23,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
   const [isBodyWeight, setIsBodyWeight] = React.useState<boolean>(false);
   const [userInputReps, setUserInputReps] = React.useState<string>('');
   const [userInputWeight, setUserInputWeight] = React.useState<string>('');
-/** 
+  /** 
   React.useEffect(() => {
     getUserRecordedValue(userInputReps, userInputWeight);
   }, [userInputReps, userInputWeight]);
