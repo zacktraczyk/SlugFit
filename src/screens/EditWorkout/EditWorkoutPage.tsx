@@ -58,7 +58,17 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
       }
     }
   };
-
+  const deleteExerciseBlock = async (exerciseName: string) => {
+    if (workout) {
+      try {
+        await deleteExerciseInWorkout(exerciseName, workout.id);
+        setEditingExercise(undefined);
+      } catch (error) {
+        console.error(error);
+        alert(error.message);
+      }
+    }
+  };
   const navigateToExercise = (exercise: Exercise) => {
     setSelectedExercise(exercise);
     if (!workout) {
@@ -76,7 +86,8 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
       <ExerciseBlock
         exercise={item}
         editing={editingExercise}
-        update={updateOrInsertExercise}
+        updateExercise={updateOrInsertExercise}
+        deleteExercise={deleteExerciseBlock}
         onPress={navigateToExercise}
       />
     );
@@ -85,7 +96,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex w-full flex-1 flex-col items-center justify-center bg-white"
+      className="flex flex-col items-center justify-center flex-1 w-full bg-white"
     >
       <FlatList
         data={workout?.exercises}

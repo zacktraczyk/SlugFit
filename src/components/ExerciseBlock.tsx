@@ -1,21 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ExerciseSearchBar from './ExerciseSearchBar';
 import { Exercise } from '../types';
 import Block from './Block';
+import BlockActionsModal from './BlockActionsModal';
 
 interface ExerciseCardProps {
   editing: string | undefined;
   exercise: Exercise;
-  update: (id: string, e: Exercise) => void;
+  updateExercise: (id: string, e: Exercise) => void;
+  deleteExercise: (exerciseName: string) => Promise<void>;
   onPress: (w: Exercise) => void;
 }
 
-const ExerciseBlock: React.FC<ExerciseCardProps> = ({ editing, exercise, update, onPress }) => {
+const ExerciseBlock: React.FC<ExerciseCardProps> = ({
+  editing,
+  exercise,
+  updateExercise,
+  deleteExercise,
+  onPress,
+}) => {
+  const [modalVisible, setModalVisible] = useState(false);
   if (editing === exercise.name) {
     return (
       <ExerciseSearchBar
         onSelectExercise={(newName) => {
-          update(exercise.name, {
+          updateExercise(exercise.name, {
             ...exercise,
             name: newName,
           });
@@ -24,12 +33,23 @@ const ExerciseBlock: React.FC<ExerciseCardProps> = ({ editing, exercise, update,
     );
   }
   return (
-    <Block
-      title={exercise.name}
-      onPress={() => {
-        onPress(exercise);
-      }}
-    />
+    <>
+      <Block
+        title={exercise.name}
+        onPress={() => {
+          onPress(exercise);
+        }}
+        onOptionsPress={() => {
+          setModalVisible(true);
+        }}
+      />
+      {modalVisible && (
+        <BlockActionsModal
+          deleteWorkout={() => deleteExercise(exercise.name)}
+          setModalVisible={(bool: boolean) => setModalVisible(bool)}
+        />
+      )}
+    </>
   );
 };
 
