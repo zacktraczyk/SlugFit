@@ -9,11 +9,22 @@ interface SetCardProps {
   setRpe: (val: string) => void;
   orm: string;
   setOrm: (val: string) => void;
+  id: number;
+  deleteCard: (id) => void;
+  duplicateCard: (id) => void;
 }
 
-const SetCard: React.FC<SetCardProps> = ({ reps, setReps, rpe, setRpe, orm, setOrm }) => {
+const SetCard: React.FC<SetCardProps> = ({
+  reps,
+  setReps,
+  rpe,
+  setRpe,
+  orm,
+  setOrm,
+  ...cardProps
+}) => {
   return (
-    <Card title="Set">
+    <Card title="Set" {...cardProps}>
       <TextInput
         accessibilityLabel="Text input Input"
         accessibilityHint="Input to change reps in set"
@@ -41,6 +52,10 @@ const SetCard: React.FC<SetCardProps> = ({ reps, setReps, rpe, setRpe, orm, setO
         value={orm}
         onChangeText={setOrm}
       />
+      {/* <Text className="text-red-500">
+        {errors.email &&
+          (errors.email.type === 'required' ? 'This field is required.' : 'Not a valid email.')}
+      </Text> */}
     </Card>
   );
 };

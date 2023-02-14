@@ -5,69 +5,166 @@ import { Keyboard, TouchableOpacity, View } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AddButton from '../../components/AddButton';
-import SetCard from '../../components/SetCard';
+import SetCard from '../../components/blocks/SetCard';
 import { getExerciseInWorkout, updateExerciseInWorkout } from '../../utils/workouts';
 import { NavigatorParamList } from '../DrawerNavigator';
-import { Set } from '../../types';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { ExerciseItem } from '../../types';
+import RestCard from '../../components/blocks/RestCard';
+import NoteCard from '../../components/blocks/NoteCard';
+import CardCreationModal from '../../components/modals/CardCreationModal';
+
 
 type EditExercisePageProps = NativeStackScreenProps<NavigatorParamList, 'EditExercisePage'>;
+
+// const emptySet = {};
+
+// data validation
+// sets 999
+// rpe 0-10
+// 0-100
+
+// Default ExerciseItem data
+const createEmptySet = (id: number) => ({ id, reps: '', rpe: '', orm: '' });
+const createEmptyRest = (id: number) => ({ id, minutes: '', seconds: '' });
+const createEmptyNote = (id: number) => ({ id, text: '' });
 
 // TODO: Append rests or sets, not just sets
 const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
   const { exerciseName, workoutId } = route.params;
-
-  const [sets, setSets] = useState<Set[]>([]);
+  const [exerciseItems, setExerciseItems] = useState<ExerciseItem[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const updateSet = async (key, property, val) => {
-    const _sets = sets.map((set) => {
-      if (set.key === key) {
-        const _set = { ...set };
+  // Card Operations
+  const updateCard = async (id, property, val) => {
+    const _exerciseItems = exerciseItems.map((item) => {
+      if (item.id === id) {
+        const _set = { ...item };
         _set[property] = val;
         return _set;
       }
-      return set;
+      return item;
     });
 
-    setSets(_sets);
-    updateExerciseInWorkout({ name: exerciseName, sets: _sets }, workoutId);
+    setExerciseItems(_exerciseItems);
+    updateExerciseInWorkout({ name: exerciseName, items: _exerciseItems }, workoutId);
   };
 
-  const appendEmptySet = () => {
-    setSets([...sets, { key: sets.length, reps: '', rpe: '', orm: '' }]);
-    // Doesn't update Supabase with empty sets
+  const duplicateCard = (id) => {
+    if (id === undefined) {
+      throw 'ExerciseItem id not given';
+    }
+    const _exerciseItems: ExerciseItem[] = [];
+    let acc = 0;
+    for (let i = 0; i < exerciseItems.length; i++) {
+      const item = exerciseItems[i];
+      if (item.id === id) {
+        item.id = acc;
+        _exerciseItems.push({ ...exerciseItems[i] });
+        acc++;
+      }
+
+      item.id = acc;
+      _exerciseItems.push(exerciseItems[i]);
+      acc++;
+    }
+    setExerciseItems(_exerciseItems);
+    updateExerciseInWorkout({ name: exerciseName, items: _exerciseItems }, workoutId);
   };
 
-  const reorderSets = (reorder: Set[]) => {
-    setSets(reorder);
-    updateExerciseInWorkout({ name: exerciseName, sets: reorder }, workoutId);
+  const deleteCard = (id) => {
+    if (id === undefined) {
+      throw 'ExerciseItem id not given';
+    }
+
+    const _exerciseItems: ExerciseItem[] = [];
+    let acc = 0;
+    for (let i = 0; i < exerciseItems.length; i++) {
+      const item = exerciseItems[i];
+      if (item.id === id) {
+        continue;
+      }
+
+      item.id = acc;
+      _exerciseItems.push(exerciseItems[i]);
+      acc++;
+    }
+    setExerciseItems(_exerciseItems);
+    updateExerciseInWorkout({ name: exerciseName, items: _exerciseItems }, workoutId);
+  };
+
+  const cardProps = { deleteCard, duplicateCard };
+
+  const appendEmptySet = () =>
+    setExerciseItems([...exerciseItems, createEmptySet(exerciseItems.length)]);
+
+  const appendEmptyRest = () =>
+    setExerciseItems([...exerciseItems, createEmptyRest(exerciseItems.length)]);
+
+  const appendEmptyNote = () =>
+    setExerciseItems([...exerciseItems, createEmptyNote(exerciseItems.length)]);
+
+  const reorderExerciseItems = (reorder: ExerciseItem[]) => {
+    setExerciseItems(reorder);
+    updateExerciseInWorkout({ name: exerciseName, items: reorder }, workoutId);
   };
 
   useEffect(() => {
     const fetchSets = async () => {
       setLoading(true);
       const exercise = await getExerciseInWorkout(exerciseName, workoutId);
-      setSets(exercise ? exercise.sets : []);
+      setExerciseItems(exercise ? exercise.items : []);
       setLoading(false);
+
     };
 
     fetchSets().catch(console.error);
   }, []);
 
   const renderItem = ({ item, drag, isActive }) => {
+    // Identify card by property
+    let Card = <></>;
+    if (item.reps !== undefined) {
+      Card = (
+        <SetCard
+          reps={item.reps}
+          setReps={(val) => updateCard(item.id, 'reps', val)}
+          rpe={item.rpe}
+          setRpe={(val) => updateCard(item.id, 'rpe', val)}
+          orm={item.orm}
+          setOrm={(val) => updateCard(item.id, 'orm', val)}
+          id={item.id}
+          {...cardProps}
+        />
+      );
+    } else if (item.minutes !== undefined) {
+      Card = (
+        <RestCard
+          minutes={item.minutes}
+          setMinutes={(val) => updateCard(item.id, 'minutes', val)}
+          seconds={item.seconds}
+          setSeconds={(val) => updateCard(item.id, 'seconds', val)}
+          id={item.id}
+          {...cardProps}
+        />
+      );
+    } else if (item.text !== undefined) {
+      Card = (
+        <NoteCard
+          text={item.text}
+          setText={(val) => updateCard(item.id, 'text', val)}
+          id={item.id}
+          {...cardProps}
+        />
+      );
+    } else {
+      throw "Can't identify ExerciseItem in renderItem";
+    }
+
     return (
       <ScaleDecorator>
         <TouchableOpacity accessibilityRole="button" onLongPress={drag} disabled={isActive}>
-          <View className="py-2">
-            <SetCard
-              reps={item.reps}
-              setReps={(val) => updateSet(item.key, 'reps', val)}
-              rpe={item.rpe}
-              setRpe={(val) => updateSet(item.key, 'rpe', val)}
-              orm={item.orm}
-              setOrm={(val) => updateSet(item.key, 'orm', val)}
-            />
-          </View>
+          <View className="py-2">{Card}</View>
         </TouchableOpacity>
       </ScaleDecorator>
     );
@@ -78,15 +175,22 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
       <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
         <View className="h-full bg-white p-10 px-5">
           <DraggableFlatList
-            data={sets}
-            onDragEnd={({ data }) => reorderSets(data)}
-            keyExtractor={(item) => '' + item.key}
+            data={exerciseItems}
+            onDragEnd={({ data }) => reorderExerciseItems(data)}
+            keyExtractor={(item) => '' + item.id}
             renderItem={renderItem}
           />
         </View>
         <Spinner visible={loading} />
       </TouchableWithoutFeedback>
-      <AddButton onPress={() => appendEmptySet()} />
+      <AddButton onPress={() => setModalVisible(true)} />
+      <CardCreationModal
+        visible={modalVisible}
+        setVisible={setModalVisible}
+        newNote={appendEmptyNote}
+        newRest={appendEmptyRest}
+        newSet={appendEmptySet}
+      />
     </>
   );
 };

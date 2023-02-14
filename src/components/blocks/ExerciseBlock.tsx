@@ -1,6 +1,6 @@
 import React from 'react';
-import ExerciseSearchBar from './ExerciseSearchBar';
-import { Exercise } from '../types';
+import ExerciseSearchBar from '../ExerciseSearchBar';
+import { Exercise } from '../../types';
 import Block from './Block';
 
 interface ExerciseCardProps {
