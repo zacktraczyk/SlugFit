@@ -45,7 +45,7 @@ const ExerciseBlock: React.FC<ExerciseCardProps> = ({
       />
       {modalVisible && (
         <BlockActionsModal
-          deleteWorkout={() => deleteExercise(exercise.name)}
+          deleteBlock={() => deleteExercise(exercise.name)}
           setModalVisible={(bool: boolean) => setModalVisible(bool)}
         />
       )}
