@@ -8,7 +8,8 @@ import AnimatedExerciseCardContainer from '../../components/AnimatedExerciseCard
 import UseWorkoutHeader from '../../components/UseWorkoutHeader';
 import Animated, { FadeInLeft } from 'react-native-reanimated';
 import Block from '../../components/blocks/Block';
-import { updateConsumableWorkout } from '../../utils/workouts';
+import ConsumableExerciseCard from '../../components/ConsumableExerciseCard';
+import { updateConsumableWorkout, updateExerciseInConsumableWorkout } from '../../utils/workouts';
 
 type UseWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'UseWorkout'>;
 
@@ -22,21 +23,21 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
       setVisibleItem(viewableItems[0].item);
       setVisibleIndex(viewableItems[0].index);
     } else {
-      setVisibleItem(undefined);
+      // setVisibleItem(undefined);
     }
   });
   const [cardView, setCardView] = useState(true);
   const flatlistRef = useRef<FlatList>(null);
 
-  const renderCardItem = ({ item: exercise }) => {
+  const renderCardItem = ({ item: exercise, index }) => {
     return (
-      <AnimatedExerciseCardContainer visible={exercise === visibleItem} className="bg-white">
-        {/**
-         * TODO: Put Paul's card component here instead and pass in the props from item
-         */}
-        <ScrollView>
-          <Text>{exercise.name}</Text>
-        </ScrollView>
+      <AnimatedExerciseCardContainer visible={index === visibleIndex} className="bg-white">
+        <ConsumableExerciseCard
+          exercise={exercise}
+          onChange={async (payload: ConsumableExercise) => {
+            await updateExerciseInConsumableWorkout(payload, route.params.workoutId);
+          }}
+        />
       </AnimatedExerciseCardContainer>
     );
   };
@@ -45,8 +46,8 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
     const goToCard = () => {
       setCardView(true);
       setTimeout(() => {
-        flatlistRef.current?.scrollToIndex({ index, animated: false });
-      }, 100);
+        flatlistRef.current?.scrollToIndex({ index, animated: true });
+      }, 500);
     };
 
     const numSets = exercise.items.reduce((acc, item) => {
@@ -106,7 +107,7 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
           keyExtractor={(item) => item.name}
           renderItem={cardView ? renderCardItem : renderListItem}
           horizontal={cardView}
-          snapToAlignment="center"
+          snapToAlignment="end"
           viewabilityConfig={viewabilityConfig.current}
           onViewableItemsChanged={onViewableItemsChanged.current}
           pagingEnabled={true}
@@ -114,6 +115,7 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
           className="w-full"
           style={styles.flatlist}
           showsHorizontalScrollIndicator={false}
+          keyboardShouldPersistTaps="always"
         />
       </View>
     </>
