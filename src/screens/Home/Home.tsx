@@ -85,7 +85,7 @@ const Home: React.FC<HomeProps> = () => {
     );
   };
 
-  return (
+  return 
     <View className="h-full bg-white">
       <View className="flex-row justify-between px-3 pt-3.5">
         <Text className="pt-1 font-bebas text-base">Completed Workouts</Text>

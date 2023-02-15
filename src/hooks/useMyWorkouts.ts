@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Session, User } from '@supabase/supabase-js';
-import { EditableWorkout } from '../types/';
+import { EditableWorkout } from '../types';
 import { getEditableWorkoutsByUserId } from '../utils/workouts';
 
 /**
