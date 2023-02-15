@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { ConsumableExercise, ConsumableWorkout } from '../types';
 import Animated, { FadeIn, FadeInLeft, FadeInRight, FadeOut } from 'react-native-reanimated';
