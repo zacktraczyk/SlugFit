@@ -12,8 +12,23 @@ interface SetBlockProps {
   orm: string;
   warmup: boolean;
   recordIndex: number;
-  getUserRecordedValue?: (value: RecordedSet) => void;
+  getUserRecordedValue: (value: RecordedSet) => void;
+  setDone: () => void;
+  setUndone: () => void;
 }
+/**
+ *
+ * @param setNumber //number label of set block to display (i.e Warmup set 1)
+ * @param reps //reps string to display
+ * @param rpe //rpe string to display
+ * @param orm //one rep max string to display
+ * @param warmup //warmup boolean if setblock is a warmup set or not
+ * @param recordIndex //index number for arr Record[] of parent
+ * @param getUserRecordedValue //function from exercise card to call to set user input vals
+ * @param setDone //funciton from parents to set if block is done (user values are filled and valid)
+ * @param setUndone  //function to set undone of block (if user values are not all filled and invalid)
+ * @returns // working/warmup set block
+ */
 const SetBlock: React.FC<SetBlockProps> = ({
   setNumber,
   reps,
@@ -22,17 +37,38 @@ const SetBlock: React.FC<SetBlockProps> = ({
   warmup,
   recordIndex,
   getUserRecordedValue,
+  setDone,
+  setUndone,
 }) => {
+  const regexReps = React.useRef(/^\d+(?:-\d+)?$/);
+  const regexWeight = React.useRef(/^\d+(\.\d+)?|BODYWEIGHT$/);
   const [isBodyWeight, setIsBodyWeight] = React.useState<boolean>(false);
   const [userInputReps, setUserInputReps] = React.useState<string>('');
   const [userInputWeight, setUserInputWeight] = React.useState<string>('');
+  const [isDone, setIsDone] = React.useState<boolean>(false);
+
+  //default values of user input
   let value: RecordedSet = { warmup: warmup, reps: '', weight: '' };
   getUserRecordedValue(value, recordIndex);
 
-  if (userInputReps.length > 0 && userInputWeight.length > 0) {
+  /**
+   * if user input valid, call parent function to return user values
+   * if set block is a warmup, call parent function setdone
+   **/
+  if (regexReps.current.test(userInputReps) && regexWeight.current.test(userInputWeight)) {
     value = { warmup: warmup, reps: userInputReps, weight: userInputWeight };
     getUserRecordedValue(value, recordIndex);
+    if (!warmup && !isDone) {
+      setDone();
+      setIsDone(true);
+    }
+  } else {
+    if (isDone && !warmup) {
+      setIsDone(false);
+      setUndone();
+    }
   }
+
   // Load font
   const [fontsLoaded] = useFonts({
     BebasNeue_400Regular,
@@ -48,7 +84,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
         {warmup ? 'WARMUP' : ''} SET {setNumber}
       </Text>
       <View
-        style={warmup ? styling.warmUpBackground1 : styling.workingBackground1} 
+        style={warmup ? styling.warmUpBackground1 : styling.workingBackground1}
         className="-2 flex h-8 flex-row rounded-md"
       >
         <View
@@ -68,7 +104,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
             style={warmup ? styling.warmUpFontColor : styling.workingFontColor}
             className="my-auto mx-4 ml-1 font-bebas text-xl font-bold"
           >
-            {warmup ? 'WARMUP':'WORKING'}
+            {warmup ? 'WARMUP' : 'WORKING'}
           </Text>
         </View>
       </View>

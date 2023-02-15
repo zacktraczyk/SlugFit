@@ -1,5 +1,3 @@
-import { Exercise, Set, Note, Rest } from '../types';
-
 export function isExercise(obj: any) {
   return 'name' in obj && 'items' in obj;
 }

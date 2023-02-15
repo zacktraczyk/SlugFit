@@ -5,9 +5,6 @@ import { useAuth } from '../../contexts/AuthProvider';
 import { supabase } from '../../utils/supabaseClient';
 import { useUserData } from '../../hooks/useUserData';
 import { NavigatorParamList } from '../DrawerNavigator';
-import ExerciseCard from '../../components/ExerciseCard';
-import { Exercise, Set, Note, Rest } from '../../types';
-import { ExerciseCardProps } from '../../components/ExerciseCard';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;
 
@@ -15,45 +12,23 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { session } = useAuth();
   const [name, setName] = useState('');
   const { userData, loading } = useUserData(session);
-  /** TESTING DATA */
-  const tempWarmUpSet: Set = {
-    id: 123,
-    reps: '8-9',
-    rpe: '10', // Rating of Perceived Exertion
-    orm: '95%', // One Rep Max
-    warmup: true,
-  };
-  const tempWorkingSet: Set = {
-    id: 123,
-    reps: '8-9',
-    rpe: '10', // Rating of Perceived Exertion
-    orm: '95%', // One Rep Max
-    warmup: false,
-  };
-  const tempNote: Note = {
-    id: 123,
-    text: 'Shoulder width apart',
-  };
-  const tempRest: Rest = {
-    id: 123,
-    minutes: '99',
-    seconds: '30',
-  };
 
-  const tempExercise: Exercise = {
-    name: 'Pull-ups',
-    items: [tempWarmUpSet,tempWarmUpSet ,tempWarmUpSet, tempWarmUpSet,tempNote, tempRest],
-  };
-
-  /** END OF TESTING DATA */
   useEffect(() => {
     if (userData?.username) setName(userData.username);
     else setName('');
   }, [userData]);
 
   return (
-    <View className="flex h-full flex-col items-center">
-      <ExerciseCard exercise={tempExercise} />
+    <View className="flex h-full flex-col items-center justify-center">
+      <Text>Home Page yay</Text>
+      {loading ? <ActivityIndicator /> : <Text>Welcome {name}!</Text>}
+      <Text>Yipee</Text>
+      <View className="h-10"></View>
+      <View className="flex flex-row">
+        <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
+        <View className="w-5"></View>
+        <Button title="Account" onPress={() => navigation.navigate('AccountSettings')} />
+      </View>
     </View>
   );
 };
