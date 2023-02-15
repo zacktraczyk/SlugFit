@@ -4,6 +4,6 @@
     "strict": true
   },
   "files": [
-    "./app.d.ts"
+    "my-app.d.ts"
   ]
 }

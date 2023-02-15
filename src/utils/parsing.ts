@@ -7,11 +7,11 @@ export const fromEditableWorkout = (workout: EditableWorkout): ConsumableWorkout
   };
 
   workout.exercises?.map((_exercise) => {
-    const exercise: ConsumableExercise = { name: _exercise.name, sets: [] };
+    const exercise: ConsumableExercise = { name: _exercise.name, items: [] };
 
-    _exercise.sets?.map((_set) => {
+    _exercise.items?.map((_set) => {
       const set = { ref: _set };
-      exercise.sets.push(set);
+      exercise.items.push(set);
     });
 
     consumable.exercises?.push(exercise);

@@ -7,7 +7,7 @@ import { ConsumableExercise } from '../../types';
 import AnimatedExerciseCardContainer from '../../components/AnimatedExerciseCardContainer';
 import UseWorkoutHeader from '../../components/UseWorkoutHeader';
 import Animated, { FadeInLeft } from 'react-native-reanimated';
-import Block from '../../components/Block';
+import Block from '../../components/blocks/Block';
 import { updateConsumableWorkout } from '../../utils/workouts';
 
 type UseWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'UseWorkout'>;
@@ -28,20 +28,20 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
   const [cardView, setCardView] = useState(true);
   const flatlistRef = useRef<FlatList>(null);
 
-  const renderCardItem = ({ item }) => {
+  const renderCardItem = ({ item: exercise }) => {
     return (
-      <AnimatedExerciseCardContainer visible={item === visibleItem} className="bg-white">
+      <AnimatedExerciseCardContainer visible={exercise === visibleItem} className="bg-white">
         {/**
          * TODO: Put Paul's card component here instead and pass in the props from item
          */}
         <ScrollView>
-          <Text>{item.name}</Text>
+          <Text>{exercise.name}</Text>
         </ScrollView>
       </AnimatedExerciseCardContainer>
     );
   };
 
-  const renderListItem = ({ item, index }) => {
+  const renderListItem = ({ item: exercise, index }) => {
     const goToCard = () => {
       setCardView(true);
       setTimeout(() => {
@@ -49,11 +49,15 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
       }, 100);
     };
 
+    const numSets = exercise.items.reduce((acc, item) => {
+      return item.ref.reps !== undefined && item.ref.reps !== null ? acc + 1 : acc;
+    }, 0);
+
     return (
       <Animated.View entering={FadeInLeft.duration(200).delay(100 * index)} className="self-center">
         <Block
-          title={item.name}
-          subtitle={`${item.sets.length} set${item.sets.length > 1 ? 's' : ''}`}
+          title={exercise.name}
+          subtitle={`${numSets} set${numSets > 1 ? 's' : ''}`}
           icon="expand"
           onPress={goToCard}
           onOptionsPress={goToCard}

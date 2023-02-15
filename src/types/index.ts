@@ -31,16 +31,16 @@ export interface EditableWorkout {
   exercises?: Exercise[];
 }
 
-export interface ConsumableSet {
+export interface ConsumableExerciseItem {
   reps?: number;
   weight?: number;
   bodyweight?: boolean;
-  ref: Set; // The reference set, i.e. the prescribed reps, rpe, and %orm
+  ref: ExerciseItem; // The reference set, i.e. the prescribed reps, rpe, and %orm
 }
 
 export interface ConsumableExercise {
   name: string;
-  sets: ConsumableSet[];
+  items: ConsumableExerciseItem[];
 }
 
 /**

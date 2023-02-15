@@ -4,7 +4,7 @@ import { NavigatorParamList } from '../DrawerNavigator';
 import { FlatList, StyleSheet, View, Alert } from 'react-native';
 import { useMyWorkouts } from '../../hooks/useMyWorkouts';
 import { useAuth } from '../../contexts/AuthProvider';
-import Block from '../../components/Block';
+import Block from '../../components/blocks/Block';
 import { EditableWorkout } from '../../types';
 import { createConsumableWorkout } from '../../utils/workouts';
 

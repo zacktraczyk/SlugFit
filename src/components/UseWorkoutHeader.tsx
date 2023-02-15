@@ -28,23 +28,13 @@ const WorkoutProgressBar: React.FC<WorkoutProgressBarProps> = ({
   currentIndex,
   direction,
 }) => {
-  const items: ProgressItem[] = useMemo(() => {
-    return exercises.map((ex) => {
-      return {
-        completed: ex.sets.every(
-          (set) => set.reps !== undefined && set.reps !== null && set.reps > 0
-        ),
-      };
-    });
-  }, [exercises]);
-
   return (
     <Animated.View
       entering={FadeIn.duration(500)}
       exiting={FadeOut.duration(500)}
       className="flex-row items-center justify-center"
     >
-      {items.map((item, index) => {
+      {exercises.map((item, index) => {
         return (
           <Fragment key={index}>
             {currentIndex === index && (
@@ -54,7 +44,7 @@ const WorkoutProgressBar: React.FC<WorkoutProgressBarProps> = ({
                 }
                 className="h-1 flex-1 rounded"
                 style={{
-                  backgroundColor: item.completed ? '#3BD15E' : '#323232',
+                  backgroundColor: '#323232',
                 }}
               ></Animated.View>
             )}
