@@ -11,6 +11,7 @@ export interface Set {
   reps: string;
   rpe: string; // Rating of Perceived Exertion
   orm: string; // One Rep Max
+  warmup: boolean;
 }
 
 export interface Rest {
@@ -24,6 +25,11 @@ export interface Note {
   text: string;
 }
 
+export interface RecordedSet {
+  warmup: boolean;
+  reps: string;
+  weight: string;
+}
 export interface EditableWorkout {
   id: string;
   name?: string;
