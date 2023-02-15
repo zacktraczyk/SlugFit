@@ -33,7 +33,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
   const { exerciseName, workoutId } = route.params;
   const [exerciseItems, setExerciseItems] = useState<ExerciseItem[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   // Card Operations
   const updateCard = async (id, property, val) => {
     const _exerciseItems = exerciseItems.map((item) => {
@@ -110,7 +110,6 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
 
   useEffect(() => {
     const fetchSets = async () => {
-      setLoading(true);
       const exercise = await getExerciseInWorkout(exerciseName, workoutId);
       setExerciseItems(exercise ? exercise.items : []);
       setLoading(false);
