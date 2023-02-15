@@ -1,13 +1,14 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { Keyboard, TouchableOpacity, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, TouchableOpacity, View } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AddButton from '../../components/AddButton';
 import SetCard from '../../components/blocks/SetCard';
 import { getExerciseInWorkout, updateExerciseInWorkout } from '../../utils/workouts';
 import { NavigatorParamList } from '../DrawerNavigator';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { ExerciseItem } from '../../types';
 import RestCard from '../../components/blocks/RestCard';
 import NoteCard from '../../components/blocks/NoteCard';
@@ -30,10 +31,9 @@ const createEmptyNote = (id: number) => ({ id, text: '' });
 // TODO: Append rests or sets, not just sets
 const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
   const { exerciseName, workoutId } = route.params;
-
   const [exerciseItems, setExerciseItems] = useState<ExerciseItem[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [loading, setLoading] = useState<boolean>(true);
   // Card Operations
   const updateCard = async (id, property, val) => {
     const _exerciseItems = exerciseItems.map((item) => {
@@ -112,6 +112,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
     const fetchSets = async () => {
       const exercise = await getExerciseInWorkout(exerciseName, workoutId);
       setExerciseItems(exercise ? exercise.items : []);
+      setLoading(false);
     };
 
     fetchSets().catch(console.error);
@@ -170,7 +171,11 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
 
   return (
     <>
-      <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback
+        accessibilityRole="button"
+        onPress={Keyboard.dismiss}
+        disabled={loading}
+      >
         <View className="h-full bg-white p-10 px-5">
           <DraggableFlatList
             data={exerciseItems}
@@ -180,14 +185,17 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
           />
         </View>
       </TouchableWithoutFeedback>
-      <AddButton onPress={() => setModalVisible(true)} />
-      <CardCreationModal
-        visible={modalVisible}
-        setVisible={setModalVisible}
-        newNote={appendEmptyNote}
-        newRest={appendEmptyRest}
-        newSet={appendEmptySet}
-      />
+      <KeyboardAvoidingView enabled={!loading}>
+        <AddButton onPress={() => setModalVisible(true)} />
+        <CardCreationModal
+          visible={modalVisible}
+          setVisible={setModalVisible}
+          newNote={appendEmptyNote}
+          newRest={appendEmptyRest}
+          newSet={appendEmptySet}
+        />
+      </KeyboardAvoidingView>
+      <Spinner visible={loading} />
     </>
   );
 };

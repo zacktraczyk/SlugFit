@@ -3,18 +3,15 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import { TextInput } from 'react-native-gesture-handler';
 import Checkbox from '../CustomCheckBox';
-import { RecordedSet } from '../../types';
+import { ConsumableExerciseItem, RecordedSet, Set } from '../../types';
 
 interface SetBlockProps {
   setNumber: number;
   reps: string;
-  rpe: string;
-  orm: string;
-  warmup: boolean;
-  recordIndex: number;
-  getUserRecordedValue: (value: RecordedSet) => void;
-  setDone: () => void;
-  setUndone: () => void;
+  weight: string;
+  setRef: Set;
+  index: number;
+  onChange: (index: number, updates: ConsumableExerciseItem) => void;
 }
 /**
  *
@@ -31,43 +28,15 @@ interface SetBlockProps {
  */
 const SetBlock: React.FC<SetBlockProps> = ({
   setNumber,
+  index,
   reps,
-  rpe,
-  orm,
-  warmup,
-  recordIndex,
-  getUserRecordedValue,
-  setDone,
-  setUndone,
+  weight,
+  setRef,
+  onChange,
 }) => {
   const regexReps = React.useRef(/^\d+(?:-\d+)?$/);
   const regexWeight = React.useRef(/^\d+(\.\d+)?|BODYWEIGHT$/);
   const [isBodyWeight, setIsBodyWeight] = React.useState<boolean>(false);
-  const [userInputReps, setUserInputReps] = React.useState<string>('');
-  const [userInputWeight, setUserInputWeight] = React.useState<string>('');
-  const [isDone, setIsDone] = React.useState<boolean>(false);
-
-  //default values of user input
-  let value: RecordedSet = { warmup: warmup, reps: '', weight: '' };
-  getUserRecordedValue(value, recordIndex);
-
-  /**
-   * if user input valid, call parent function to return user values
-   * if set block is a warmup, call parent function setdone
-   **/
-  if (regexReps.current.test(userInputReps) && regexWeight.current.test(userInputWeight)) {
-    value = { warmup: warmup, reps: userInputReps, weight: userInputWeight };
-    getUserRecordedValue(value, recordIndex);
-    if (!warmup && !isDone) {
-      setDone();
-      setIsDone(true);
-    }
-  } else {
-    if (isDone && !warmup) {
-      setIsDone(false);
-      setUndone();
-    }
-  }
 
   // Load font
   const [fontsLoaded] = useFonts({
@@ -81,30 +50,30 @@ const SetBlock: React.FC<SetBlockProps> = ({
   return (
     <View className="mx-2 mt-2 ">
       <Text className="ml-1 font-bebas font-extralight text-stone-700">
-        {warmup ? 'WARMUP' : ''} SET {setNumber}
+        {setRef.warmup ? 'WARMUP' : ''} SET {setNumber}
       </Text>
       <View
-        style={warmup ? styling.warmUpBackground1 : styling.workingBackground1}
+        style={setRef.warmup ? styling.warmUpBackground1 : styling.workingBackground1}
         className="-2 flex h-8 flex-row rounded-md"
       >
         <View
-          style={warmup ? styling.warmUpBackground2 : styling.workingBackground2}
+          style={setRef.warmup ? styling.warmUpBackground2 : styling.workingBackground2}
           className="h-8 w-6 rounded-l-lg"
         >
           <Text className="my-auto ml-1 font-bebas text-xl font-bold">DO</Text>
         </View>
-        <Text className="my-auto ml-3 font-bebas text-xl font-bold">{reps}</Text>
+        <Text className="my-auto ml-3 font-bebas text-xl font-bold">{setRef.reps}</Text>
         <Text className="mt-3 font-bebas text-xs font-bold"> REPS</Text>
-        <Text className="my-auto ml-6 font-bebas text-xl font-bold">{rpe}</Text>
+        <Text className="my-auto ml-6 font-bebas text-xl font-bold">{setRef.rpe}</Text>
         <Text className="mt-3 font-bebas text-xs font-bold"> RPE</Text>
-        <Text className="my-auto ml-6 font-bebas text-xl font-bold">{orm}</Text>
+        <Text className="my-auto ml-6 font-bebas text-xl font-bold">{setRef.orm}</Text>
         <Text className="mt-3 font-bebas text-xs font-bold"> %1RM</Text>
         <View className="flex flex-grow flex-row justify-end border-solid">
           <Text
-            style={warmup ? styling.warmUpFontColor : styling.workingFontColor}
+            style={setRef.warmup ? styling.warmUpFontColor : styling.workingFontColor}
             className="my-auto mx-4 ml-1 font-bebas text-xl font-bold"
           >
-            {warmup ? 'WARMUP' : 'WORKING'}
+            {setRef.warmup ? 'WARMUP' : 'WORKING'}
           </Text>
         </View>
       </View>
@@ -120,10 +89,8 @@ const SetBlock: React.FC<SetBlockProps> = ({
             autoCapitalize="none"
             placeholder="REPS YOU DID"
             returnKeyType="next"
-            value={userInputReps}
-            onChangeText={(value) => {
-              setUserInputReps(value);
-            }}
+            value={reps}
+            onChangeText={(value) => onChange(index, { reps: parseInt(value), ref: setRef })}
           />
         </View>
         <Text className="my-auto mr-1 font-bebas text-xs font-bold"> REPS</Text>
@@ -139,10 +106,8 @@ const SetBlock: React.FC<SetBlockProps> = ({
               autoCapitalize="none"
               placeholder="Weight"
               returnKeyType="next"
-              value={userInputWeight}
-              onChangeText={(value) => {
-                setUserInputWeight(value);
-              }}
+              value={weight}
+              onChangeText={(value) => onChange(index, { reps: parseInt(value), ref: setRef })}
             />
           </View>
         )}
@@ -157,9 +122,6 @@ const SetBlock: React.FC<SetBlockProps> = ({
               checked={isBodyWeight}
               onPress={() => {
                 setIsBodyWeight(!isBodyWeight);
-                {
-                  isBodyWeight ? setUserInputWeight('') : setUserInputWeight('BODYWEIGHT');
-                }
               }}
             />
           </View>

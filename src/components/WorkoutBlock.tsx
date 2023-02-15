@@ -29,18 +29,20 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
   const [modalVisible, setModalVisible] = useState(false);
   if (editing === workout.id) {
     return (
-      <BlockContainer>
-        <TextInput
-          accessibilityLabel="Text input field"
-          accessibilityHint="rename workout"
-          autoFocus={true}
-          placeholder="Enter workout name"
-          className="flex-1"
-          value={name}
-          onChangeText={setName}
-        />
-        <DoneButton onPress={() => updateName({ ...workout, name })} />
-      </BlockContainer>
+      <>
+        <BlockContainer>
+          <TextInput
+            accessibilityLabel="Text input field"
+            accessibilityHint="rename workout"
+            autoFocus={true}
+            placeholder="Enter workout name"
+            className="flex-1"
+            value={name}
+            onChangeText={setName}
+          />
+          <DoneButton onPress={() => updateName({ ...workout, name })} />
+        </BlockContainer>
+      </>
     );
   }
 
