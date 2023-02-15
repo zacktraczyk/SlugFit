@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { Keyboard, TouchableOpacity, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, TouchableOpacity, View } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AddButton from '../../components/AddButton';
@@ -170,7 +170,11 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
 
   return (
     <>
-      <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback
+        accessibilityRole="button"
+        onPress={Keyboard.dismiss}
+        disabled={loading}
+      >
         <View className="h-full bg-white p-10 px-5">
           <DraggableFlatList
             data={exerciseItems}
@@ -179,16 +183,18 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
             renderItem={renderItem}
           />
         </View>
-        <Spinner visible={loading} />
       </TouchableWithoutFeedback>
-      <AddButton onPress={() => setModalVisible(true)} />
-      <CardCreationModal
-        visible={modalVisible}
-        setVisible={setModalVisible}
-        newNote={appendEmptyNote}
-        newRest={appendEmptyRest}
-        newSet={appendEmptySet}
-      />
+      <KeyboardAvoidingView enabled={!loading}>
+        <AddButton onPress={() => setModalVisible(true)} />
+        <CardCreationModal
+          visible={modalVisible}
+          setVisible={setModalVisible}
+          newNote={appendEmptyNote}
+          newRest={appendEmptyRest}
+          newSet={appendEmptySet}
+        />
+      </KeyboardAvoidingView>
+      <Spinner visible={loading} />
     </>
   );
 };

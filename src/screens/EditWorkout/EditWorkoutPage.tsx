@@ -87,6 +87,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex w-full flex-1 flex-col items-center justify-center bg-white"
+      enabled={!loading}
     >
       <FlatList
         data={workout?.exercises}
