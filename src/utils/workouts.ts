@@ -1,6 +1,13 @@
 import { supabase } from './supabaseClient';
 import { Session, User } from '@supabase/supabase-js';
-import { ConsumableWorkout, ConsumableWorkoutTemplate, EditableWorkout, Exercise } from '../types';
+import {
+  ConsumableWorkout,
+  ConsumableWorkoutTemplate,
+  EditableWorkout,
+  Exercise,
+  ConsumableExercise,
+  ConsumableExerciseItem,
+} from '../types';
 import { DuplicateExerciseError, ExerciseNotFoundError, UnauthenticatedError } from '../errors';
 import { fromEditableWorkout } from './parsing';
 
@@ -251,5 +258,54 @@ export const updateConsumableWorkout = async (
  */
 export const deleteConsumableWorkout = async (workoutId: string) => {
   const { error } = await supabase.from('consumableworkouts').delete().eq('id', workoutId);
+  if (error) throw error;
+};
+
+/**
+ * Returns the exercises in an ConsumableWorkout from supabase
+ * @param workoutId The id of the ConsumableWorkout
+ * @returns Array of exercises
+ * @throws `PostgresError`
+ */
+export const getExercisesInConsumableWorkout = async (
+  workoutId: string
+): Promise<ConsumableExercise[]> => {
+  const { error, data } = await supabase
+    .from('consumableworkouts')
+    .select('exercises')
+    .eq('id', workoutId)
+    .single();
+
+  if (error) throw error;
+
+  const exercises: Array<ConsumableExercise> = data.exercises;
+  return exercises;
+};
+
+/**
+ * Returns an array of exercises with the new exercise updates
+ * @param exercise New `ConsumableExercise` object
+ * @throws `PostgresError` or `ExerciseNotFoundError`
+ */
+export const updateExerciseInConsumableWorkout = async (
+  exercise: ConsumableExercise,
+  workoutId: string
+) => {
+  const exercises: Array<ConsumableExercise> = await getExercisesInConsumableWorkout(workoutId);
+
+  let found = false;
+  for (let i = 0; i < exercises.length; i++) {
+    if (exercises[i].name === exercise.name) {
+      exercises[i] = exercise;
+      found = true;
+      break;
+    }
+  }
+  if (!found) throw new ExerciseNotFoundError(`No exercise found with name ${exercise.name}`);
+
+  const { error } = await supabase
+    .from('consumableworkouts')
+    .update({ exercises })
+    .eq('id', workoutId);
   if (error) throw error;
 };
