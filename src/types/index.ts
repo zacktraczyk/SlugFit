@@ -1,15 +1,35 @@
-export type Set = {
-  key: number;
+// Exercise
+export interface Exercise {
+  name: string;
+  items: ExerciseItem[];
+}
+
+export type ExerciseItem = Set | Rest | Note;
+
+export interface Set {
+  id: number;
   reps: string;
   rpe: string; // Rating of Perceived Exertion
   orm: string; // One Rep Max
-};
-
-export interface Exercise {
-  name: string;
-  sets: Set[];
+  warmup: boolean;
 }
 
+export interface Rest {
+  id: number;
+  minutes: string;
+  seconds: string;
+}
+
+export interface Note {
+  id: number;
+  text: string;
+}
+
+export interface RecordedSet {
+  warmup: boolean;
+  reps: string;
+  weight: string;
+}
 export interface EditableWorkout {
   id: string;
   name?: string;
