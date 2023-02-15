@@ -3,14 +3,15 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 
 interface BlockContainerProps {
   children?: React.ReactNode;
+  className?: string;
 }
 
-export const BlockContainer: React.FC<BlockContainerProps> = ({ children }) => {
+export const BlockContainer: React.FC<BlockContainerProps> = ({
+  children,
+  className = 'mt-2 flex flex-row items-center border border-slate-200 p-2 bg-white rounded-md shadow-sm',
+}) => {
   return (
-    <View
-      className="mt-2 flex flex-row items-center rounded border border-slate-200 p-2"
-      style={styles.container}
-    >
+    <View className={className} style={styles.container}>
       {children}
     </View>
   );

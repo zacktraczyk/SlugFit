@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
-import { EditableWorkout } from '../types/';
+import { EditableWorkout } from '../types';
 import { getEditableWorkout } from '../utils/workouts';
 
 /**
