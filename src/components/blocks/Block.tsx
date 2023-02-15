@@ -2,19 +2,31 @@ import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { BlockContainer } from './BlockContainer';
+import MaterialCommunityIcon from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface BlockProps {
   // Name of the block
   title: string;
+
+  subtitle?: string;
 
   // Handler for when the main block body is pressed
   onPress?: () => void;
 
   // Handler for when the options ellipsis are pressed
   onOptionsPress?: () => void;
+
+  // name of Ionicon icon
+  icon?: keyof typeof Ionicon.glyphMap;
 }
 
-const Block: React.FC<BlockProps> = ({ title, onPress, onOptionsPress }) => {
+const Block: React.FC<BlockProps> = ({
+  title,
+  subtitle,
+  icon = 'ellipsis-horizontal',
+  onPress,
+  onOptionsPress,
+}) => {
   return (
     <BlockContainer>
       <TouchableOpacity
@@ -24,6 +36,17 @@ const Block: React.FC<BlockProps> = ({ title, onPress, onOptionsPress }) => {
         hitSlop={{ top: 20, bottom: 20, left: 20 }}
       >
         <Text className="text-base font-medium">{title}</Text>
+        {subtitle !== undefined && (
+          <>
+            <MaterialCommunityIcon
+              name="circle"
+              size={4}
+              color="black"
+              style={{ paddingHorizontal: 10 }}
+            />
+            <Text className="text-xs font-light">{subtitle}</Text>
+          </>
+        )}
       </TouchableOpacity>
       <TouchableOpacity
         accessibilityRole="button"
@@ -31,7 +54,7 @@ const Block: React.FC<BlockProps> = ({ title, onPress, onOptionsPress }) => {
         hitSlop={{ top: 20, bottom: 20, right: 20 }}
         onPress={onOptionsPress}
       >
-        <Ionicon name="ellipsis-horizontal" size={16} />
+        <Ionicon name={icon} size={16} />
       </TouchableOpacity>
     </BlockContainer>
   );

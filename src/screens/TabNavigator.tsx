@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicon from '@expo/vector-icons/Ionicons';
-import Home from './Home/Home';
+import HomeStack from './Home/HomeStack';
 import MyWorkoutsStack from './MyWorkouts/MyWorkoutsStack';
 import Profile from './Profile/Profile';
 import { NavigatorParamList } from './DrawerNavigator';
@@ -15,7 +15,7 @@ function TabNavigator() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           switch (route.name) {
-            case 'Home':
+            case 'HomeStack':
               iconName = focused ? 'home' : 'home-outline';
               break;
             case 'MyWorkoutsStack':
@@ -32,7 +32,7 @@ function TabNavigator() {
         tabBarShowLabel: false,
       })}
     >
-      <Tabs.Screen name="Home" component={Home} />
+      <Tabs.Screen name="HomeStack" component={HomeStack} options={{ headerShown: false }} />
       <Tabs.Screen
         name="MyWorkoutsStack"
         component={MyWorkoutsStack}
