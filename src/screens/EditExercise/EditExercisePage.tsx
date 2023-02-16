@@ -24,7 +24,7 @@ type EditExercisePageProps = NativeStackScreenProps<NavigatorParamList, 'EditExe
 // 0-100
 
 // Default ExerciseItem data
-const createEmptySet = (id: number) => ({ id, reps: '', rpe: '', orm: '' });
+const createEmptySet = (id: number) => ({ id, reps: '', rpe: '', orm: '', warmup: false });
 const createEmptyRest = (id: number) => ({ id, minutes: '', seconds: '' });
 const createEmptyNote = (id: number) => ({ id, text: '' });
 
@@ -130,6 +130,8 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
           setRpe={(val) => updateCard(item.id, 'rpe', val)}
           orm={item.orm}
           setOrm={(val) => updateCard(item.id, 'orm', val)}
+          warmupSet={item.warmup}
+          setWarmupSet={(val) => updateCard(item.id, 'warmup', val)}
           id={item.id}
           {...cardProps}
         />
