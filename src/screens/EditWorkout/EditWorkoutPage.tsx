@@ -12,6 +12,7 @@ import {
   deleteExerciseInWorkout,
 } from '../../utils/workouts';
 import useBreadcrumbHistory from '../../hooks/useBreadcrumbHistory';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 type EditWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'EditWorkoutPage'>;
 
@@ -20,7 +21,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
     state.workout,
     state.setExercise,
   ]);
-  const { workout } = useEditableWorkout(selectedWorkout?.id, true);
+  const { workout, loading } = useEditableWorkout(selectedWorkout?.id, true);
   const [editingExercise, setEditingExercise] = useState<string | undefined>(undefined);
 
   /**
@@ -86,6 +87,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex w-full flex-1 flex-col items-center justify-center bg-white"
+      enabled={!loading}
     >
       <FlatList
         data={workout?.exercises}
@@ -96,6 +98,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation }) => {
         keyboardShouldPersistTaps="always"
       />
       <AddButton onPress={addExerciseBlock} />
+      <Spinner visible={loading} />
     </KeyboardAvoidingView>
   );
 };

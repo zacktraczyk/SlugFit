@@ -1,7 +1,15 @@
 import { supabase } from './supabaseClient';
 import { Session, User } from '@supabase/supabase-js';
-import { EditableWorkout, Exercise } from '../types';
+import {
+  ConsumableWorkout,
+  ConsumableWorkoutTemplate,
+  EditableWorkout,
+  Exercise,
+  ConsumableExercise,
+  ConsumableExerciseItem,
+} from '../types';
 import { DuplicateExerciseError, ExerciseNotFoundError, UnauthenticatedError } from '../errors';
+import { fromEditableWorkout } from './parsing';
 
 /**
  *
@@ -179,5 +187,125 @@ export const deleteExerciseInWorkout = async (exerciseName: string, workoutId: s
   exercises.splice(index, 1);
 
   const { error } = await supabase.from('workouts').update({ exercises }).eq('id', workoutId);
+  if (error) throw error;
+};
+
+/**
+ * Creates a consumale workout from an editable workout id
+ * @param session Current session -- from AuthProvider context
+ * @param workoutId Id of the editable workout
+ * @returns `ConsumableWorkout`
+ */
+export const createConsumableWorkout = async (
+  session: Session | null,
+  workoutId: string
+): Promise<ConsumableWorkout> => {
+  if (session === undefined || session === null)
+    throw new UnauthenticatedError('Cannot create a workout with no active user session.');
+
+  const user: User = session.user;
+  const workout = await getEditableWorkout(workoutId);
+
+  const consumableWorkout = fromEditableWorkout(workout);
+
+  const { error, data } = await supabase
+    .from('consumableworkouts')
+    .insert({
+      ...consumableWorkout,
+      created_by: user.id,
+    })
+    .select('*')
+    .single();
+
+  if (error) throw error;
+
+  return data;
+};
+
+/**
+ * Fetches a consumable workout from supabase
+ * @param workoutId Id of the consumable workout
+ * @returns `ConsumableWorkout`
+ */
+export const getConsumableWorkout = async (workoutId: string): Promise<ConsumableWorkout> => {
+  const { error, data } = await supabase
+    .from('consumableworkouts')
+    .select('*')
+    .eq('id', workoutId)
+    .single();
+
+  if (error) throw error;
+
+  return data;
+};
+
+/**
+ * Updates a consumable workout in supabase
+ * @param workoutId Id of the consumable workout
+ * @param payload `ConsumableWorkoutTemplate` updates to be applied
+ */
+export const updateConsumableWorkout = async (
+  workoutId: string,
+  payload: ConsumableWorkoutTemplate
+) => {
+  const { error } = await supabase.from('consumableworkouts').update(payload).eq('id', workoutId);
+  if (error) throw error;
+};
+
+/**
+ * Delete a consumable workout in supabase
+ * @param workoutId Id of the consumable workout
+ */
+export const deleteConsumableWorkout = async (workoutId: string) => {
+  const { error } = await supabase.from('consumableworkouts').delete().eq('id', workoutId);
+  if (error) throw error;
+};
+
+/**
+ * Returns the exercises in an ConsumableWorkout from supabase
+ * @param workoutId The id of the ConsumableWorkout
+ * @returns Array of exercises
+ * @throws `PostgresError`
+ */
+export const getExercisesInConsumableWorkout = async (
+  workoutId: string
+): Promise<ConsumableExercise[]> => {
+  const { error, data } = await supabase
+    .from('consumableworkouts')
+    .select('exercises')
+    .eq('id', workoutId)
+    .single();
+
+  if (error) throw error;
+
+  const exercises: Array<ConsumableExercise> = data.exercises;
+  return exercises;
+};
+
+/**
+ * Returns an array of exercises with the new exercise updates
+ * @param exercise New `ConsumableExercise` object
+ * @throws `PostgresError` or `ExerciseNotFoundError`
+ */
+export const updateExerciseInConsumableWorkout = async (
+  exercise: ConsumableExercise,
+  workoutId: string
+) => {
+  const exercises: Array<ConsumableExercise> = await getExercisesInConsumableWorkout(workoutId);
+
+  let found = false;
+  for (let i = 0; i < exercises.length; i++) {
+    if (exercises[i].name === exercise.name) {
+      exercises[i] = exercise;
+      found = true;
+      break;
+    }
+  }
+  if (!found) throw new ExerciseNotFoundError(`No exercise found with name ${exercise.name}`);
+
+  const { error } = await supabase
+    .from('consumableworkouts')
+    .update({ exercises })
+    .eq('id', workoutId);
   if (error) throw error;
 };

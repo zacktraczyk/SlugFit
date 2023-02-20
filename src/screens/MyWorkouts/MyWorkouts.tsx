@@ -14,12 +14,13 @@ import {
 } from '../../utils/workouts';
 import useBreadcrumbHistory from '../../hooks/useBreadcrumbHistory';
 import { EditableWorkout } from '../../types';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 export type MyWorkoutsProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkouts'>;
 
 const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   const { session } = useAuth();
-  const { workouts, fetch: refreshWorkouts } = useMyWorkouts(session);
+  const { workouts, loading, fetch: refreshWorkouts } = useMyWorkouts(session);
   const [editingWorkout, setEditingWorkout] = useState<string | undefined>(undefined);
   const [setSelectedWorkout] = useBreadcrumbHistory((state) => [state.setWorkout]);
 
@@ -77,6 +78,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex w-full flex-1 flex-col items-center justify-center bg-white"
+      enabled={!loading}
     >
       <FlatList
         data={workouts}
@@ -87,6 +89,8 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
         keyboardShouldPersistTaps="always"
       />
       <AddButton onPress={addWorkoutBlock} />
+
+      <Spinner visible={loading} />
     </KeyboardAvoidingView>
   );
 };

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
-import { EditableWorkout } from '../types/';
+import { EditableWorkout } from '../types';
 import { getEditableWorkout } from '../utils/workouts';
 
 /**
@@ -14,7 +14,7 @@ export const useEditableWorkout = (workoutId: string | undefined, useRealtime = 
   if (workoutId === null || workoutId === undefined) return {};
   const [listening, setListening] = useState<boolean>(false);
   const [workout, setWorkout] = useState<EditableWorkout>({ id: workoutId });
-
+  const [loading, setLoading] = useState<boolean>(false);
   const listen = () => {
     const workoutChannel = supabase.channel('workout-channel');
 
@@ -40,10 +40,13 @@ export const useEditableWorkout = (workoutId: string | undefined, useRealtime = 
 
   const fetch = async () => {
     try {
+      setLoading(true);
       const data = await getEditableWorkout(workoutId);
       setWorkout(data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,5 +58,5 @@ export const useEditableWorkout = (workoutId: string | undefined, useRealtime = 
     }
   }, [workoutId, useRealtime]);
 
-  return { workout, fetch, listening };
+  return { workout, fetch, listening, loading };
 };
