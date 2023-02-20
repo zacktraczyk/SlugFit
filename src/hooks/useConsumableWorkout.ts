@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { ConsumableWorkout } from '../types';
-import { getConsumableWorkout } from '../utils/workouts';
+import {
+  CONSUMABLE_WORKOUTS_TABLE_NAME,
+  getConsumableWorkout,
+} from '../utils/db/consumableworkouts';
 
 /**
  * Hooks in to a ConsumableWorkout and gets data
@@ -10,19 +13,26 @@ import { getConsumableWorkout } from '../utils/workouts';
  * @param useRealtime Set to true if you want to create a realtime listener for this workout
  * @returns `{workout, fetch, listening}`
  */
-export const useConsumableWorkout = (workoutId: string | undefined, useRealtime = false) => {
-  if (workoutId === null || workoutId === undefined) return {};
+export const useConsumableWorkout = (consumableWorkoutId: string, useRealtime = false) => {
   const [listening, setListening] = useState<boolean>(false);
-  const [workout, setWorkout] = useState<ConsumableWorkout>({ id: workoutId, exercises: [] });
+  const [consumableWorkout, setConsumableWorkout] = useState<Partial<ConsumableWorkout>>({
+    id: consumableWorkoutId,
+    exercises: [],
+  });
 
   const listen = () => {
-    const workoutChannel = supabase.channel('workout-channel');
+    const workoutChannel = supabase.channel(`consumable-workout-${consumableWorkoutId}-channel`);
 
     workoutChannel.on(
       'postgres_changes',
-      { event: '*', schema: 'public', table: 'consumableworkouts', filter: `id=eq.${workoutId}` },
+      {
+        event: '*',
+        schema: 'public',
+        table: CONSUMABLE_WORKOUTS_TABLE_NAME,
+        filter: `id=eq.${consumableWorkoutId}`,
+      },
       (payload) => {
-        setWorkout(payload.new as ConsumableWorkout);
+        setConsumableWorkout(payload.new as ConsumableWorkout);
       }
     );
 
@@ -40,8 +50,8 @@ export const useConsumableWorkout = (workoutId: string | undefined, useRealtime 
 
   const fetch = async () => {
     try {
-      const data = await getConsumableWorkout(workoutId);
-      setWorkout(data);
+      const data = await getConsumableWorkout({ consumableWorkoutId });
+      setConsumableWorkout(data);
     } catch (error) {
       console.error(error);
     }
@@ -53,7 +63,7 @@ export const useConsumableWorkout = (workoutId: string | undefined, useRealtime 
       const unsubscribe = listen();
       return unsubscribe;
     }
-  }, [workoutId, useRealtime]);
+  }, [consumableWorkoutId, useRealtime]);
 
-  return { workout, fetch, listening };
+  return { consumableWorkout, fetch, listening };
 };

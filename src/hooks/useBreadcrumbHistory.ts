@@ -1,11 +1,11 @@
 import { create, UseBoundStore, StoreApi } from 'zustand';
-import { EditableWorkout, Exercise } from '../types';
+import { EditableWorkout, EditableExercise } from '../types';
 
 interface BreadcrumbHistoryState {
   workout: EditableWorkout | undefined;
   setWorkout: (w: EditableWorkout | undefined) => void;
-  exercise: Exercise | undefined;
-  setExercise: (e: Exercise | undefined) => void;
+  exercise: Partial<EditableExercise> | undefined;
+  setExercise: (e: Partial<EditableExercise> | undefined) => void;
 }
 
 const useBreadcrumbHistory: UseBoundStore<StoreApi<BreadcrumbHistoryState>> =

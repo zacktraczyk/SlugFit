@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Session, User } from '@supabase/supabase-js';
-import { EditableWorkout } from '../types';
-import { getEditableWorkoutsByUserId } from '../utils/workouts';
+import { ConsumableWorkout } from '../types';
+import { getConsumableWorkoutsByUserId } from '../utils/db/consumableworkouts';
 
 /**
- * Hooks into the user's workouts
+ * Hooks into the user's consumable workouts
  * @param session Current session from AuthProvider
- * @returns An array of the user's EditableWorkouts
  */
-export const useMyWorkouts = (session: Session | null) => {
-  const [workouts, setWorkouts] = useState<Array<EditableWorkout>>([]);
+export const useMyConsumableWorkouts = (session: Session | null) => {
+  const [consumableWorkouts, setConsumableWorkouts] = useState<Array<ConsumableWorkout>>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | undefined>(undefined);
 
@@ -21,9 +20,9 @@ export const useMyWorkouts = (session: Session | null) => {
     try {
       setLoading(true);
 
-      const data = await getEditableWorkoutsByUserId(user.id);
+      const data = await getConsumableWorkoutsByUserId({ userId: user.id });
 
-      if (data) setWorkouts(data);
+      if (data) setConsumableWorkouts(data);
 
       setError(undefined);
     } catch (error) {
@@ -37,5 +36,5 @@ export const useMyWorkouts = (session: Session | null) => {
     fetch();
   }, [user]);
 
-  return { workouts, loading, error, fetch };
+  return { consumableWorkouts, loading, error, fetch };
 };
