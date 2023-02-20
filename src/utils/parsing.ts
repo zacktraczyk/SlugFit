@@ -1,21 +1,21 @@
-import { ConsumableExercise, ConsumableWorkoutTemplate, EditableWorkout } from '../types';
+import { ConsumableWorkout } from '../types';
 
-export const fromEditableWorkout = (workout: EditableWorkout): ConsumableWorkoutTemplate => {
-  const consumable: ConsumableWorkoutTemplate = {
-    name: workout.name,
-    exercises: [],
-  };
+// count the # of completed/total sets in a workout
+// iterates through a workout's exercises, keeping a running count
 
-  workout.exercises?.map((_exercise) => {
-    const exercise: ConsumableExercise = { name: _exercise.name, items: [] };
+export const countSets = (workout: ConsumableWorkout) => {
+  let done = 0;
+  let total = 0;
 
-    _exercise.items?.map((_set) => {
-      const set = { ref: _set };
-      exercise.items.push(set);
+  workout.exercises.map((currExercise) => {
+    total += currExercise.sets.length;
+
+    currExercise.sets.map((currSet) => {
+      if (Number(currSet.reps) > 0) {
+        done++;
+      }
     });
-
-    consumable.exercises?.push(exercise);
   });
 
-  return consumable;
+  return { done, total };
 };
