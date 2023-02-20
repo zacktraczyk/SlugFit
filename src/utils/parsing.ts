@@ -1,21 +1,41 @@
-import { ConsumableWorkout } from '../types';
+import { ConsumableExercise, ConsumableExerciseItem, EditableExercise } from '../types';
+import { isSet } from './typeCheck';
 
-// count the # of completed/total sets in a workout
-// iterates through a workout's exercises, keeping a running count
+export const isCompletedSet = (s: ConsumableExerciseItem) => {
+  return isSet(s.ref) && s.data && s.data.reps !== undefined && s.data.reps !== null;
+};
 
-export const countSets = (workout: ConsumableWorkout) => {
+/**
+ * Count the # of completed and total sets in a ConsumableExercise
+ * @param workout
+ * @returns `{ done: Number, total: Number }`
+ */
+export const countSetsInConsumableExercise = (
+  consumableExercise: ConsumableExercise
+): { done: number; total: number } => {
   let done = 0;
   let total = 0;
 
-  workout.exercises.map((currExercise) => {
-    total += currExercise.sets.length;
-
-    currExercise.sets.map((currSet) => {
-      if (Number(currSet.reps) > 0) {
-        done++;
-      }
-    });
+  consumableExercise.exerciseItems.map((item: ConsumableExerciseItem) => {
+    if (isSet(item.ref)) {
+      total++;
+      if (isCompletedSet(item)) done++;
+    }
   });
 
   return { done, total };
+};
+
+/**
+ * Takes an Editable Exercise and spits out a ConsumableExerciseTemplate form
+ * @param editableExercise
+ * @returns
+ */
+export const toConsumableExerciseTemplate = (
+  editableExercise: EditableExercise
+): Pick<ConsumableExercise, 'exerciseName' | 'exerciseItems'> => {
+  return {
+    exerciseName: editableExercise.exerciseName,
+    exerciseItems: editableExercise.exerciseItems.map((item) => ({ data: {}, ref: item })),
+  };
 };

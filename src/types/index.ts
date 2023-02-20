@@ -1,12 +1,14 @@
-// Exercise
-export interface Exercise {
-  name: string;
-  items: ExerciseItem[];
+export type EditableExerciseItem = ExerciseSet | ExerciseRest | ExerciseNote;
+
+export interface EditableExercise {
+  exerciseName: string; // Primary Key, Relation
+  editableWorkoutId: string; // Primary Key, Relation
+  created_by: string; // Relation to Profile uid
+  created_at: Date;
+  exerciseItems: EditableExerciseItem[];
 }
 
-export type ExerciseItem = Set | Rest | Note;
-
-export interface Set {
+export interface ExerciseSet {
   id: number;
   reps: string;
   rpe: string; // Rating of Perceived Exertion
@@ -14,74 +16,50 @@ export interface Set {
   warmup: boolean;
 }
 
-export interface Rest {
+export interface ExerciseRest {
   id: number;
   minutes: string;
   seconds: string;
 }
 
-export interface Note {
+export interface ExerciseNote {
   id: number;
   text: string;
 }
 
-export interface RecordedSet {
-  warmup: boolean;
-  reps: string;
-  weight: string;
-}
 export interface EditableWorkout {
-  id: string;
-  name?: string;
-  created_by?: string;
-  exercises?: Exercise[];
+  id: string; // Primary Key
+  name: string;
+  created_by: string; // Relation to Profile uid
+  created_at: Date;
+  exercises: EditableExercise[];
 }
 
-export interface ConsumableExerciseItem {
+export interface ConsumableExerciseData {
   reps?: number;
   weight?: number;
   bodyweight?: boolean;
-  ref: ExerciseItem; // The reference set, i.e. the prescribed reps, rpe, and %orm
+}
+
+export interface ConsumableExerciseItem {
+  data: ConsumableExerciseData;
+  ref: EditableExerciseItem; // contains the reference editable exercise
 }
 
 export interface ConsumableExercise {
-  name: string;
-  items: ConsumableExerciseItem[];
+  exerciseName: string; // Primary Key, Relation
+  consumableWorkoutId: string; // Primary Key, Relation
+  created_by: string; // Relation
+  created_at: Date;
+  exerciseItems: ConsumableExerciseItem[];
 }
 
-/**
- * Example ConsumableWorkout with one exercise and one set
- * {
- *  id: 'xC12ilA201P'
- *  name: 'Back and Bis',
- *  created_by: 'uid12345',
- *  exercises: [
- *    {
- *      name: 'Pullups',
- *      sets: [
- *        reps: 0,
- *        weight: 0,
- *        bodyweight: false,
- *        ref: {
- *          key: 0,
- *          reps: 12,
- *          rpe: 7,
- *          orm: 75
- *        }
- *      ]
- *    }
- *  ]
- * }
- */
 export interface ConsumableWorkout {
-  id: string;
-  name?: string;
-  created_by?: string;
-  started_at?: Date;
-  ended_at?: Date;
-  exercises?: ConsumableExercise[];
+  id: string; // Primary Key
+  created_by: string; // Relation
+  name: string;
+  created_at: Date;
+  started_at: Date;
+  ended_at: Date | null;
+  exercises: ConsumableExercise[];
 }
-
-export type ConsumableWorkoutTemplate = Omit<ConsumableWorkout, 'id'>;
-
-export const PLACEHOLDER_EXERCISE_NAME = 'placeholder';
