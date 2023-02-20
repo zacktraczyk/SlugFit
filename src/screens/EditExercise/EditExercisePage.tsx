@@ -6,13 +6,13 @@ import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatli
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AddButton from '../../components/AddButton';
 import SetCard from '../../components/blocks/SetCard';
-import { getExerciseInWorkout, updateExerciseInWorkout } from '../../utils/workouts';
 import { NavigatorParamList } from '../DrawerNavigator';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
-import { ExerciseItem } from '../../types';
 import RestCard from '../../components/blocks/RestCard';
 import NoteCard from '../../components/blocks/NoteCard';
 import CardCreationModal from '../../components/modals/CardCreationModal';
+import { EditableExerciseItem } from '../../types';
+import { updateEditableExercise, getEditableExercise } from '../../utils/db/editableexercises';
 
 type EditExercisePageProps = NativeStackScreenProps<NavigatorParamList, 'EditExercisePage'>;
 
@@ -30,8 +30,8 @@ const createEmptyNote = (id: number) => ({ id, text: '' });
 
 // TODO: Append rests or sets, not just sets
 const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
-  const { exerciseName, workoutId } = route.params;
-  const [exerciseItems, setExerciseItems] = useState<ExerciseItem[]>([]);
+  const { exerciseName, editableWorkoutId } = route.params;
+  const [exerciseItems, setExerciseItems] = useState<EditableExerciseItem[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
   // Card Operations
@@ -46,14 +46,20 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
     });
 
     setExerciseItems(_exerciseItems);
-    updateExerciseInWorkout({ name: exerciseName, items: _exerciseItems }, workoutId);
+    updateEditableExercise({
+      editableWorkoutId,
+      exerciseName,
+      payload: {
+        exerciseItems: _exerciseItems,
+      },
+    });
   };
 
   const duplicateCard = (id) => {
     if (id === undefined) {
       throw 'ExerciseItem id not given';
     }
-    const _exerciseItems: ExerciseItem[] = [];
+    const _exerciseItems: EditableExerciseItem[] = [];
     let acc = 0;
     for (let i = 0; i < exerciseItems.length; i++) {
       const item = exerciseItems[i];
@@ -68,7 +74,13 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
       acc++;
     }
     setExerciseItems(_exerciseItems);
-    updateExerciseInWorkout({ name: exerciseName, items: _exerciseItems }, workoutId);
+    updateEditableExercise({
+      editableWorkoutId,
+      exerciseName,
+      payload: {
+        exerciseItems: _exerciseItems,
+      },
+    });
   };
 
   const deleteCard = (id) => {
@@ -76,7 +88,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
       throw 'ExerciseItem id not given';
     }
 
-    const _exerciseItems: ExerciseItem[] = [];
+    const _exerciseItems: EditableExerciseItem[] = [];
     let acc = 0;
     for (let i = 0; i < exerciseItems.length; i++) {
       const item = exerciseItems[i];
@@ -89,7 +101,13 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
       acc++;
     }
     setExerciseItems(_exerciseItems);
-    updateExerciseInWorkout({ name: exerciseName, items: _exerciseItems }, workoutId);
+    updateEditableExercise({
+      editableWorkoutId,
+      exerciseName,
+      payload: {
+        exerciseItems: _exerciseItems,
+      },
+    });
   };
 
   const cardProps = { deleteCard, duplicateCard };
@@ -103,15 +121,21 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
   const appendEmptyNote = () =>
     setExerciseItems([...exerciseItems, createEmptyNote(exerciseItems.length)]);
 
-  const reorderExerciseItems = (reorder: ExerciseItem[]) => {
+  const reorderExerciseItems = (reorder: EditableExerciseItem[]) => {
     setExerciseItems(reorder);
-    updateExerciseInWorkout({ name: exerciseName, items: reorder }, workoutId);
+    updateEditableExercise({
+      editableWorkoutId,
+      exerciseName,
+      payload: {
+        exerciseItems: reorder,
+      },
+    });
   };
 
   useEffect(() => {
     const fetchSets = async () => {
-      const exercise = await getExerciseInWorkout(exerciseName, workoutId);
-      setExerciseItems(exercise ? exercise.items : []);
+      const exercise = await getEditableExercise({ exerciseName, editableWorkoutId });
+      setExerciseItems(exercise ? exercise.exerciseItems : []);
       setLoading(false);
     };
 
