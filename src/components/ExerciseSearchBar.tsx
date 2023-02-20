@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { supabase } from '../utils/supabaseClient';
+import Chip from './CustomChip';
 
 export type ExerciseSearchBarProps = {
   onSelectExercise: (exercise: string) => void;
@@ -48,7 +49,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
 
   return (
     <View className="h-full w-screen items-center bg-white">
-      <View className="mt-7 h-12  w-11/12 rounded-t  border-x border-t border-slate-200 bg-slate-50">
+      <View className="mt-7 h-12  w-11/12 rounded-t  border-x border-t border-slate-200 bg-white">
         <TextInput
           accessibilityLabel="Exercise Search Text Field "
           accessibilityHint="Input characters to search for an exercise"
@@ -63,11 +64,22 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
           autoFocus
         />
       </View>
-      <View className="divide-y-10 invisible  h-60 w-11/12 overflow-scroll border border-slate-200 bg-slate-50">
+      <View className="divide-y-10 invisible  h-60 w-11/12 overflow-scroll border border-slate-200 bg-white">
         <ScrollView keyboardShouldPersistTaps="always">
           {searchInput.length <= 0 ? (
             <View className="mx-5 ">
-              {recentlyUsedExercise.current.length > 0 ? (
+             {/**CHIP VIEW*/}
+              <View className="flex flex-row border-b-0.5 border-slate-400 pb-2">
+                <ScrollView horizontal={true}>
+                  {/**CHIP*/}
+                  <Chip value={"Back"} index={5} onClose={(v,i,c)=> {console.log(`val=${v} i=${i}  c=${c} `);}} color=""/>
+                  <Chip value={"Legs"} index={3} onClose={(v,i,c)=> {console.log(`val=${v} i=${i}  c=${c} `);}} color=""/>
+                  <Chip value={"Chest"} index={2} onClose={(v,i,c)=> {console.log(`val=${v} i=${i}  c=${c} `);}} color=""/>
+                  {/**END OF CHIP*/} 
+                </ScrollView>
+              </View>
+              {/**End of CHIP VIEW*/}
+                {/**recentlyUsedExercise.current.length > 0 ? (
                 <View>
                   <Text className="text-l mx-1 my-3 font-light">Recently Used</Text>
                   <TouchableOpacity
@@ -81,7 +93,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
                 </View>
               ) : (
                 <View />
-              )}
+              )*/}
               <Text className="text-l mx-1 my-3 font-light ">All Exercises</Text>
               {allExercises.map((item) => {
                 return (

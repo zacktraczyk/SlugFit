@@ -4,6 +4,7 @@ import { ActivityIndicator, Button, Text, View } from 'react-native';
 import { useAuth } from '../../contexts/AuthProvider';
 import { useUserData } from '../../hooks/useUserData';
 import { NavigatorParamList } from '../DrawerNavigator';
+import ExerciseSearchBar from '../../components/ExerciseSearchBar';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;
 
@@ -19,9 +20,8 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
 
   return (
     <View className="flex h-full flex-col items-center justify-center">
-      <Text>Home Page yay</Text>
-      {loading ? <ActivityIndicator /> : <Text>Welcome {name}!</Text>}
-      <Button title="Start Workout" onPress={() => navigation.navigate('SelectWorkout')} />
+      <ExerciseSearchBar />
+      
     </View>
   );
 };
