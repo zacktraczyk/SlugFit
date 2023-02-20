@@ -6,7 +6,6 @@ import AddButton from '../../components/AddButton';
 import WorkoutBlock from '../../components/blocks/WorkoutBlock';
 import { useAuth } from '../../contexts/AuthProvider';
 import { useMyEditableWorkouts } from '../../hooks/useMyEditableWorkouts';
-import useBreadcrumbHistory from '../../hooks/useBreadcrumbHistory';
 import { EditableWorkout } from '../../types';
 import {
   createEditableWorkout,
@@ -26,7 +25,6 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
     fetch: fetchEditableWorkouts,
   } = useMyEditableWorkouts(session);
   const [editingWorkout, setEditingWorkout] = useState<string | undefined>(undefined);
-  const [setSelectedWorkout] = useBreadcrumbHistory((state) => [state.setWorkout]);
 
   const addWorkoutBlock = async () => {
     if (!session) throw new Error('Unauthenticated');
@@ -52,11 +50,15 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   const duplicateWorkoutBlock = async (editableWorkoutId: string) => {
     if (!session) throw new Error('Unauthenticated');
     await duplicateEditableWorkout({ editableWorkoutId, userId: session.user.id });
+    if (fetchEditableWorkouts) await fetchEditableWorkouts();
   };
 
-  const navigateToWorkout = (workout: EditableWorkout) => {
-    setSelectedWorkout(workout);
-    navigation.navigate('EditWorkoutPage');
+  const navigateToWorkout = (editableWorkout: EditableWorkout) => {
+    navigation.navigate('EditWorkoutPage', {
+      editableWorkoutId: editableWorkout.id,
+      editableWorkoutName: editableWorkout.name,
+      exerciseName: '',
+    });
   };
 
   const renderWorkoutBlock = ({ item }) => {

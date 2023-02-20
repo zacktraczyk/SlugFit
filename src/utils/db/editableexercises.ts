@@ -50,7 +50,7 @@ export const createEditableExercise = async ({
   const { data, error } = await supabase
     .from(EDITABLE_EXERCISES_TABLE_NAME)
     .insert({
-      name: exerciseName,
+      exerciseName,
       editableWorkoutId,
       created_by: userId,
       exerciseItems,

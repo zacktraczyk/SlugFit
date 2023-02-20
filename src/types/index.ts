@@ -32,7 +32,7 @@ export interface EditableWorkout {
   name: string;
   created_by: string; // Relation to Profile uid
   created_at: Date;
-  exercises: EditableExercise[];
+  exercises: string[];
 }
 
 export interface ConsumableExerciseData {

@@ -128,10 +128,10 @@ export const duplicateEditableWorkout = async ({
   });
 
   const promises: Promise<void>[] = [];
-  for (const editableExercise of editableWorkout.exercises) {
+  for (const editableExerciseName of editableWorkout.exercises) {
     promises.push(
       duplicateEditableExercise({
-        exerciseName: editableExercise.exerciseName,
+        exerciseName: editableExerciseName,
         fromEditableWorkoutId: editableWorkoutId,
         toEditableWorkoutId: duplicate.id,
         userId,
