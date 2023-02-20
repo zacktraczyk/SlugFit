@@ -1,5 +1,5 @@
 import { supabase } from '../supabaseClient';
-import { EditableExercise } from '../../types';
+import { EditableExercise, EditableExerciseItem } from '../../types';
 
 export const EDITABLE_EXERCISES_TABLE_NAME = 'editableexercises';
 
@@ -40,10 +40,12 @@ export const createEditableExercise = async ({
   exerciseName,
   editableWorkoutId,
   userId,
+  exerciseItems = [],
 }: {
   exerciseName: string;
   editableWorkoutId: string;
   userId: string;
+  exerciseItems?: EditableExerciseItem[];
 }): Promise<EditableExercise> => {
   const { data, error } = await supabase
     .from(EDITABLE_EXERCISES_TABLE_NAME)
@@ -51,6 +53,7 @@ export const createEditableExercise = async ({
       name: exerciseName,
       editableWorkoutId,
       created_by: userId,
+      exerciseItems,
     })
     .select('*')
     .single();
@@ -126,4 +129,23 @@ export const deleteEditableExercise = async ({
     .eq('editableWorkoutId', editableWorkoutId);
 
   if (error) throw error;
+};
+
+export const duplicateEditableExercise = async ({
+  exerciseName,
+  fromEditableWorkoutId,
+  toEditableWorkoutId,
+  userId,
+}) => {
+  const editableExercise = await getEditableExercise({
+    exerciseName,
+    editableWorkoutId: fromEditableWorkoutId,
+  });
+
+  await createEditableExercise({
+    exerciseName,
+    editableWorkoutId: toEditableWorkoutId,
+    userId,
+    exerciseItems: editableExercise.exerciseItems,
+  });
 };
