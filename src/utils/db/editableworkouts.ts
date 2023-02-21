@@ -1,6 +1,6 @@
 import { supabase } from '../supabaseClient';
 import { EditableWorkout } from '../../types';
-import { duplicateEditableExercise } from './editableexercises';
+import { deleteEditableExercise, duplicateEditableExercise } from './editableexercises';
 
 export const EDITABLE_WORKOUTS_TABLE_NAME = 'editableworkouts';
 
@@ -17,7 +17,8 @@ export const getEditableWorkoutsByUserId = async ({
   const { data, error } = await supabase
     .from(EDITABLE_WORKOUTS_TABLE_NAME)
     .select(`*`)
-    .eq('created_by', userId);
+    .eq('created_by', userId)
+    .order('created_at', { ascending: true });
 
   if (error) throw error;
 
@@ -100,6 +101,14 @@ export const deleteEditableWorkout = async ({
 }: {
   editableWorkoutId: string;
 }) => {
+  const editableWorkout = await getEditableWorkout({ editableWorkoutId });
+
+  const promises: Promise<void>[] = [];
+  for (const exerciseName of editableWorkout.exercises) {
+    promises.push(deleteEditableExercise({ exerciseName, editableWorkoutId }));
+  }
+  await Promise.all(promises);
+
   const { error } = await supabase
     .from(EDITABLE_WORKOUTS_TABLE_NAME)
     .delete()

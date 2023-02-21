@@ -1,5 +1,7 @@
 import { supabase } from '../supabaseClient';
-import { ConsumableWorkout } from '../../types';
+import { ConsumableExercise, ConsumableWorkout } from '../../types';
+import { getEditableWorkout } from './editableworkouts';
+import { createConsumableExercise, deleteConsumableExercise } from './consumableexercises';
 
 export const CONSUMABLE_WORKOUTS_TABLE_NAME = 'consumableworkouts';
 
@@ -16,7 +18,8 @@ export const getConsumableWorkoutsByUserId = async ({
   const { data, error } = await supabase
     .from(CONSUMABLE_WORKOUTS_TABLE_NAME)
     .select(`*`)
-    .eq('created_by', userId);
+    .eq('created_by', userId)
+    .order('created_at', { ascending: false });
 
   if (error) throw error;
 
@@ -26,20 +29,42 @@ export const getConsumableWorkoutsByUserId = async ({
 /**
  * Create -- 'consumableworkouts'
  * @param userId Id of the current user
+ * @param editableWorkoutId Id of the workout to branch from
  * @returns `ConsumableWorkout`
  */
 export const createConsumableWorkout = async ({
   userId,
+  editableWorkoutId,
 }: {
   userId: string;
+  editableWorkoutId: string;
 }): Promise<ConsumableWorkout> => {
+  const editableWorkout = await getEditableWorkout({ editableWorkoutId });
+
   const { data, error } = await supabase
     .from(CONSUMABLE_WORKOUTS_TABLE_NAME)
-    .insert({ name: '', created_by: userId })
+    .insert({
+      name: editableWorkout.name,
+      created_by: userId,
+      exercises: editableWorkout.exercises,
+    })
     .select(`*`)
     .single();
 
   if (error) throw error;
+
+  const promises: Promise<ConsumableExercise>[] = [];
+  for (const exerciseName of data.exercises) {
+    promises.push(
+      createConsumableExercise({
+        exerciseName,
+        consumableWorkoutId: data.id,
+        editableWorkoutId,
+        userId,
+      })
+    );
+  }
+  await Promise.all(promises);
 
   return data as ConsumableWorkout;
 };
@@ -96,6 +121,14 @@ export const deleteConsumableWorkout = async ({
 }: {
   consumableWorkoutId: string;
 }) => {
+  const consumableWorkout = await getConsumableWorkout({ consumableWorkoutId });
+
+  const promises: Promise<void>[] = [];
+  for (const exerciseName of consumableWorkout.exercises) {
+    promises.push(deleteConsumableExercise({ exerciseName, consumableWorkoutId }));
+  }
+  await Promise.all(promises);
+
   const { error } = await supabase
     .from(CONSUMABLE_WORKOUTS_TABLE_NAME)
     .delete()

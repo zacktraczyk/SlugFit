@@ -12,7 +12,7 @@ export const useMyConsumableWorkouts = (session: Session | null) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | undefined>(undefined);
 
-  if (session === undefined || session === null) return {};
+  if (session === undefined || session === null) return { loading: false };
 
   const user: User = session.user;
 

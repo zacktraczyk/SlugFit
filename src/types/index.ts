@@ -36,13 +36,13 @@ export interface EditableWorkout {
 }
 
 export interface ConsumableExerciseData {
-  reps?: number;
-  weight?: number;
-  bodyweight?: boolean;
+  reps: string;
+  weight: string;
+  bodyweight: boolean;
 }
 
 export interface ConsumableExerciseItem {
-  data: ConsumableExerciseData;
+  data?: ConsumableExerciseData;
   ref: EditableExerciseItem; // contains the reference editable exercise
 }
 
@@ -61,5 +61,5 @@ export interface ConsumableWorkout {
   created_at: Date;
   started_at: Date;
   ended_at: Date | null;
-  exercises: ConsumableExercise[];
+  exercises: string[];
 }

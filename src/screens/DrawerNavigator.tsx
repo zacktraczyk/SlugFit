@@ -10,7 +10,7 @@ export type NavigatorParamList = {
   Home: undefined;
   HomeStack: undefined;
   SelectWorkout: undefined;
-  UseWorkout: { workoutId: string };
+  UseWorkout: { consumableWorkoutId: string };
   MyWorkouts: undefined;
   MyWorkoutsStack: undefined;
   EditWorkoutPage: { editableWorkoutId: string; editableWorkoutName: string; exerciseName: string };
@@ -34,11 +34,11 @@ function DrawerNavigator() {
     >
       <Drawer.Screen name="Tabs" component={TabNavigator} />
       <Drawer.Screen name="AccountSettings" component={AccountSettings} />
-      {/* <Drawer.Screen
+      <Drawer.Screen
         name="UseWorkout"
         component={UseWorkoutPage}
         options={{ swipeEnabled: false }}
-      /> */}
+      />
     </Drawer.Navigator>
   );
 }

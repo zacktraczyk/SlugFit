@@ -1,53 +1,34 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useMemo, useState } from 'react';
-import { Text, View, FlatList, TouchableOpacity } from 'react-native';
+import React, { useMemo, useState, useEffect } from 'react';
+import { Text, View, FlatList, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import CompletedWorkoutBlock from '../../components/blocks/CompletedWorkoutBlock';
-import dummyData from '../../utils/DummyData.json';
 import { Calendar } from 'react-native-calendars';
+import { useMyConsumableWorkouts } from '../../hooks/useMyConsumableWorkouts';
+import { useAuth } from '../../contexts/AuthProvider';
+import { ConsumableWorkout } from '../../types';
+import { formatDateToISO } from '../../utils/parsing';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;
 
-const Home: React.FC<HomeProps> = () => {
-  // render each workout for CompletedWorkoutBlock
+const Home: React.FC<HomeProps> = ({ navigation }) => {
+  const { session } = useAuth();
+  const { consumableWorkouts, loading, fetch } = useMyConsumableWorkouts(session);
+  const [completedWorkouts, setCompletedWorkouts] = useState<ConsumableWorkout[]>([]);
 
+  useEffect(() => {
+    setCompletedWorkouts(
+      consumableWorkouts?.filter((workout) => workout.ended_at !== undefined) || []
+    );
+  }, [consumableWorkouts]);
+
+  // render each workout for CompletedWorkoutBlock
   const renderWorkoutBlock = ({ item }) => {
-    return <CompletedWorkoutBlock workout={item} />;
+    return <CompletedWorkoutBlock consumableWorkout={item} />;
   };
 
-  // checks if there's any completed workouts
-  // iterates through workouts, checking for at least one "ended_at" attribute
-
-  function existCompletedWorkouts() {
-    if (dummyData.length == 0) {
-      return false;
-    }
-
-    let existFlag = false;
-
-    dummyData.map((currWorkout) => {
-      if (currWorkout.ended_at) {
-        existFlag = true;
-      }
-    });
-
-    return existFlag;
-  }
-
-  // filters through workouts returning those that are completed
-  // iterate through workouts and returning those with an "ended_at" attribute
-
-  const completedWorkouts = useMemo(filterCompletedWorkouts, dummyData);
-
-  function filterCompletedWorkouts() {
-    return dummyData
-      .filter((item) => item.ended_at != null)
-      .sort((a, b) => b.ended_at.localeCompare(a.ended_at));
-  }
-
   // toggle variable "showCalendar", switching between CompletedWorkouts and Calendar
-
   const [showCalendar, setToggle] = useState(false);
   const toggleFunction = () => {
     setToggle(!showCalendar);
@@ -60,14 +41,16 @@ const Home: React.FC<HomeProps> = () => {
 
     // mark all dates in data
     for (let i = 0; i < completedWorkouts.length; i += 1) {
-      let date = completedWorkouts[i].ended_at;
-      date = date.substring(0, 10);
-      dates[date] = { marked: true };
+      const workout = completedWorkouts[i];
+      if (workout.ended_at) {
+        const date = formatDateToISO(workout.ended_at);
+        dates[date] = { marked: true };
+      }
     }
 
     // Add red circle to today's date
     const today = new Date();
-    const todaysDate = today.toISOString().split('T')[0];
+    const todaysDate = formatDateToISO(today);
     dates[todaysDate] = { selected: true, selectedColor: '#EF4444' };
 
     return (
@@ -86,7 +69,10 @@ const Home: React.FC<HomeProps> = () => {
   };
 
   return (
-    <View className="h-full bg-white">
+    <ScrollView
+      className="h-full bg-white"
+      refreshControl={<RefreshControl refreshing={loading} onRefresh={fetch} />}
+    >
       <View className="flex-row justify-between px-3 pt-3.5">
         <Text className="pt-1 font-bebas text-base">Completed Workouts</Text>
         <TouchableOpacity accessibilityRole="button" onPress={() => toggleFunction()}>
@@ -98,7 +84,7 @@ const Home: React.FC<HomeProps> = () => {
         <View className="items-center">
           <Text>{renderWorkoutCalender()}</Text>
         </View>
-      ) : !existCompletedWorkouts() ? (
+      ) : completedWorkouts.length === 0 ? (
         <View className="items-center pt-3.5 pb-6">
           <Text className="font-bebas text-xl text-gray-400">No completed workouts.</Text>
         </View>
@@ -117,11 +103,14 @@ const Home: React.FC<HomeProps> = () => {
         <TouchableOpacity
           accessibilityRole="button"
           className="my-2 mt-0 w-60 items-center rounded-lg bg-red-500 p-2"
+          onPress={() => {
+            navigation.navigate('SelectWorkout');
+          }}
         >
           <Text className="text-center font-bebas text-2xl text-white">Start A Workout</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
