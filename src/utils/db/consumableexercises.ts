@@ -20,9 +20,9 @@ export const getConsumableExercises = async ({
   consumableWorkoutId?: string;
   exerciseName?: string;
 }): Promise<ConsumableExercise[]> => {
-  let request = supabase.from(CONSUMABLE_EXERCISES_TABLE_NAME).select('*').eq('userId', userId);
+  let request = supabase.from(CONSUMABLE_EXERCISES_TABLE_NAME).select('*').eq('created_by', userId);
 
-  if (consumableWorkoutId) request = request.eq('cosumableWorkoutId', consumableWorkoutId);
+  if (consumableWorkoutId) request = request.eq('consumableWorkoutId', consumableWorkoutId);
 
   if (exerciseName) request = request.eq('exerciseName', exerciseName);
 

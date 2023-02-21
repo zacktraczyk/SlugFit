@@ -67,7 +67,9 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
         ended_at: new Date(),
       },
     });
-    navigation.navigate('Home');
+    navigation.navigate('WorkoutSummary', {
+      consumableWorkoutId: route.params.consumableWorkoutId,
+    });
   };
 
   const onStopPress = () => {
