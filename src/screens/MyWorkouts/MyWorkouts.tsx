@@ -3,61 +3,62 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { KeyboardAvoidingView, FlatList, Platform, StyleSheet } from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import AddButton from '../../components/AddButton';
-import WorkoutBlock from '../../components/WorkoutBlock';
+import WorkoutBlock from '../../components/blocks/WorkoutBlock';
 import { useAuth } from '../../contexts/AuthProvider';
-import { useMyWorkouts } from '../../hooks/useMyWorkouts';
+import { useMyEditableWorkouts } from '../../hooks/useMyEditableWorkouts';
+import { EditableWorkout } from '../../types';
 import {
   createEditableWorkout,
-  deleteEditableWorkout,
-  getEditableWorkout,
+  duplicateEditableWorkout,
   updateEditableWorkout,
-} from '../../utils/workouts';
-import useBreadcrumbHistory from '../../hooks/useBreadcrumbHistory';
-import { EditableWorkout } from '../../types';
+  deleteEditableWorkout,
+} from '../../utils/db/editableworkouts';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 export type MyWorkoutsProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkouts'>;
 
 const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   const { session } = useAuth();
-  const { workouts, loading, fetch: refreshWorkouts } = useMyWorkouts(session);
+  const {
+    editableWorkouts,
+    loading,
+    fetch: fetchEditableWorkouts,
+  } = useMyEditableWorkouts(session);
   const [editingWorkout, setEditingWorkout] = useState<string | undefined>(undefined);
-  const [setSelectedWorkout] = useBreadcrumbHistory((state) => [state.setWorkout]);
 
   const addWorkoutBlock = async () => {
-    const workout = await createEditableWorkout(session);
+    if (!session) throw new Error('Unauthenticated');
+    const workout = await createEditableWorkout({ userId: session.user.id });
     if (workout) setEditingWorkout(workout.id);
-    if (refreshWorkouts) await refreshWorkouts();
+    if (fetchEditableWorkouts) await fetchEditableWorkouts();
   };
 
-  const updateWorkout = async (payload) => {
-    await updateEditableWorkout(payload.id, payload);
+  const updateWorkout = async (editableWorkoutId: string, payload: Partial<EditableWorkout>) => {
+    await updateEditableWorkout({
+      editableWorkoutId,
+      payload,
+    });
     setEditingWorkout(undefined);
-    if (refreshWorkouts) await refreshWorkouts();
+    if (fetchEditableWorkouts) await fetchEditableWorkouts();
   };
-  const deleteWorkoutBlock = async (id) => {
-    await deleteEditableWorkout(id);
-    setEditingWorkout(undefined);
-    if (refreshWorkouts) await refreshWorkouts();
-  };
-  const duplicateWorkoutBlock = async (workoutId: string) => {
-    const workout = await createEditableWorkout(session);
-    const editableWorkout = getEditableWorkout(workoutId);
 
-    if (workout) {
-      setEditingWorkout(workout.id);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { id, ...rest } = await editableWorkout;
-      const duplicate: EditableWorkout = {
-        ...workout,
-        ...rest,
-      };
-      await updateWorkout(duplicate);
-    }
+  const deleteWorkoutBlock = async (editableWorkoutId: string) => {
+    await deleteEditableWorkout({ editableWorkoutId });
+    if (fetchEditableWorkouts) await fetchEditableWorkouts();
   };
-  const navigateToWorkout = (workout: EditableWorkout) => {
-    setSelectedWorkout(workout);
-    navigation.navigate('EditWorkoutPage');
+
+  const duplicateWorkoutBlock = async (editableWorkoutId: string) => {
+    if (!session) throw new Error('Unauthenticated');
+    await duplicateEditableWorkout({ editableWorkoutId, userId: session.user.id });
+    if (fetchEditableWorkouts) await fetchEditableWorkouts();
+  };
+
+  const navigateToWorkout = (editableWorkout: EditableWorkout) => {
+    navigation.navigate('EditWorkoutPage', {
+      editableWorkoutId: editableWorkout.id,
+      editableWorkoutName: editableWorkout.name,
+      exerciseName: '',
+    });
   };
 
   const renderWorkoutBlock = ({ item }) => {
@@ -81,7 +82,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
       enabled={!loading}
     >
       <FlatList
-        data={workouts}
+        data={editableWorkouts}
         renderItem={renderWorkoutBlock}
         keyExtractor={(item) => item.id}
         className="w-full"

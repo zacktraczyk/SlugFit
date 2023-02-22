@@ -3,15 +3,16 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import { TextInput } from 'react-native-gesture-handler';
 import Checkbox from '../CustomCheckBox';
-import { ConsumableExerciseItem, RecordedSet, Set } from '../../types';
+import { ConsumableExerciseData, ExerciseSet } from '../../types';
 
 interface SetBlockProps {
   setNumber: number;
-  reps: string;
-  weight: string;
-  setRef: Set;
+  reps: number;
+  weight: number;
+  bodyweight: boolean;
+  setRef: ExerciseSet;
   index: number;
-  onChange: (index: number, updates: ConsumableExerciseItem) => void;
+  onChange: (index: number, updates: Partial<ConsumableExerciseData>) => void;
 }
 /**
  *
@@ -31,12 +32,12 @@ const SetBlock: React.FC<SetBlockProps> = ({
   index,
   reps,
   weight,
+  bodyweight,
   setRef,
   onChange,
 }) => {
   const regexReps = React.useRef(/^\d+(?:-\d+)?$/);
   const regexWeight = React.useRef(/^\d+(\.\d+)?|BODYWEIGHT$/);
-  const [isBodyWeight, setIsBodyWeight] = React.useState<boolean>(false);
 
   // Load font
   const [fontsLoaded] = useFonts({
@@ -81,48 +82,40 @@ const SetBlock: React.FC<SetBlockProps> = ({
         <View className="bor h-8 w-14 rounded-l-lg bg-gray-300">
           <Text className="my-auto ml-1 font-bebas text-xl font-bold">RECORD</Text>
         </View>
-        <View className="my-auto ml-1 h-5/6 w-16 rounded-md bg-white">
-          <TextInput
-            accessibilityLabel="Record Reps"
-            accessibilityHint="Input reps you did"
-            className=" my-auto mx-auto w-auto font-bebas text-xs"
-            autoCapitalize="none"
-            placeholder="REPS YOU DID"
-            returnKeyType="next"
-            value={reps}
-            onChangeText={(value) => onChange(index, { reps: parseInt(value), ref: setRef })}
-          />
-        </View>
+        <TextInput
+          accessibilityLabel="Record Reps"
+          accessibilityHint="Input reps you did"
+          className="my-auto mx-auto ml-1 h-5/6 w-16 rounded-md bg-white text-center font-bebas text-xs"
+          autoCapitalize="none"
+          placeholder="REPS YOU DID"
+          returnKeyType="next"
+          value={reps?.toString()}
+          clearTextOnFocus={true}
+          onChangeText={(value) => onChange(index, { reps: value })}
+        />
         <Text className="my-auto mr-1 font-bebas text-xs font-bold"> REPS</Text>
 
-        {isBodyWeight ? (
+        {bodyweight ? (
           <View />
         ) : (
-          <View className="my-auto ml-1 h-5/6 w-14 rounded-md bg-white">
-            <TextInput
-              accessibilityLabel="User Recorded Weight"
-              accessibilityHint="Input weight you did"
-              className=" my-auto mx-auto w-auto font-bebas text-xs"
-              autoCapitalize="none"
-              placeholder="Weight"
-              returnKeyType="next"
-              value={weight}
-              onChangeText={(value) => onChange(index, { reps: parseInt(value), ref: setRef })}
-            />
-          </View>
+          <TextInput
+            accessibilityLabel="User Recorded Weight"
+            accessibilityHint="Input weight you did"
+            className="my-auto mx-auto ml-1 h-5/6 w-16 rounded-md bg-white text-center font-bebas text-xs"
+            clearTextOnFocus={true}
+            autoCapitalize="none"
+            placeholder="Weight"
+            returnKeyType="next"
+            value={weight?.toString()}
+            onChangeText={(value) => onChange(index, { weight: value })}
+          />
         )}
-        {isBodyWeight ? (
-          <View />
-        ) : (
-          <Text className="my-auto font-bebas text-xs font-bold"> LB</Text>
-        )}
+        {bodyweight ? <View /> : <Text className="my-auto font-bebas text-xs font-bold"> LB</Text>}
         <View className="flex flex-grow flex-row justify-center border-solid">
           <View>
             <Checkbox
-              checked={isBodyWeight}
-              onPress={() => {
-                setIsBodyWeight(!isBodyWeight);
-              }}
+              checked={bodyweight}
+              onPress={() => onChange(index, { bodyweight: !bodyweight })}
             />
           </View>
           <Text className="my-auto font-bebas text-xs font-bold"> BODYWEIGHT</Text>

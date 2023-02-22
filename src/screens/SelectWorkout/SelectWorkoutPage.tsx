@@ -2,25 +2,29 @@ import React from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { NavigatorParamList } from '../DrawerNavigator';
 import { FlatList, StyleSheet, View, Alert } from 'react-native';
-import { useMyWorkouts } from '../../hooks/useMyWorkouts';
 import { useAuth } from '../../contexts/AuthProvider';
 import Block from '../../components/blocks/Block';
 import { EditableWorkout } from '../../types';
-import { createConsumableWorkout } from '../../utils/workouts';
+import { useMyEditableWorkouts } from '../../hooks/useMyEditableWorkouts';
+import { createConsumableWorkout } from '../../utils/db/consumableworkouts';
 
 type SelectWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'SelectWorkout'>;
 
 const SelectWorkoutPage: React.FC<SelectWorkoutPageProps> = ({ navigation }) => {
   const { session } = useAuth();
-  const { workouts } = useMyWorkouts(session);
+  const { editableWorkouts } = useMyEditableWorkouts(session);
 
-  const startWorkout = async (workout: EditableWorkout) => {
-    const { id } = await createConsumableWorkout(session, workout.id);
-    navigation.navigate('UseWorkout', { workoutId: id });
+  const startWorkout = async (editableWorkout: EditableWorkout) => {
+    if (!session) return;
+    const { id } = await createConsumableWorkout({
+      userId: session?.user.id,
+      editableWorkoutId: editableWorkout.id,
+    });
+    navigation.navigate('UseWorkout', { consumableWorkoutId: id });
   };
 
-  const alertConfirmStart = (workout: EditableWorkout) => {
-    Alert.alert('Start the workout?', workout.name, [
+  const alertConfirmStart = (editableWorkout: EditableWorkout) => {
+    Alert.alert('Start the workout?', editableWorkout.name, [
       {
         text: 'Cancel',
         style: 'cancel',
@@ -28,7 +32,7 @@ const SelectWorkoutPage: React.FC<SelectWorkoutPageProps> = ({ navigation }) => 
       {
         text: 'Yes',
         onPress: async () => {
-          await startWorkout(workout);
+          await startWorkout(editableWorkout);
         },
       },
     ]);
@@ -44,7 +48,7 @@ const SelectWorkoutPage: React.FC<SelectWorkoutPageProps> = ({ navigation }) => 
   return (
     <View className="flex w-full flex-1 flex-col items-center justify-center bg-white">
       <FlatList
-        data={workouts}
+        data={editableWorkouts}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         className="w-full"

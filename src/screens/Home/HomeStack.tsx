@@ -6,6 +6,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Home from './Home';
 import SelectWorkoutPage from '../SelectWorkout/SelectWorkoutPage';
 import BackButton from '../../components/BackButton';
+import WorkoutSummary from '../WorkoutSummary';
 
 type HomeStackProps = NativeStackScreenProps<NavigatorParamList, 'HomeStack'>;
 
@@ -31,6 +32,7 @@ const HomeStack: React.FC<HomeStackProps> = () => {
           ),
         })}
       />
+      <Stack.Screen name="WorkoutSummary" component={WorkoutSummary} />
     </Stack.Navigator>
   );
 };

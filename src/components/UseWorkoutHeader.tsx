@@ -8,7 +8,7 @@ import MaterialCommunityIcon from '@expo/vector-icons/MaterialCommunityIcons';
 interface UseWorkoutHeaderProps {
   isCardView?: boolean;
   index: number;
-  workout: ConsumableWorkout;
+  consumableWorkout: ConsumableWorkout;
   toggleView: () => void;
   onStopPress: () => void;
 }
@@ -64,7 +64,7 @@ const WorkoutProgressBar: React.FC<WorkoutProgressBarProps> = ({
 };
 
 const UseWorkoutHeader: React.FC<UseWorkoutHeaderProps> = ({
-  workout,
+  consumableWorkout,
   isCardView = true,
   index,
   toggleView,
@@ -78,8 +78,8 @@ const UseWorkoutHeader: React.FC<UseWorkoutHeaderProps> = ({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (workout.started_at !== undefined) {
-        let totalSeconds = (Date.now() - new Date(workout.started_at).getTime()) / 1000;
+      if (consumableWorkout.started_at !== undefined) {
+        let totalSeconds = (Date.now() - new Date(consumableWorkout.started_at).getTime()) / 1000;
         const _hours = totalSeconds / 3600;
         totalSeconds %= 3600;
         const _minutes = totalSeconds / 60;
@@ -92,7 +92,7 @@ const UseWorkoutHeader: React.FC<UseWorkoutHeaderProps> = ({
     return () => {
       clearInterval(interval);
     };
-  }, [workout.started_at]);
+  }, [consumableWorkout.started_at]);
 
   useEffect(() => {
     setCurrentIndex((lastIndex) => {
@@ -118,7 +118,7 @@ const UseWorkoutHeader: React.FC<UseWorkoutHeaderProps> = ({
           </TouchableOpacity>
         </View>
         <View className="flex flex-grow flex-row items-center justify-center pt-2 pb-2">
-          <Text className="text-lg font-medium">{workout.name}</Text>
+          <Text className="text-lg font-medium">{consumableWorkout.name}</Text>
         </View>
         <View className="flex flex-1 flex-col items-center justify-center pt-2 pb-2">
           <Text className="text-sm font-light">{`${
@@ -133,7 +133,7 @@ const UseWorkoutHeader: React.FC<UseWorkoutHeaderProps> = ({
       </View>
       {isCardView && (
         <WorkoutProgressBar
-          exercises={workout.exercises || []}
+          exercises={consumableWorkout.exercises || []}
           currentIndex={currentIndex}
           direction={direction}
         />

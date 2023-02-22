@@ -10,11 +10,16 @@ export type NavigatorParamList = {
   Home: undefined;
   HomeStack: undefined;
   SelectWorkout: undefined;
-  UseWorkout: { workoutId: string };
+  WorkoutSummary: { consumableWorkoutId: string };
+  UseWorkout: { consumableWorkoutId: string };
   MyWorkouts: undefined;
   MyWorkoutsStack: undefined;
-  EditWorkoutPage: undefined;
-  EditExercisePage: { workoutId: string; exerciseName: string };
+  EditWorkoutPage: { editableWorkoutId: string; editableWorkoutName: string; exerciseName: string };
+  EditExercisePage: {
+    editableWorkoutId: string;
+    editableWorkoutName: string;
+    exerciseName: string;
+  };
   Profile: undefined;
 };
 
