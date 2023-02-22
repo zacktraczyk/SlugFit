@@ -51,7 +51,12 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
     // Add red circle to today's date
     const today = new Date();
     const todaysDate = formatDateToISO(today);
-    dates[todaysDate] = { selected: true, selectedColor: '#EF4444' };
+
+    if (todaysDate in dates) {
+      dates[todaysDate] = { selected: true, selectedColor: '#EF4444', marked: true };
+    } else {
+      dates[todaysDate] = { selected: true, selectedColor: '#EF4444' };
+    }
 
     return (
       <Calendar
