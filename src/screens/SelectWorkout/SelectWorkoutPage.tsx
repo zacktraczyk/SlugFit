@@ -13,7 +13,6 @@ type SelectWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'Select
 const SelectWorkoutPage: React.FC<SelectWorkoutPageProps> = ({ navigation }) => {
   const { session } = useAuth();
   const { editableWorkouts } = useMyEditableWorkouts(session);
-
   const startWorkout = async (editableWorkout: EditableWorkout) => {
     if (!session) return;
     const { id } = await createConsumableWorkout({
@@ -46,7 +45,8 @@ const SelectWorkoutPage: React.FC<SelectWorkoutPageProps> = ({ navigation }) => 
   };
 
   return (
-    <View className="flex w-full flex-1 flex-col items-center justify-center bg-white">
+    <View className="flex flex-col items-center justify-center flex-1 w-full bg-white">
+
       <FlatList
         data={editableWorkouts}
         keyExtractor={(item) => item.id}

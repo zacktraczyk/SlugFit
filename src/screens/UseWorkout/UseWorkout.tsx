@@ -1,7 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { NavigatorParamList } from '../DrawerNavigator';
-import { View, StyleSheet, Dimensions, FlatList, Alert } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  FlatList,
+  Alert,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import { useConsumableWorkout } from '../../hooks/useConsumableWorkout';
 import AnimatedExerciseCardContainer from '../../components/AnimatedExerciseCardContainer';
 import UseWorkoutHeader from '../../components/UseWorkoutHeader';
@@ -9,6 +17,7 @@ import Animated, { FadeInLeft } from 'react-native-reanimated';
 import Block from '../../components/blocks/Block';
 import ConsumableExerciseCard from '../../components/ConsumableExerciseCard';
 import { updateConsumableWorkout } from '../../utils/db/consumableworkouts';
+import PastWorkoutPerformance from '../../components/PastWorkoutPerformance';
 
 type UseWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'UseWorkout'>;
 
@@ -16,6 +25,7 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
   const { consumableWorkout } = useConsumableWorkout(route.params.consumableWorkoutId, true);
   const [visibleIndex, setVisibleIndex] = useState(0);
   const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 90 });
+  const [pastWorkoutVisible, setPastWorkoutVisible] = useState(false);
   const onViewableItemsChanged = useRef(({ viewableItems }) => {
     if (viewableItems && viewableItems.length > 0) {
       setVisibleIndex(viewableItems[0].index);
@@ -98,7 +108,20 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
           onStopPress={onStopPress}
         />
       )}
-      <View className="h-full w-full flex-1 bg-slate-50">
+      <TouchableOpacity
+        accessibilityRole="button"
+        onPress={() => setPastWorkoutVisible(true)}
+        className="bg-white"
+      >
+        <Text className="text-lg font-bold text-center">Past Workout Performance</Text>
+        {pastWorkoutVisible && (
+          <PastWorkoutPerformance
+            id={''}
+            setModalVisible={(bool: boolean) => setPastWorkoutVisible(bool)}
+          />
+        )}
+      </TouchableOpacity>
+      <View className="flex-1 w-full h-full bg-slate-50">
         <FlatList
           ref={flatlistRef}
           data={consumableWorkout.exercises}
