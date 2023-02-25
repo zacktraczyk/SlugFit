@@ -38,7 +38,7 @@ function TabNavigator() {
         component={MyWorkoutsStack}
         options={{ headerShown: false }}
       />
-      <Tabs.Screen name="Profile" component={Profile} />
+      <Tabs.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
     </Tabs.Navigator>
   );
 }
