@@ -123,3 +123,5 @@ export const formatDate = (date) => {
 
   return month + ' ' + day + ', ' + year;
 };
+
+export const milliToDays = (milliseconds: number) => milliseconds / 1000 / 60 / 60 / 24;
