@@ -1,48 +1,41 @@
 import React, { useRef, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { NavigatorParamList } from '../DrawerNavigator';
-import { View, Text, StyleSheet, Dimensions, FlatList, ScrollView, Alert } from 'react-native';
+import { View, StyleSheet, Dimensions, FlatList, Alert } from 'react-native';
 import { useConsumableWorkout } from '../../hooks/useConsumableWorkout';
-import { ConsumableExercise } from '../../types';
 import AnimatedExerciseCardContainer from '../../components/AnimatedExerciseCardContainer';
 import UseWorkoutHeader from '../../components/UseWorkoutHeader';
 import Animated, { FadeInLeft } from 'react-native-reanimated';
 import Block from '../../components/blocks/Block';
 import ConsumableExerciseCard from '../../components/ConsumableExerciseCard';
-import { updateConsumableWorkout, updateExerciseInConsumableWorkout } from '../../utils/workouts';
+import { updateConsumableWorkout } from '../../utils/db/consumableworkouts';
 
 type UseWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'UseWorkout'>;
 
 const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) => {
-  const { workout } = useConsumableWorkout(route.params.workoutId, true);
-  const [visibleItem, setVisibleItem] = useState<ConsumableExercise | undefined>(undefined);
+  const { consumableWorkout } = useConsumableWorkout(route.params.consumableWorkoutId, true);
   const [visibleIndex, setVisibleIndex] = useState(0);
   const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 90 });
   const onViewableItemsChanged = useRef(({ viewableItems }) => {
     if (viewableItems && viewableItems.length > 0) {
-      setVisibleItem(viewableItems[0].item);
       setVisibleIndex(viewableItems[0].index);
-    } else {
-      // setVisibleItem(undefined);
     }
   });
   const [cardView, setCardView] = useState(true);
   const flatlistRef = useRef<FlatList>(null);
 
-  const renderCardItem = ({ item: exercise, index }) => {
+  const renderCardItem = ({ item: exerciseName, index }) => {
     return (
       <AnimatedExerciseCardContainer visible={index === visibleIndex} className="bg-white">
         <ConsumableExerciseCard
-          exercise={exercise}
-          onChange={async (payload: ConsumableExercise) => {
-            await updateExerciseInConsumableWorkout(payload, route.params.workoutId);
-          }}
+          exerciseName={exerciseName}
+          consumableWorkoutId={route.params.consumableWorkoutId}
         />
       </AnimatedExerciseCardContainer>
     );
   };
 
-  const renderListItem = ({ item: exercise, index }) => {
+  const renderListItem = ({ item: exerciseName, index }) => {
     const goToCard = () => {
       setCardView(true);
       setTimeout(() => {
@@ -50,15 +43,15 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
       }, 500);
     };
 
-    const numSets = exercise.items.reduce((acc, item) => {
-      return item.ref.reps !== undefined && item.ref.reps !== null ? acc + 1 : acc;
-    }, 0);
+    // const numSets = exercise.exerciseItems.reduce((acc, item) => {
+    //   return item.ref.reps !== undefined && item.ref.reps !== null ? acc + 1 : acc;
+    // }, 0);
 
     return (
       <Animated.View entering={FadeInLeft.duration(200).delay(100 * index)} className="self-center">
         <Block
-          title={exercise.name}
-          subtitle={`${numSets} set${numSets > 1 ? 's' : ''}`}
+          title={exerciseName}
+          // subtitle={`${numSets} set${numSets > 1 ? 's' : ''}`}
           icon="expand"
           onPress={goToCard}
           onOptionsPress={goToCard}
@@ -68,10 +61,15 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
   };
 
   const endWorkout = async () => {
-    if (workout) {
-      await updateConsumableWorkout(workout.id, { ended_at: new Date() });
-      navigation.navigate('Home');
-    }
+    await updateConsumableWorkout({
+      consumableWorkoutId: route.params.consumableWorkoutId,
+      payload: {
+        ended_at: new Date(),
+      },
+    });
+    navigation.navigate('WorkoutSummary', {
+      consumableWorkoutId: route.params.consumableWorkoutId,
+    });
   };
 
   const onStopPress = () => {
@@ -89,9 +87,9 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
 
   return (
     <>
-      {workout && (
+      {consumableWorkout && (
         <UseWorkoutHeader
-          workout={workout}
+          consumableWorkout={consumableWorkout}
           index={visibleIndex}
           isCardView={cardView}
           toggleView={() => {
@@ -103,17 +101,17 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
       <View className="h-full w-full flex-1 bg-slate-50">
         <FlatList
           ref={flatlistRef}
-          data={workout?.exercises}
-          keyExtractor={(item) => item.name}
+          data={consumableWorkout.exercises}
+          keyExtractor={(item) => item}
           renderItem={cardView ? renderCardItem : renderListItem}
           horizontal={cardView}
           snapToAlignment="end"
           viewabilityConfig={viewabilityConfig.current}
           onViewableItemsChanged={onViewableItemsChanged.current}
-          pagingEnabled={true}
           decelerationRate={'fast'}
           className="w-full"
           style={styles.flatlist}
+          pagingEnabled={true}
           showsHorizontalScrollIndicator={false}
           keyboardShouldPersistTaps="always"
         />

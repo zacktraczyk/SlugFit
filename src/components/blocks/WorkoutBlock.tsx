@@ -1,16 +1,16 @@
 import React, { SetStateAction, useState } from 'react';
 import { TextInput } from 'react-native';
-import DoneButton from './DoneButton';
-import { EditableWorkout } from '../types';
-import Block from './blocks/Block';
-import { BlockContainer } from './blocks/BlockContainer';
-import BlockActionsModal from './modals/BlockActionsModal';
+import DoneButton from '../DoneButton';
+import { EditableWorkout } from '../../types';
+import Block from './Block';
+import { BlockContainer } from './BlockContainer';
+import BlockActionsModal from '../modals/BlockActionsModal';
 
 interface WorkoutBlockProps {
   editing?: string;
   setEditing: React.Dispatch<SetStateAction<string | undefined>>;
   workout: EditableWorkout;
-  updateName: (payload: EditableWorkout) => Promise<void>;
+  updateName: (editableWorkoutId: string, payload: Partial<EditableWorkout>) => Promise<void>;
   onPress: (w: EditableWorkout) => void;
   deleteWorkout: (id: string) => Promise<void>;
   duplicateWorkout: (id: string) => Promise<void>;
@@ -40,7 +40,7 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
             value={name}
             onChangeText={setName}
           />
-          <DoneButton onPress={() => updateName({ ...workout, name })} />
+          <DoneButton onPress={() => updateName(workout.id, { name })} />
         </BlockContainer>
       </>
     );

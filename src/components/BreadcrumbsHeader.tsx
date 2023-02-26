@@ -3,16 +3,20 @@ import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { NavigatorParamList } from '../screens/DrawerNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import useBreadcrumbHistory from '../hooks/useBreadcrumbHistory';
 
 interface BreadcrumbsHeaderProps {
-  navigation: NativeStackNavigationProp<NavigatorParamList, keyof NavigatorParamList, undefined>;
-  route: RouteProp<NavigatorParamList, keyof NavigatorParamList>;
+  navigation: NativeStackNavigationProp<
+    Pick<NavigatorParamList, 'MyWorkouts' | 'EditWorkoutPage' | 'EditExercisePage'>,
+    'MyWorkouts' | 'EditWorkoutPage' | 'EditExercisePage',
+    undefined
+  >;
+  route: RouteProp<
+    Pick<NavigatorParamList, 'MyWorkouts' | 'EditWorkoutPage' | 'EditExercisePage'>,
+    'MyWorkouts' | 'EditWorkoutPage' | 'EditExercisePage'
+  >;
 }
 
 const BreadcrumbsHeader: React.FC<BreadcrumbsHeaderProps> = ({ route, navigation }) => {
-  const [workout, exercise] = useBreadcrumbHistory((state) => [state.workout, state.exercise]);
-
   const MyWorkoutsLink = useMemo(() => {
     const shouldAbbreviateName = route.name === 'EditExercisePage';
     const text = shouldAbbreviateName ? '...' : 'My Workouts';
@@ -39,14 +43,20 @@ const BreadcrumbsHeader: React.FC<BreadcrumbsHeaderProps> = ({ route, navigation
         </Text>
         <TouchableOpacity
           accessibilityRole="button"
-          onPress={() => navigation.navigate('EditWorkoutPage')}
+          onPress={() =>
+            navigation.navigate('EditWorkoutPage', {
+              editableWorkoutId: route.params?.editableWorkoutId || '',
+              editableWorkoutName: route.params?.editableWorkoutName || '',
+              exerciseName: '',
+            })
+          }
           hitSlop={{ top: 20, bottom: 20 }}
         >
-          <Text className="text-sm underline">{workout?.name}</Text>
+          <Text className="text-sm underline">{route.params?.editableWorkoutName}</Text>
         </TouchableOpacity>
       </>
     );
-  }, [route.name, workout]);
+  }, [route]);
 
   const shouldRenderEditExercisePageLink = route.name === 'EditExercisePage';
 
@@ -56,10 +66,10 @@ const BreadcrumbsHeader: React.FC<BreadcrumbsHeaderProps> = ({ route, navigation
         <Text>
           {` `}/{` `}
         </Text>
-        <Text className="text-sm">{exercise?.name}</Text>
+        <Text className="text-sm">{route.params?.exerciseName}</Text>
       </>
     );
-  }, [route.name, exercise]);
+  }, [route]);
 
   return (
     <View className="flex flex-1 flex-row">

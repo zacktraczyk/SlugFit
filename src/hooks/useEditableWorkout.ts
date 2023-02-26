@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { EditableWorkout } from '../types';
-import { getEditableWorkout } from '../utils/workouts';
+import { EDITABLE_WORKOUTS_TABLE_NAME, getEditableWorkout } from '../utils/db/editableworkouts';
 
 /**
  * Hooks in to a specific EditableWorkout and gets data
@@ -10,19 +10,27 @@ import { getEditableWorkout } from '../utils/workouts';
  * @param useRealtime Set to true if you want to create a realtime listener for this workout
  * @returns `{workout, fetch, listening}`
  */
-export const useEditableWorkout = (workoutId: string | undefined, useRealtime = false) => {
-  if (workoutId === null || workoutId === undefined) return {};
+export const useEditableWorkout = (editableWorkoutId: string, useRealtime = false) => {
   const [listening, setListening] = useState<boolean>(false);
-  const [workout, setWorkout] = useState<EditableWorkout>({ id: workoutId });
   const [loading, setLoading] = useState<boolean>(false);
+  const [editableWorkout, setEditableWorkout] = useState<Partial<EditableWorkout>>({
+    id: editableWorkoutId,
+    exercises: [],
+  });
+
   const listen = () => {
-    const workoutChannel = supabase.channel('workout-channel');
+    const workoutChannel = supabase.channel(`editable-workout-${editableWorkoutId}-channel`);
 
     workoutChannel.on(
       'postgres_changes',
-      { event: '*', schema: 'public', table: 'workouts', filter: `id=eq.${workoutId}` },
+      {
+        event: '*',
+        schema: 'public',
+        table: EDITABLE_WORKOUTS_TABLE_NAME,
+        filter: `id=eq.${editableWorkoutId}`,
+      },
       (payload) => {
-        setWorkout(payload.new as EditableWorkout);
+        setEditableWorkout(payload.new as EditableWorkout);
       }
     );
 
@@ -41,8 +49,8 @@ export const useEditableWorkout = (workoutId: string | undefined, useRealtime = 
   const fetch = async () => {
     try {
       setLoading(true);
-      const data = await getEditableWorkout(workoutId);
-      setWorkout(data);
+      const data = await getEditableWorkout({ editableWorkoutId });
+      setEditableWorkout(data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -56,7 +64,7 @@ export const useEditableWorkout = (workoutId: string | undefined, useRealtime = 
       const unsubscribe = listen();
       return unsubscribe;
     }
-  }, [workoutId, useRealtime]);
+  }, [editableWorkoutId, useRealtime]);
 
-  return { workout, fetch, listening, loading };
+  return { editableWorkout, fetch, listening, loading };
 };
