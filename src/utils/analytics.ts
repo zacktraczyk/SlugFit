@@ -1,9 +1,10 @@
+import { ChartDataPoint } from 'react-native-responsive-linechart';
 import { ConsumableExercise } from '../types';
 import { getConsumableExercises } from './db/consumableexercises';
 import { isCompletedSet, milliToDays } from './parsing';
 
 export const enum MetricType {
-  INTENSITY = 'intenstiy',
+  INTENSITY = 'intensity',
   WEIGHT = 'weight',
   VOLUME = 'volume',
 }
@@ -19,13 +20,10 @@ export enum Timeframe {
 export interface ExerciseAnalytics {
   exerciseName: string;
   metricType: MetricType;
-  graphData: Array<{
-    date: Date;
-    value: number;
-  }>;
+  graphData: ChartDataPoint[];
 }
 
-type AnalyticsSelector = ({
+export type AnalyticsSelector = ({
   metricType,
   timeframe,
 }: {
@@ -50,10 +48,14 @@ const brzyckiOneRepMax = (w: number, r: number): number => {
  * @returns
  */
 export const calculateMaxIntensity = (exercise: ConsumableExercise): number => {
-  const sets = exercise.exerciseItems
-    .filter(isCompletedSet)
-    .map((set) => brzyckiOneRepMax(Number(set.data?.weight), Number(set.data?.reps)));
-  return Math.max(...sets);
+  const sets = exercise.exerciseItems.filter(isCompletedSet).map((set) => {
+    const k = brzyckiOneRepMax(
+      parseFloat(set.data?.weight || '0'),
+      parseFloat(set.data?.reps || '0')
+    );
+    return k;
+  });
+  return Math.max(0, ...sets);
 };
 
 /**
@@ -64,14 +66,16 @@ export const calculateMaxIntensity = (exercise: ConsumableExercise): number => {
 export const calculateTotalVolume = (exercise: ConsumableExercise): number => {
   const volume = exercise.exerciseItems
     .filter(isCompletedSet)
-    .map((set) => Number(set.data?.weight) * Number(set.data?.reps))
+    .map((set) => parseFloat(set.data?.weight || '0') * parseInt(set.data?.reps || '0'))
     .reduce((acc, vol) => acc + vol);
   return volume;
 };
 
 export const calculateMaxWeight = (exercise: ConsumableExercise): number => {
-  const sets = exercise.exerciseItems.filter(isCompletedSet).map((set) => Number(set.data?.weight));
-  return Math.max(...sets);
+  const sets = exercise.exerciseItems
+    .filter(isCompletedSet)
+    .map((set) => parseFloat(set.data?.weight || '0'));
+  return Math.max(0, ...sets);
 };
 
 export const getAnalyticsForExercise = async ({
@@ -85,14 +89,20 @@ export const getAnalyticsForExercise = async ({
 
   const today = new Date();
 
-  return ({ metricType, timeframe }: { metricType: MetricType; timeframe: Timeframe }) => {
+  return (({ metricType, timeframe }: { metricType: MetricType; timeframe: Timeframe }) => {
     const analytics: ExerciseAnalytics = {
       exerciseName,
       metricType,
       graphData: exercises
-        .filter((exercise) => {
+        .map((exercise) => {
           const exerciseDate = new Date(exercise.created_at);
           const dayDiff = milliToDays(today.getTime() - exerciseDate.getTime());
+          return {
+            ...exercise,
+            dayDiff,
+          };
+        })
+        .filter(({ dayDiff }) => {
           return dayDiff <= timeframe;
         })
         .map((exercise) => {
@@ -109,12 +119,12 @@ export const getAnalyticsForExercise = async ({
               break;
           }
           return {
-            date: new Date(exercise.created_at),
-            value,
+            x: timeframe - exercise.dayDiff,
+            y: value,
           };
         }),
     };
 
     return analytics;
-  };
+  }) as AnalyticsSelector;
 };
