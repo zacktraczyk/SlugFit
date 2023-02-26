@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, Text, View } from 'react-native';
 import {
   Chart,
   Line,
@@ -69,6 +69,7 @@ interface AnalyticsGraphProps {
   exerciseNames: string[];
   metricType: MetricType;
   timeframe: Timeframe;
+  colors: string[];
   onDataPointSelected: (d: ChartDataPoint) => void;
 }
 
@@ -76,6 +77,7 @@ export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({
   exerciseNames,
   metricType,
   timeframe,
+  colors,
   onDataPointSelected,
 }) => {
   const [yMax, setYMax] = useState(50);
@@ -88,7 +90,7 @@ export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({
 
   const ExerciseLines = useMemo(() => {
     setYMax(50);
-    return exerciseNames.map((exerciseName) => (
+    return exerciseNames.map((exerciseName, index) => (
       <ExerciseLine
         key={exerciseName}
         exerciseName={exerciseName}
@@ -96,13 +98,13 @@ export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({
         timeframe={timeframe}
         onChartDataFetched={hoistYMax}
         theme={{
-          stroke: { color: '#ffa502', width: 1 },
+          stroke: { color: colors[index], width: 2, opacity: 0.5 },
           scatter: {
-            default: { width: 10, height: 10, rx: 5, color: 'red', opacity: 0.5 },
+            default: { width: 10, height: 10, rx: 5, color: colors[index], opacity: 0.5 },
             selected: {
               width: 10,
               height: 10,
-              color: 'red',
+              color: colors[index],
               opacity: 1,
             },
           },
@@ -113,9 +115,9 @@ export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({
         tooltipComponent={<GraphTooltip />}
       />
     ));
-  }, [exerciseNames, metricType, timeframe]);
+  }, [exerciseNames, metricType, timeframe, colors]);
 
-  return (
+  return exerciseNames.length > 0 ? (
     <Chart
       style={{
         height: (width / 12) * 10,
@@ -129,5 +131,16 @@ export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({
     >
       {ExerciseLines}
     </Chart>
+  ) : (
+    <View
+      style={{
+        height: (width / 12) * 10,
+        width: (width / 12) * 10,
+        alignSelf: 'center',
+      }}
+      className="flex items-center justify-center"
+    >
+      <Text className="font-light">Select an exercise to analyze</Text>
+    </View>
   );
 };

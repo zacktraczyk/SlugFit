@@ -17,7 +17,7 @@ export const GraphTooltip: React.FC<GraphTooltipProps> = ({ theme, value, positi
   return (
     <View
       className="min-w-12 flex h-8 items-center justify-center rounded-lg bg-slate-900 pl-1 pr-1"
-      style={{ position: 'absolute', top: position?.y - 20, left: position?.x }}
+      style={{ position: 'absolute', top: (position?.y || 0) - 20, left: position?.x || 0 }}
     >
       <Text className="text-white">{value?.y.toFixed(2)}</Text>
     </View>
