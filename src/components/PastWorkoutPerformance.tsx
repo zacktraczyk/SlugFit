@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import Picker from 'react-native-wheel-pick';
 import Modal from 'react-native-modal/dist/modal';
+import { ConsumableWorkout } from '../types';
 
 interface PastWorkoutPerformanceProps {
-  id: string;
+  consumableWorkouts: ConsumableWorkout[];
   setModalVisible: (bool: boolean) => void;
 }
-const PastWorkoutPerformance: React.FC<PastWorkoutPerformanceProps> = ({ id, setModalVisible }) => {
-  const [date, setDate] = useState(new Date());
+const PastWorkoutPerformance: React.FC<PastWorkoutPerformanceProps> = ({
+  consumableWorkouts,
+  setModalVisible,
+}) => {
+  const [pastWorkout, setPastWorkout] = useState<ConsumableWorkout>();
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setDate(currentDate);
+  const onChange = (selectedWorkout) => {
+    const currentWorkout = selectedWorkout;
+    setPastWorkout(currentWorkout);
   };
 
   return (
@@ -23,14 +27,12 @@ const PastWorkoutPerformance: React.FC<PastWorkoutPerformanceProps> = ({ id, set
       onSwipeComplete={() => setModalVisible(false)}
       swipeDirection="down"
     >
-      <View className="absolute w-full h-full bg-white top-2/4 rounded-t-3xl">
-        <View className="self-center w-16 h-1 my-3 bg-gray-400 rounded-lg"></View>
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={'date'}
-          is24Hour={true}
-          onChange={onChange}
+      <View className="absolute top-2/4 h-full w-full rounded-t-3xl bg-white">
+        <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
+        <Picker
+          pickerData={consumableWorkouts.map((workout) => workout.ended_at)}
+          selectedValue={pastWorkout}
+          onValueChange={onChange(consumableWorkouts)}
           display="spinner"
           textColor="black"
         />
