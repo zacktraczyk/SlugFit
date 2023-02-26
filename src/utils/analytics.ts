@@ -121,6 +121,7 @@ export const getAnalyticsForExercise = async ({
           return {
             x: timeframe - exercise.dayDiff,
             y: value,
+            meta: exercise,
           };
         }),
     };

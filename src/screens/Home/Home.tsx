@@ -9,7 +9,8 @@ import { useMyConsumableWorkouts } from '../../hooks/useMyConsumableWorkouts';
 import { useAuth } from '../../contexts/AuthProvider';
 import { ConsumableWorkout } from '../../types';
 import { formatDateToISO } from '../../utils/parsing';
-import { AnalyticsGraph } from '../../components/AnalyticsGraph';
+import { AnalyticsGraph } from '../../components/analytics/AnalyticsGraph';
+import { ExerciseAnalyticsDisplay } from '../../components/analytics/ExerciseAnalyticsDisplay';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;
 
@@ -116,7 +117,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
           <Text className="text-center font-bebas text-2xl text-white">Start A Workout</Text>
         </TouchableOpacity>
       </View>
-      <AnalyticsGraph exerciseNames={['name']} />
+      <ExerciseAnalyticsDisplay />
     </ScrollView>
   );
 };

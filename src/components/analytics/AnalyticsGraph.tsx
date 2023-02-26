@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View } from 'react-native';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { Dimensions, View } from 'react-native';
 import {
   Chart,
   Line,
@@ -14,10 +14,12 @@ import {
   getAnalyticsForExercise,
   MetricType,
   Timeframe,
-} from '../utils/analytics';
-import { useAuth } from '../contexts/AuthProvider';
-import { AnalyticsSelector } from '../utils/analytics';
+} from '../../utils/analytics';
+import { useAuth } from '../../contexts/AuthProvider';
+import { AnalyticsSelector } from '../../utils/analytics';
 import { LineHandle } from 'react-native-responsive-linechart/lib/Line';
+
+const width = Dimensions.get('window').width;
 
 type LineProps = React.ComponentProps<typeof Line>;
 
@@ -64,27 +66,31 @@ ExerciseLine.displayName = 'ExerciseLine';
 
 interface AnalyticsGraphProps {
   exerciseNames: string[];
+  metricType: MetricType;
+  timeframe: Timeframe;
 }
 
-export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({ exerciseNames }) => {
+export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({
+  exerciseNames,
+  metricType,
+  timeframe,
+}) => {
   const [yMax, setYMax] = useState(50);
   const hoistYMax = (graphData: ChartDataPoint[]) => {
+    console.log({ graphData });
     if (graphData && Array.isArray(graphData)) {
       const y = graphData.reduce((acc, { x, y }) => Math.max(acc, y), 0);
       setYMax((_yMax) => Math.max(_yMax, y));
     }
   };
-  return (
-    <Chart
-      style={{ height: 200, width: 400 }}
-      padding={{ bottom: 20, top: 20, left: 20, right: 20 }}
-      data={[]}
-      yDomain={{ min: 0, max: yMax }}
-    >
+
+  const ExerciseLines = useMemo(() => {
+    return exerciseNames.map((exerciseName) => (
       <ExerciseLine
-        exerciseName="Reverse Crunch"
-        metricType={MetricType.INTENSITY}
-        timeframe={Timeframe.WEEK}
+        key={exerciseName}
+        exerciseName={exerciseName}
+        metricType={metricType}
+        timeframe={timeframe}
         onChartDataFetched={hoistYMax}
         theme={{
           stroke: { color: '#ffa502', width: 1 },
@@ -94,6 +100,18 @@ export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({ exerciseNames })
           },
         }}
       />
+    ));
+  }, [exerciseNames, metricType, timeframe]);
+
+  return (
+    <Chart
+      style={{ height: 300, width }}
+      padding={{ bottom: 20, top: 20, left: 20, right: 20 }}
+      data={[]}
+      xDomain={{ min: 0, max: timeframe }}
+      yDomain={{ min: 0, max: yMax }}
+    >
+      {ExerciseLines}
     </Chart>
   );
 };
