@@ -62,7 +62,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
 
   return (
     <View className="h-full w-screen items-center bg-white">
-      <View className="mt-7 flex  h-12 w-11/12 flex-row justify-between  rounded-t border-x border-t border-slate-200 bg-white">
+      <View className="mt-7 flex  h-12 w-11/12 flex-row justify-between rounded border border-slate-200 bg-white ">
         <TextInput
           accessibilityLabel="Exercise Search Text Field "
           accessibilityHint="Input characters to search for an exercise"
@@ -92,7 +92,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
       {hideBodyOnIdle && !searchOnFocus ? (
         <View className="h-1 w-11/12 rounded border-t border-slate-200" />
       ) : (
-        <View className="divide-y-10 invisible  h-60 w-11/12 overflow-scroll border border-slate-200 bg-white ">
+        <View className="divide-y-10 absolute mt-20 h-60 w-11/12 overflow-scroll rounded border border-slate-200">
           <ScrollView keyboardShouldPersistTaps="always">
             {searchInput.length <= 0 ? (
               <View className="mx-5 ">
@@ -134,7 +134,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
               </View>
             ) : (
               <View className="mx-5 ">
-                <Text className="my-1 text-xs font-light "> Search Result:</Text>
+                <Text className="my-1 text-xs font-light"> Search Result:</Text>
                 {searchArray.current.map((item) => {
                   return (
                     <TouchableOpacity

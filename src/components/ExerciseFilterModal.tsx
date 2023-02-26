@@ -1,12 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import Checkbox from './CustomCheckBox';
 
-export type ExerciseSearchBarProps = {
+export type ExerciseFilterModalProps = {
   onClose: (filters: string[] | undefined) => void;
 };
 
@@ -36,10 +35,6 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
   const [selectedSecondary, setSelectedSecondary] = useState(
     new Array(SECONDARYFILTER.length).fill(false)
   );
-  // Load font
-  const [fontsLoaded] = useFonts({
-    BebasNeue_400Regular,
-  });
 
   const styling = StyleSheet.create({
     modalMask: {
@@ -90,10 +85,10 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
                 <AntDesign name="close" size={20} color="grey" />
               </TouchableOpacity>
             </View>
-            {/**Primary: Chest, Back, Shoulders, Abs, Legs */}
+            {/**Primary*/}
             <ScrollView>
-              <View className=" ml-4 w-5/12 border-b border-slate-200 pb-2">
-                <Text className="font-bebas text-lg font-bold"> Primary:</Text>
+              <View className=" ml-4 w-10/12 border-b border-slate-200 pb-2">
+                <Text className="font-bebas text-lg font-bold">Primary:</Text>
               </View>
               <View className="mt-4 flex flex-row justify-between px-8">
                 <View className="flex flex-grow flex-col">
@@ -139,16 +134,9 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
                   })}
                 </View>
               </View>
-              {/**Secondary:
-               * CHEST: Upper Chest, Lower Chest
-               * BACK: Rhomboids, Lat, Lowerback
-               * ABS: Lower, Upper, Obliques, Upper, Total Abs
-               * Legs: Hamstring, Quadriceps, Calves
-               * Traps
-               * Rotator Cuff
-               * */}
-              <View className=" ml-4 mt-10 w-5/12 border-b border-slate-200  pb-2">
-                <Text className="font-bebas text-lg"> Secondary:</Text>
+              {/**Secondary: */}
+              <View className=" ml-4 mt-10 w-10/12 border-b border-slate-200  pb-2">
+                <Text className="font-bebas text-lg">Secondary:</Text>
               </View>
               <View className="mt-4 flex flex-row justify-between px-8">
                 <View className="flex flex-grow flex-col">

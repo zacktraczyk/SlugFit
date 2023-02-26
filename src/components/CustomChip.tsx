@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 
 /**
@@ -17,8 +16,6 @@ export type ChipProps = {
   onRequestClose?: (value?: string, index?: number, color?: string) => void;
 };
 const Chip: React.FC<ChipProps> = ({ value, index, color, closeable = true, onRequestClose }) => {
-  const [show, setShow] = useState(true);
-
   const styling = StyleSheet.create({
     colorProp: {
       backgroundColor: color,
@@ -39,13 +36,12 @@ const Chip: React.FC<ChipProps> = ({ value, index, color, closeable = true, onRe
           accessibilityRole="button"
           onPress={() => {
             onRequestClose(value, index, color);
-            setShow(false);
           }}
         >
           <AntDesign name="close" size={12} color="grey" />
         </TouchableOpacity>
       ) : (
-        <View className="ml-1"/>
+        <View className="ml-1" />
       )}
     </View>
   );
