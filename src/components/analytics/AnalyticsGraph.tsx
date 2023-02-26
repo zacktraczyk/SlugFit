@@ -18,6 +18,7 @@ import {
 import { useAuth } from '../../contexts/AuthProvider';
 import { AnalyticsSelector } from '../../utils/analytics';
 import { LineHandle } from 'react-native-responsive-linechart/lib/Line';
+import { VerticalLineTooltip } from './VerticalLineTooltip';
 
 const width = Dimensions.get('window').width;
 
@@ -68,12 +69,14 @@ interface AnalyticsGraphProps {
   exerciseNames: string[];
   metricType: MetricType;
   timeframe: Timeframe;
+  onDataPointSelected: (d: ChartDataPoint) => void;
 }
 
 export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({
   exerciseNames,
   metricType,
   timeframe,
+  onDataPointSelected,
 }) => {
   const [yMax, setYMax] = useState(50);
   const hoistYMax = (graphData: ChartDataPoint[]) => {
@@ -95,17 +98,30 @@ export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({
         theme={{
           stroke: { color: '#ffa502', width: 1 },
           scatter: {
-            default: { width: 10, height: 10, rx: 2 },
-            selected: { width: 10, height: 10, color: 'red' },
+            default: { width: 10, height: 10, rx: 5, color: 'red', opacity: 0.5 },
+            selected: {
+              width: 10,
+              height: 10,
+              color: 'red',
+              opacity: 1,
+            },
           },
         }}
+        onTooltipSelect={(value) => {
+          onDataPointSelected(value);
+        }}
+        tooltipComponent={<VerticalLineTooltip />}
       />
     ));
   }, [exerciseNames, metricType, timeframe]);
 
   return (
     <Chart
-      style={{ height: 300, width }}
+      style={{
+        height: (width / 12) * 10,
+        width: (width / 12) * 10,
+        alignSelf: 'flex-end',
+      }}
       padding={{ bottom: 20, top: 20, left: 20, right: 20 }}
       data={[]}
       xDomain={{ min: 0, max: timeframe }}

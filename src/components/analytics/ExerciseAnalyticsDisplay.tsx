@@ -21,10 +21,27 @@ export const ExerciseAnalyticsDisplay: React.FC<ExerciseAnalyticsDisplayProps> =
 
   return (
     <View className="h-96 w-full">
-      {/* <SelectedDataDisplay dataPoint={selectedDataPoint} metricType={metricType} /> */}
-      <MetricTypeFilter onChange={setMetricType} metricType={metricType} />
-      <AnalyticsGraph exerciseNames={exerciseNames} metricType={metricType} timeframe={timeframe} />
-      <TimeframeFilter onChange={setTimeframe} timeframe={timeframe} />
+      <SelectedDataDisplay dataPoint={selectedDataPoint} metricType={metricType} />
+      <MetricTypeFilter
+        onChange={(val) => {
+          setMetricType(val);
+          setSelectedDataPoint(undefined);
+        }}
+        metricType={metricType}
+      />
+      <AnalyticsGraph
+        exerciseNames={exerciseNames}
+        metricType={metricType}
+        timeframe={timeframe}
+        onDataPointSelected={setSelectedDataPoint}
+      />
+      <TimeframeFilter
+        onChange={(val) => {
+          setTimeframe(val);
+          setSelectedDataPoint(undefined);
+        }}
+        timeframe={timeframe}
+      />
     </View>
   );
 };
