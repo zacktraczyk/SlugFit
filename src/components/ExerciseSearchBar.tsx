@@ -7,9 +7,13 @@ import ExerciseFilterModal from './ExerciseFilterModal';
 
 export type ExerciseSearchBarProps = {
   onSelectExercise: (exercise: string) => void;
+  hideBodyOnIdle?: boolean;
 };
 
-const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise }) => {
+const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
+  onSelectExercise,
+  hideBodyOnIdle,
+}) => {
   const [allExercises, setAllExercises] = useState<string[]>([]);
   const [searchInput, setSearchInput] = useState('');
   const searchArray = useRef<string[]>([]);
@@ -70,69 +74,59 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
           />
         </View>
       </View>
-      <View className="divide-y-10 invisible  h-60 w-11/12 overflow-scroll border border-slate-200 bg-white">
-        <ScrollView keyboardShouldPersistTaps="always">
-          {searchInput.length <= 0 ? (
-            <View className="mx-5 ">
-              {/**CHIP VIEW*/}
-              <View className="border-b-0.5 flex flex-row border-slate-400 pb-2">
-                <ScrollView horizontal={true}>
-                  {/**CHIP*/}
-
-                  <Chip
-                    value={'Legs'}
-                    index={3}
-                    onRequestClose={(v, i, c) => {
-                      console.log(`val=${v} i=${i}  c=${c} `);
-                    }}
-                    color=""
-                    closeable={false}
-                  />
-                  <Chip
-                    value={'Chest'}
-                    index={2}
-                    onRequestClose={(v, i, c) => {
-                      console.log(`val=${v} i=${i}  c=${c} `);
-                    }}
-                    color=""
-                  />
-                  {/**END OF CHIP*/}
-                </ScrollView>
+      {hideBodyOnIdle && searchInput.length <= 0 ? (
+        <View className="h-1 w-11/12 border-t rounded border-slate-200"/>
+      ) : (
+        <View className="divide-y-10 invisible  h-60 w-11/12 overflow-scroll border border-slate-200 bg-white">
+          <ScrollView keyboardShouldPersistTaps="always">
+            {searchInput.length <= 0 ? (
+              <View className="mx-5 ">
+                {filters.length > 0 ? (
+                  <View className="border-b-0.5 flex flex-row border-slate-400 pb-2">
+                    <ScrollView horizontal={true}>
+                      {filters.map((item) => {
+                        return <Chip key={item} value={item} closeable={false} />;
+                      })}
+                      {/**END OF CHIP*/}
+                    </ScrollView>
+                  </View>
+                ) : (
+                  <View />
+                )}
+                <Text className="text-l mx-1 my-3 font-light ">All Exercises</Text>
+                {allExercises.map((item) => {
+                  return (
+                    <TouchableOpacity
+                      accessibilityRole="button"
+                      key={item}
+                      onPress={() => onPressHandler(item)}
+                      className="mb-1 rounded border border-slate-200 p-3"
+                    >
+                      <Text className="text-l font-bold">{item}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
-              {/**End of CHIP VIEW*/}
-              <Text className="text-l mx-1 my-3 font-light ">All Exercises</Text>
-              {allExercises.map((item) => {
-                return (
-                  <TouchableOpacity
-                    accessibilityRole="button"
-                    key={item}
-                    onPress={() => onPressHandler(item)}
-                    className="mb-1 rounded border border-slate-200 p-3"
-                  >
-                    <Text className="text-l font-bold">{item}</Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          ) : (
-            <View className="mx-5 ">
-              <Text className="my-1 text-xs font-light "> Search Result:</Text>
-              {searchArray.current.map((item) => {
-                return (
-                  <TouchableOpacity
-                    accessibilityRole="button"
-                    key={item}
-                    onPress={() => onPressHandler(item)}
-                    className="mb-1 rounded border border-slate-200 p-3"
-                  >
-                    <Text className="text-l font-bold ">{item}</Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          )}
-        </ScrollView>
-      </View>
+            ) : (
+              <View className="mx-5 ">
+                <Text className="my-1 text-xs font-light "> Search Result:</Text>
+                {searchArray.current.map((item) => {
+                  return (
+                    <TouchableOpacity
+                      accessibilityRole="button"
+                      key={item}
+                      onPress={() => onPressHandler(item)}
+                      className="mb-1 rounded border border-slate-200 p-3"
+                    >
+                      <Text className="text-l font-bold ">{item}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            )}
+          </ScrollView>
+        </View>
+      )}
     </View>
   );
 };
