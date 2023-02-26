@@ -8,7 +8,13 @@ import { isSet } from './typeCheck';
 import { getConsumableExercise } from './db/consumableexercises';
 
 export const isCompletedSet = (s: ConsumableExerciseItem) => {
-  return isSet(s.ref) && s.data && s.data.reps !== undefined && s.data.reps !== null;
+  return (
+    isSet(s.ref) &&
+    s.data &&
+    s.data.reps !== undefined &&
+    s.data.reps !== null &&
+    parseInt(s.data.reps) > 0
+  );
 };
 
 /**
