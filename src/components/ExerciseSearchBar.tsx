@@ -12,9 +12,8 @@ export type ExerciseSearchBarProps = {
 const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise }) => {
   const [allExercises, setAllExercises] = useState<string[]>([]);
   const [searchInput, setSearchInput] = useState('');
-  const recentlyUsedExercise = useRef('');
   const searchArray = useRef<string[]>([]);
-
+  const [filters, setFilters] = useState<string[]>([]);
   if (searchInput.length > 0) {
     searchArray.current = [];
     const tempArr = allExercises.filter((exercise) =>
@@ -44,13 +43,12 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
   }, []);
 
   const onPressHandler = (item: string) => {
-    recentlyUsedExercise.current = item;
     onSelectExercise(item);
   };
 
   return (
     <View className="h-full w-screen items-center bg-white">
-      <View className="mt-7 h-12  flex flex-row w-11/12 rounded-t  border-x border-t border-slate-200 bg-white justify-between">
+      <View className="mt-7 flex  h-12 w-11/12 flex-row justify-between  rounded-t border-x border-t border-slate-200 bg-white">
         <TextInput
           accessibilityLabel="Exercise Search Text Field "
           accessibilityHint="Input characters to search for an exercise"
@@ -65,7 +63,11 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
           autoFocus
         />
         <View className="mr-2">
-          <ExerciseFilterModal />
+          <ExerciseFilterModal
+            onClose={(filterArr) => {
+              setFilters(new Array(...filterArr));
+            }}
+          />
         </View>
       </View>
       <View className="divide-y-10 invisible  h-60 w-11/12 overflow-scroll border border-slate-200 bg-white">
@@ -84,6 +86,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
                       console.log(`val=${v} i=${i}  c=${c} `);
                     }}
                     color=""
+                    closeable={false}
                   />
                   <Chip
                     value={'Chest'}
@@ -97,21 +100,6 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
                 </ScrollView>
               </View>
               {/**End of CHIP VIEW*/}
-              {/**recentlyUsedExercise.current.length > 0 ? (
-                <View>
-                  <Text className="text-l mx-1 my-3 font-light">Recently Used</Text>
-                  <TouchableOpacity
-                    accessibilityRole="button"
-                    key={'recently-used-' + recentlyUsedExercise.current}
-                    onPress={() => onPressHandler(recentlyUsedExercise.current)}
-                    className="mb-1 rounded border border-slate-200 p-3"
-                  >
-                    <Text className="text-l font-bold ">{recentlyUsedExercise.current}</Text>
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <View />
-              )*/}
               <Text className="text-l mx-1 my-3 font-light ">All Exercises</Text>
               {allExercises.map((item) => {
                 return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import { Ionicons } from '@expo/vector-icons';
@@ -6,14 +6,62 @@ import { AntDesign } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import Checkbox from './CustomCheckBox';
 
-const ExerciseFilterModal = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+export type ExerciseSearchBarProps = {
+  onClose: (filters: string[] | undefined) => void;
+};
 
+const PRIMARYFILTER = ['Chest', 'Back', 'Shoulders', 'Triceps', 'Biceps', 'Legs', 'Abs'];
+const SECONDARYFILTER = [
+  'Upper Chest',
+  'Lower Chest',
+  'Rhomboids',
+  'Lat',
+  'Lower Back',
+  'Lower Abs',
+  'Upper Abs',
+  'Total Abs',
+  'Obliques',
+  'Hamstrings',
+  'Quadriceps',
+  'Calves',
+  'Traps',
+  ' Rotator Cuffs',
+];
+
+const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPrimary, setSelectedPrimary] = useState(
+    new Array(PRIMARYFILTER.length).fill(false)
+  );
+  const [selectedSecondary, setSelectedSecondary] = useState(
+    new Array(SECONDARYFILTER.length).fill(false)
+  );
   // Load font
   const [fontsLoaded] = useFonts({
     BebasNeue_400Regular,
   });
 
+  const styling = StyleSheet.create({
+    modalMask: {
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    },
+  });
+
+  const onCloseHandler = () => {
+    setModalVisible(!modalVisible);
+    const filters: string[] = [];
+    for (let i = 0; i < PRIMARYFILTER.length; i++) {
+      if (selectedPrimary[i]) {
+        filters.push(PRIMARYFILTER[i]);
+      }
+    }
+    for (let i = 0; i < SECONDARYFILTER.length; i++) {
+      if (selectedSecondary[i]) {
+        filters.push(SECONDARYFILTER[i]);
+      }
+    }
+    onClose(filters);
+  };
 
   return (
     <View className="my-auto">
@@ -22,169 +70,132 @@ const ExerciseFilterModal = () => {
       </TouchableOpacity>
 
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}
       >
-        <View className="h-full w-full items-center justify-center">
-          <View className="flex h-2/6 w-10/12 flex-col rounded-lg border border-slate-200 bg-white shadow-2xl pb-2 pt-2">
+        <View style={styling.modalMask} className="h-full w-full items-center justify-center">
+          <View className="flex h-4/6 w-10/12 flex-col rounded-lg border border-2 border-slate-200 bg-white py-4 shadow-2xl">
+            <View className="flex flex-row justify-end">
+              <TouchableOpacity
+                className="fixed m-2 mr-4"
+                accessibilityRole="button"
+                onPress={() => {
+                  onCloseHandler();
+                }}
+              >
+                <AntDesign name="close" size={20} color="grey" />
+              </TouchableOpacity>
+            </View>
+            {/**Primary: Chest, Back, Shoulders, Abs, Legs */}
             <ScrollView>
-
-            
-              <View className="flex flex-row justify-end">
-                <TouchableOpacity
-                  className="m-2 mr-4"
-                  accessibilityRole="button"
-                  onPress={() => setModalVisible(!modalVisible)}
-                >
-                  <AntDesign name="close" size={20} color="grey" />
-                </TouchableOpacity>
-              </View>
-
-
-
-              {/**Primary: Chest, Back, Shoulders, Abs, Legs */}
               <View className=" ml-4 w-5/12 border-b border-slate-200 pb-2">
-                <Text className="font-bold font-bebas text-lg"> Primary:</Text>
+                <Text className="font-bebas text-lg font-bold"> Primary:</Text>
               </View>
-
-              <View className="flex flex-row justify-between mt-4">
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Chest</Text>
-                  <Checkbox checked={false} />
+              <View className="mt-4 flex flex-row justify-between px-8">
+                <View className="flex flex-grow flex-col">
+                  {PRIMARYFILTER.slice(
+                    parseInt(PRIMARYFILTER.length / 2),
+                    PRIMARYFILTER.length
+                  ).map((item, index) => {
+                    return (
+                      <View key={item} className="mt-4 flex flex-grow flex-row justify-start">
+                        <Text className="my-auto mr-2 font-bebas">{item}</Text>
+                        <Checkbox
+                          checked={selectedPrimary[index + parseInt(PRIMARYFILTER.length / 2)]}
+                          onPress={() => {
+                            setSelectedPrimary((prevArray) => {
+                              const tempArray = [...prevArray];
+                              tempArray[index + parseInt(PRIMARYFILTER.length / 2)] =
+                                !prevArray[index + parseInt(PRIMARYFILTER.length / 2)];
+                              return tempArray;
+                            });
+                          }}
+                        />
+                      </View>
+                    );
+                  })}
                 </View>
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Back</Text>
-                  <Checkbox checked={false} />
+                <View className="flex flex-grow flex-col ">
+                  {PRIMARYFILTER.slice(0, parseInt(PRIMARYFILTER.length / 2)).map((item, index) => {
+                    return (
+                      <View key={item} className="mt-4 flex flex-grow flex-row justify-start">
+                        <Text className="my-auto mr-2 font-bebas">{item}</Text>
+                        <Checkbox
+                          checked={selectedPrimary[index]}
+                          onPress={() => {
+                            setSelectedPrimary((prevArray) => {
+                              const tempArray = [...prevArray];
+                              tempArray[index] = !prevArray[index];
+                              return tempArray;
+                            });
+                          }}
+                        />
+                      </View>
+                    );
+                  })}
                 </View>
               </View>
-
-              <View className="flex flex-row justify-between mt-4">
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Shoulders</Text>
-                  <Checkbox checked={false} />
-                </View>
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Biceps</Text>
-                  <Checkbox checked={false} />
-                </View>
-              </View>
-
-              <View className="flex flex-row justify-between mt-4">
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Triceps</Text>
-                  <Checkbox checked={false} />
-                </View>
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Abs</Text>
-                  <Checkbox checked={false} />
-                </View>
-              </View>
-
-              <View className="flex flex-row justify-between mt-4">
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Legs</Text>
-                  <Checkbox checked={false} />
-                </View>
-              </View>
-
-              {/**Secondary:  
-               * CHEST: Upper Chest, Lower Chest  
+              {/**Secondary:
+               * CHEST: Upper Chest, Lower Chest
                * BACK: Rhomboids, Lat, Lowerback
                * ABS: Lower, Upper, Obliques, Upper, Total Abs
                * Legs: Hamstring, Quadriceps, Calves
                * Traps
                * Rotator Cuff
                * */}
-
-              <View className=" ml-4 w-5/12 border-b border-slate-200 pb-2  mt-10">
+              <View className=" ml-4 mt-10 w-5/12 border-b border-slate-200  pb-2">
                 <Text className="font-bebas text-lg"> Secondary:</Text>
               </View>
-
-              <View className="flex flex-row justify-between mt-4">
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Upper Chest</Text>
-                  <Checkbox checked={false} />
+              <View className="mt-4 flex flex-row justify-between px-8">
+                <View className="flex flex-grow flex-col">
+                  {SECONDARYFILTER.slice(
+                    parseInt(SECONDARYFILTER.length / 2),
+                    SECONDARYFILTER.length
+                  ).map((item, index) => {
+                    return (
+                      <View key={item} className="mt-4 flex flex-grow flex-row justify-start">
+                        <Text className="my-auto mr-2 font-bebas">{item}</Text>
+                        <Checkbox
+                          checked={selectedSecondary[index + parseInt(SECONDARYFILTER.length / 2)]}
+                          onPress={() => {
+                            setSelectedSecondary((prevArray) => {
+                              const tempArray = [...prevArray];
+                              tempArray[index + parseInt(SECONDARYFILTER.length / 2)] =
+                                !prevArray[index + parseInt(SECONDARYFILTER.length / 2)];
+                              return tempArray;
+                            });
+                          }}
+                        />
+                      </View>
+                    );
+                  })}
                 </View>
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Lower Chest</Text>
-                  <Checkbox checked={false} />
-                </View>
-              </View>
-
-              <View className="flex flex-row justify-between mt-4">
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Rhomboids</Text>
-                  <Checkbox checked={false} />
-                </View>
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Lat</Text>
-                  <Checkbox checked={false} />
-                </View>
-              </View>
-
-              <View className="flex flex-row justify-between mt-4">
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Lower Back</Text>
-                  <Checkbox checked={false} />
-                </View>
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Lower Abs</Text>
-                  <Checkbox checked={false} />
-                </View>
-              </View>
-
-              <View className="flex flex-row justify-between mt-4">
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Upper Abs</Text>
-                  <Checkbox checked={false} />
-                </View>
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Total Abs</Text>
-                  <Checkbox checked={false} />
-                </View>
-              </View>
-
-              <View className="flex flex-row justify-between mt-4">
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Obliques</Text>
-                  <Checkbox checked={false} />
-                </View>
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Hamstrings</Text>
-                  <Checkbox checked={false} />
+                <View className="flex flex-grow flex-col ">
+                  {SECONDARYFILTER.slice(0, parseInt(SECONDARYFILTER.length / 2)).map(
+                    (item, index) => {
+                      return (
+                        <View key={item} className="mt-4 flex flex-grow flex-row justify-start">
+                          <Text className="my-auto mr-2 font-bebas">{item}</Text>
+                          <Checkbox
+                            checked={selectedSecondary[index]}
+                            onPress={() => {
+                              setSelectedSecondary((prevArray) => {
+                                const tempArray = [...prevArray];
+                                tempArray[index] = !prevArray[index];
+                                return tempArray;
+                              });
+                            }}
+                          />
+                        </View>
+                      );
+                    }
+                  )}
                 </View>
               </View>
-
-              <View className="flex flex-row justify-between mt-4">
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Quadriceps</Text>
-                  <Checkbox checked={false} />
-                </View>
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Calves</Text>
-                  <Checkbox checked={false} />
-                </View>
-              </View>
-
-              <View className="flex flex-row justify-between mt-4">
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Traps</Text>
-                  <Checkbox checked={false} />
-                </View>
-                <View className="flex flex-row flex-grow justify-center">
-                  <Text className="mr-2 font-bebas">Rotator Cuffs</Text>
-                  <Checkbox checked={false} />
-                </View>
-              </View>
-
-              
-
-
-
             </ScrollView>
           </View>
         </View>
@@ -192,14 +203,5 @@ const ExerciseFilterModal = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-});
 
 export default ExerciseFilterModal;
