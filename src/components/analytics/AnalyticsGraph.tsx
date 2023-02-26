@@ -77,14 +77,14 @@ export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({
 }) => {
   const [yMax, setYMax] = useState(50);
   const hoistYMax = (graphData: ChartDataPoint[]) => {
-    console.log({ graphData });
     if (graphData && Array.isArray(graphData)) {
-      const y = graphData.reduce((acc, { x, y }) => Math.max(acc, y), 0);
-      setYMax((_yMax) => Math.max(_yMax, y));
+      const y = graphData.reduce((acc, { y }) => Math.max(acc, y), 0);
+      setYMax((_yMax) => Math.max(y, _yMax));
     }
   };
 
   const ExerciseLines = useMemo(() => {
+    setYMax(50);
     return exerciseNames.map((exerciseName) => (
       <ExerciseLine
         key={exerciseName}

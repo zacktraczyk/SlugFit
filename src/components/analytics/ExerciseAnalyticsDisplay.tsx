@@ -21,8 +21,8 @@ export const ExerciseAnalyticsDisplay: React.FC<ExerciseAnalyticsDisplayProps> =
 
   return (
     <View className="h-96 w-full">
-      {/* <SelectedDataDisplay dataPoint={selectedDataPoint} metricType={metricType} />
-      <MetricTypeFilter onChange={setMetricType} /> */}
+      {/* <SelectedDataDisplay dataPoint={selectedDataPoint} metricType={metricType} /> */}
+      <MetricTypeFilter onChange={setMetricType} metricType={metricType} />
       <AnalyticsGraph exerciseNames={exerciseNames} metricType={metricType} timeframe={timeframe} />
       <TimeframeFilter onChange={setTimeframe} timeframe={timeframe} />
     </View>

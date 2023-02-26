@@ -67,7 +67,7 @@ export const calculateTotalVolume = (exercise: ConsumableExercise): number => {
   const volume = exercise.exerciseItems
     .filter(isCompletedSet)
     .map((set) => parseFloat(set.data?.weight || '0') * parseInt(set.data?.reps || '0'))
-    .reduce((acc, vol) => acc + vol);
+    .reduce((acc, vol) => acc + vol, 0);
   return volume;
 };
 
