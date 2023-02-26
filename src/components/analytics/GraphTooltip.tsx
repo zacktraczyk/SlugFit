@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { ChartDataPoint, XYValue, Shape, Label } from 'react-native-responsive-linechart';
-import MaterialCommunityIcon from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface GraphTooltipProps {
   theme?: {
@@ -13,7 +12,7 @@ interface GraphTooltipProps {
   position?: XYValue;
 }
 
-export const GraphTooltip: React.FC<GraphTooltipProps> = ({ theme, value, position }) => {
+export const GraphTooltip: React.FC<GraphTooltipProps> = ({ value, position }) => {
   return (
     <View
       className="min-w-12 flex h-8 items-center justify-center rounded-lg bg-slate-900 pl-1 pr-1"

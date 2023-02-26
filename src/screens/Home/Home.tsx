@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, FlatList, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import Ionicon from '@expo/vector-icons/Ionicons';
@@ -9,7 +9,6 @@ import { useMyConsumableWorkouts } from '../../hooks/useMyConsumableWorkouts';
 import { useAuth } from '../../contexts/AuthProvider';
 import { ConsumableWorkout } from '../../types';
 import { formatDateToISO } from '../../utils/parsing';
-import { AnalyticsGraph } from '../../components/analytics/AnalyticsGraph';
 import { ExerciseAnalyticsDisplay } from '../../components/analytics/ExerciseAnalyticsDisplay';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;

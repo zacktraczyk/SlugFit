@@ -1,14 +1,6 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { Dimensions, Text, View } from 'react-native';
-import {
-  Chart,
-  Line,
-  Area,
-  HorizontalAxis,
-  VerticalAxis,
-  ChartDataPoint,
-  Tooltip,
-} from 'react-native-responsive-linechart';
+import { Chart, Line, ChartDataPoint } from 'react-native-responsive-linechart';
 import {
   ExerciseAnalytics,
   getAnalyticsForExercise,

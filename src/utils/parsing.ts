@@ -1,9 +1,4 @@
-import {
-  ConsumableExercise,
-  ConsumableExerciseItem,
-  EditableExercise,
-  ConsumableWorkout,
-} from '../types';
+import { ConsumableExercise, ConsumableExerciseItem, ConsumableWorkout } from '../types';
 import { isSet } from './typeCheck';
 import { getConsumableExercise } from './db/consumableexercises';
 

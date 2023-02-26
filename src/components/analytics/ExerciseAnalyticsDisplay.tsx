@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useReducer } from 'react';
+import React, { useState } from 'react';
 import { View, Text, FlatList, Dimensions } from 'react-native';
 import { ChartDataPoint } from 'react-native-responsive-linechart';
 import { MetricType, Timeframe } from '../../utils/analytics';

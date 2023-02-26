@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
-import React, {useMemo, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import NoteBlock from './blocks/ExerciseNoteBlock';
 import RestBlock from './blocks/ExerciseRestBlock';
 import SetBlock from './blocks/ExerciseSetBlock';
 import { ConsumableExerciseData, EditableExerciseItem, ConsumableExerciseItem, ConsumableExercise } from '../types';
-import {isSet, isNote, isRest} from '../utils/typeCheck';
+import {isSet} from '../utils/typeCheck';
 import { useConsumableExercise } from '../hooks/useConsumableExercise';
 import { updateConsumableExercise } from '../utils/db/consumableexercises';
 
@@ -55,7 +55,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
     }, [exercise, rerender]);
 
     // Load font
-    const [fontsLoaded] = useFonts({
+    useFonts({
         BebasNeue_400Regular,
     });
 
@@ -64,8 +64,8 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
             if(oldExercise.exerciseItems) {
                 const oldData = oldExercise.exerciseItems[index].data;
                 oldExercise.exerciseItems[index].data = {
-                    reps: oldData?.reps || 0,
-                    weight: oldData?.weight || 0,
+                    reps: oldData?.reps || '0',
+                    weight: oldData?.weight || '0',
                     bodyweight: oldData?.bodyweight || false,
                     ...payload,
                 }
