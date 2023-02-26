@@ -10,19 +10,29 @@ export type ExerciseSearchBarProps = {
   hideBodyOnIdle?: boolean;
 };
 
+type Exercise = {
+  name: string;
+  muscleGroup: string;
+};
+
 const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
   onSelectExercise,
   hideBodyOnIdle,
 }) => {
-  const [allExercises, setAllExercises] = useState<string[]>([]);
+  const [allExercises, setAllExercises] = useState<Exercise[]>([]);
   const [searchInput, setSearchInput] = useState('');
-  const searchArray = useRef<string[]>([]);
+  const searchArray = useRef<Exercise[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
+  const [searchOnFocus, setSearchOnFocus] = useState(false);
   if (searchInput.length > 0) {
     searchArray.current = [];
-    const tempArr = allExercises.filter((exercise) =>
-      exercise.toLowerCase().includes(searchInput.toLowerCase())
-    );
+    const tempArr = allExercises.filter((exercise) => {
+      let val = true;
+      for (let i = 0; i < filters.length; i++) {
+        val = val && exercise.muscleGroup.toLowerCase().includes(filters[i].toLowerCase());
+      }
+      return val && exercise.name.toLowerCase().includes(searchInput.toLowerCase());
+    });
     tempArr.map((exercise) => {
       searchArray.current.push(exercise);
     });
@@ -34,9 +44,9 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
       alert(error);
     }
     if (data != null) {
-      const temp: string[] = [];
+      const temp: Exercise[] = [];
       data.map((exercise) => {
-        temp.push(exercise.name);
+        temp.push({ name: exercise.name, muscleGroup: exercise.muscle_group });
       });
       setAllExercises(temp);
     }
@@ -61,10 +71,15 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
           placeholder="Search for an exercise"
           returnKeyType="next"
           value={searchInput}
+          onFocus={() => {
+            setSearchOnFocus(true);
+          }}
+          onBlur={() => {
+            setSearchOnFocus(false);
+          }}
           onChangeText={(value) => {
             setSearchInput(value);
           }}
-          autoFocus
         />
         <View className="mr-2">
           <ExerciseFilterModal
@@ -74,10 +89,10 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
           />
         </View>
       </View>
-      {hideBodyOnIdle && searchInput.length <= 0 ? (
-        <View className="h-1 w-11/12 border-t rounded border-slate-200"/>
+      {hideBodyOnIdle && !searchOnFocus ? (
+        <View className="h-1 w-11/12 rounded border-t border-slate-200" />
       ) : (
-        <View className="divide-y-10 invisible  h-60 w-11/12 overflow-scroll border border-slate-200 bg-white">
+        <View className="divide-y-10 invisible  h-60 w-11/12 overflow-scroll border border-slate-200 bg-white ">
           <ScrollView keyboardShouldPersistTaps="always">
             {searchInput.length <= 0 ? (
               <View className="mx-5 ">
@@ -94,18 +109,28 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
                   <View />
                 )}
                 <Text className="text-l mx-1 my-3 font-light ">All Exercises</Text>
-                {allExercises.map((item) => {
-                  return (
-                    <TouchableOpacity
-                      accessibilityRole="button"
-                      key={item}
-                      onPress={() => onPressHandler(item)}
-                      className="mb-1 rounded border border-slate-200 p-3"
-                    >
-                      <Text className="text-l font-bold">{item}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
+                {allExercises
+                  .filter((exercise) => {
+                    let val = true;
+                    for (let i = 0; i < filters.length; i++) {
+                      val =
+                        val &&
+                        exercise.muscleGroup.toLowerCase().includes(filters[i].toLowerCase());
+                    }
+                    return val;
+                  })
+                  .map((item) => {
+                    return (
+                      <TouchableOpacity
+                        accessibilityRole="button"
+                        key={item.name}
+                        onPress={() => onPressHandler(item.name)}
+                        className="mb-1 rounded border border-slate-200 p-3"
+                      >
+                        <Text className="text-l font-bold">{item.name}</Text>
+                      </TouchableOpacity>
+                    );
+                  })}
               </View>
             ) : (
               <View className="mx-5 ">
@@ -114,17 +139,18 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
                   return (
                     <TouchableOpacity
                       accessibilityRole="button"
-                      key={item}
-                      onPress={() => onPressHandler(item)}
+                      key={item.name}
+                      onPress={() => onPressHandler(item.name)}
                       className="mb-1 rounded border border-slate-200 p-3"
                     >
-                      <Text className="text-l font-bold ">{item}</Text>
+                      <Text className="text-l font-bold ">{item.name}</Text>
                     </TouchableOpacity>
                   );
                 })}
               </View>
             )}
           </ScrollView>
+          <View className="h-10 w-10"></View>
         </View>
       )}
     </View>

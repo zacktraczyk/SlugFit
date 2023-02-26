@@ -25,7 +25,7 @@ const SECONDARYFILTER = [
   'Quadriceps',
   'Calves',
   'Traps',
-  ' Rotator Cuffs',
+  ' Rotator Cuff',
 ];
 
 const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) => {

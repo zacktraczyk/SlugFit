@@ -20,8 +20,6 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
 
   return (
     <View className="flex h-full flex-col items-center justify-center">
-      <ExerciseSearchBar/>
-      
     </View>
   );
 };
