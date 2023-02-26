@@ -14,34 +14,26 @@ interface ExerciseAnalyticsDisplayProps {
 export const ExerciseAnalyticsDisplay: React.FC<ExerciseAnalyticsDisplayProps> = ({
   numCanSelect = 2,
 }) => {
-  const [exerciseNames, setExerciseNames] = useState<string[]>(['Reverse Crunch']);
+  const [exerciseNames, setExerciseNames] = useState<string[]>([
+    'Reverse Crunch',
+    'Alternating Heel Touch',
+  ]);
   const [metricType, setMetricType] = useState<MetricType>(MetricType.INTENSITY);
   const [timeframe, setTimeframe] = useState<Timeframe>(Timeframe.WEEK);
   const [selectedDataPoint, setSelectedDataPoint] = useState<ChartDataPoint | undefined>(undefined);
 
   return (
     <View className="h-96 w-full">
-      <SelectedDataDisplay dataPoint={selectedDataPoint} metricType={metricType} />
-      <MetricTypeFilter
-        onChange={(val) => {
-          setMetricType(val);
-          setSelectedDataPoint(undefined);
-        }}
-        metricType={metricType}
-      />
+      <MetricTypeFilter onChange={setMetricType} metricType={metricType} />
       <AnalyticsGraph
         exerciseNames={exerciseNames}
         metricType={metricType}
         timeframe={timeframe}
         onDataPointSelected={setSelectedDataPoint}
       />
-      <TimeframeFilter
-        onChange={(val) => {
-          setTimeframe(val);
-          setSelectedDataPoint(undefined);
-        }}
-        timeframe={timeframe}
-      />
+      <SelectedDataDisplay dataPoint={selectedDataPoint} metricType={metricType} />
+
+      <TimeframeFilter onChange={setTimeframe} timeframe={timeframe} />
     </View>
   );
 };

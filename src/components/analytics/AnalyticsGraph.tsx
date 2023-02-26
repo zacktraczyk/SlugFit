@@ -18,7 +18,7 @@ import {
 import { useAuth } from '../../contexts/AuthProvider';
 import { AnalyticsSelector } from '../../utils/analytics';
 import { LineHandle } from 'react-native-responsive-linechart/lib/Line';
-import { VerticalLineTooltip } from './VerticalLineTooltip';
+import { GraphTooltip } from './GraphTooltip';
 
 const width = Dimensions.get('window').width;
 
@@ -110,7 +110,7 @@ export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({
         onTooltipSelect={(value) => {
           onDataPointSelected(value);
         }}
-        tooltipComponent={<VerticalLineTooltip />}
+        tooltipComponent={<GraphTooltip />}
       />
     ));
   }, [exerciseNames, metricType, timeframe]);

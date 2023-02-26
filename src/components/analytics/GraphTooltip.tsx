@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { ChartDataPoint, XYValue, Shape, Label } from 'react-native-responsive-linechart';
 import MaterialCommunityIcon from '@expo/vector-icons/MaterialCommunityIcons';
 
-interface VerticalLineTooltipProps {
+interface GraphTooltipProps {
   theme?: {
     label?: Label;
     shape?: Shape;
@@ -13,14 +13,13 @@ interface VerticalLineTooltipProps {
   position?: XYValue;
 }
 
-export const VerticalLineTooltip: React.FC<VerticalLineTooltipProps> = ({
-  theme,
-  value,
-  position,
-}) => {
+export const GraphTooltip: React.FC<GraphTooltipProps> = ({ theme, value, position }) => {
   return (
-    <View style={{ position: 'absolute', top: position?.y, left: position.x }}>
-      <MaterialCommunityIcon name="dumbbell" size={12} />
+    <View
+      className="min-w-12 flex h-8 items-center justify-center rounded-lg bg-slate-900 pl-1 pr-1"
+      style={{ position: 'absolute', top: position?.y - 20, left: position?.x }}
+    >
+      <Text className="text-white">{value?.y.toFixed(2)}</Text>
     </View>
   );
 };
