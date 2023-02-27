@@ -1,12 +1,17 @@
 /* eslint-disable prettier/prettier */
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import NoteBlock from './blocks/ExerciseNoteBlock';
 import RestBlock from './blocks/ExerciseRestBlock';
 import SetBlock from './blocks/ExerciseSetBlock';
-import { ConsumableExerciseData, EditableExerciseItem, ConsumableExerciseItem, ConsumableExercise } from '../types';
-import {isSet} from '../utils/typeCheck';
+import {
+  ConsumableExerciseData,
+  EditableExerciseItem,
+  ConsumableExerciseItem,
+  ConsumableExercise,
+} from '../types';
+import { isSet } from '../utils/typeCheck';
 import { useConsumableExercise } from '../hooks/useConsumableExercise';
 import { updateConsumableExercise } from '../utils/db/consumableexercises';
 
@@ -65,39 +70,39 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
     BebasNeue_400Regular,
   });
 
-    // Load font
-    useFonts({
-        BebasNeue_400Regular,
+  // Load font
+  useFonts({
+    BebasNeue_400Regular,
+  });
+  setRerender((_rerender) => !_rerender);
+
+  const updateExerciseCardItem = (index, payload: Partial<ConsumableExerciseData>) => {
+    setExercise((oldExercise) => {
+      if (oldExercise.exerciseItems) {
+        const oldData = oldExercise.exerciseItems[index].data;
+        oldExercise.exerciseItems[index].data = {
+          reps: oldData?.reps || '0',
+          weight: oldData?.weight || '0',
+          bodyweight: oldData?.bodyweight || false,
+          ...payload,
+        };
+      }
+      updateConsumableExercise({ consumableWorkoutId, exerciseName, payload: oldExercise });
+      return oldExercise;
     });
     setRerender((_rerender) => !_rerender);
   };
 
-    const updateExerciseCardItem = (index, payload: Partial<ConsumableExerciseData>) => {
-        setExercise(oldExercise => {
-            if(oldExercise.exerciseItems) {
-                const oldData = oldExercise.exerciseItems[index].data;
-                oldExercise.exerciseItems[index].data = {
-                    reps: oldData?.reps || '0',
-                    weight: oldData?.weight || '0',
-                    bodyweight: oldData?.bodyweight || false,
-                    ...payload,
-                }
-            }
-            updateConsumableExercise({consumableWorkoutId, exerciseName, payload: oldExercise})
-            return oldExercise;
-        })
-        setRerender(_rerender => !_rerender)
-    };
-    
-    return (
-        <ScrollView className='flex-1 w-full h-full bg-white p-4'>
-            <View className='h-10 w-full mb-2 content-evenly border-b border-slate-200 flex-row justify-between'>
-                <Text className="m-1 mt-3 ml-3 font-bold text-center">{exercise.exerciseName}</Text>
-                {/* <Text style={currentSetsDone==maxSets.current?styling.greenText:styling.redText} className="m-1 mt-3 mr-3 font-bold"> {currentSetsDone} / {maxSets.current} Sets Done</Text> */}
-            </View>
-            {exerciseItems}
-        </ScrollView>)
-}
+  return (
+    <ScrollView className="h-full w-full flex-1 bg-white p-4">
+      <View className="mb-2 h-10 w-full flex-row content-evenly justify-between border-b border-slate-200">
+        <Text className="m-1 mt-3 ml-3 text-center font-bold">{exercise.exerciseName}</Text>
+        {/* <Text style={currentSetsDone==maxSets.current?styling.greenText:styling.redText} className="m-1 mt-3 mr-3 font-bold"> {currentSetsDone} / {maxSets.current} Sets Done</Text> */}
+      </View>
+      {exerciseItems}
+    </ScrollView>
+  );
+};
 
 const styling = StyleSheet.create({
   container: {
