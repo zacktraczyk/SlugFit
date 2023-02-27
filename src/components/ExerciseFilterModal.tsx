@@ -91,14 +91,13 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
                 <Text className="font-bebas text-lg font-bold">Primary:</Text>
               </View>
               <View className="mt-4 flex flex-row justify-between px-8">
-                <View className="flex flex-grow flex-col">
+                <View className="flex flex-1 flex-col">
                   {PRIMARYFILTER.slice(
                     parseInt(PRIMARYFILTER.length / 2),
                     PRIMARYFILTER.length
                   ).map((item, index) => {
                     return (
                       <View key={item} className="mt-4 flex flex-grow flex-row justify-start">
-                        <Text className="my-auto mr-2 font-bebas">{item}</Text>
                         <Checkbox
                           checked={selectedPrimary[index + parseInt(PRIMARYFILTER.length / 2)]}
                           onPress={() => {
@@ -110,15 +109,15 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
                             });
                           }}
                         />
+                        <Text className="my-auto ml-1 font-bebas">{item}</Text>
                       </View>
                     );
                   })}
                 </View>
-                <View className="flex flex-grow flex-col ">
+                <View className="flex flex-1 flex-col ">
                   {PRIMARYFILTER.slice(0, parseInt(PRIMARYFILTER.length / 2)).map((item, index) => {
                     return (
-                      <View key={item} className="mt-4 flex flex-grow flex-row justify-start">
-                        <Text className="my-auto mr-2 font-bebas">{item}</Text>
+                      <View key={item} className="mt-4 flex flex-row justify-start">
                         <Checkbox
                           checked={selectedPrimary[index]}
                           onPress={() => {
@@ -129,6 +128,7 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
                             });
                           }}
                         />
+                        <Text className="my-auto ml-1 font-bebas">{item}</Text>
                       </View>
                     );
                   })}
@@ -139,14 +139,13 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
                 <Text className="font-bebas text-lg">Secondary:</Text>
               </View>
               <View className="mt-4 flex flex-row justify-between px-8">
-                <View className="flex flex-grow flex-col">
+                <View className="flex flex-1 flex-col">
                   {SECONDARYFILTER.slice(
                     parseInt(SECONDARYFILTER.length / 2),
                     SECONDARYFILTER.length
                   ).map((item, index) => {
                     return (
                       <View key={item} className="mt-4 flex flex-grow flex-row justify-start">
-                        <Text className="my-auto mr-2 font-bebas">{item}</Text>
                         <Checkbox
                           checked={selectedSecondary[index + parseInt(SECONDARYFILTER.length / 2)]}
                           onPress={() => {
@@ -158,16 +157,16 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
                             });
                           }}
                         />
+                        <Text className="my-auto ml-1 font-bebas">{item}</Text>
                       </View>
                     );
                   })}
                 </View>
-                <View className="flex flex-grow flex-col ">
+                <View className="flex flex-1 flex-col">
                   {SECONDARYFILTER.slice(0, parseInt(SECONDARYFILTER.length / 2)).map(
                     (item, index) => {
                       return (
                         <View key={item} className="mt-4 flex flex-grow flex-row justify-start">
-                          <Text className="my-auto mr-2 font-bebas">{item}</Text>
                           <Checkbox
                             checked={selectedSecondary[index]}
                             onPress={() => {
@@ -178,6 +177,7 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
                               });
                             }}
                           />
+                          <Text className="my-auto ml-1 font-bebas">{item}</Text>
                         </View>
                       );
                     }

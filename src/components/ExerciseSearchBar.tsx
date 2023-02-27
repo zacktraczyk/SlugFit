@@ -61,8 +61,8 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
   };
 
   return (
-    <View className="h-full w-screen items-center bg-white">
-      <View className="mt-7 flex  h-12 w-11/12 flex-row justify-between rounded border border-slate-200 bg-white ">
+    <View className="z-50 w-screen items-center bg-white">
+      <View className="mt-7 flex  h-12 w-11/12 flex-row justify-between rounded border border-slate-200 bg-white">
         <TextInput
           accessibilityLabel="Exercise Search Text Field "
           accessibilityHint="Input characters to search for an exercise"
@@ -89,10 +89,8 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
           />
         </View>
       </View>
-      {hideBodyOnIdle && !searchOnFocus ? (
-        <View className="h-1 w-11/12 rounded border-t border-slate-200" />
-      ) : (
-        <View className="divide-y-10 absolute mt-20 h-60 w-11/12 overflow-scroll rounded border border-slate-200">
+      {hideBodyOnIdle && !searchOnFocus ? null : (
+        <View className="divide-y-10 absolute z-50 mt-20 h-60 w-11/12 overflow-scroll rounded border border-slate-200 bg-white">
           <ScrollView keyboardShouldPersistTaps="always">
             {searchInput.length <= 0 ? (
               <View className="mx-5 ">
@@ -105,9 +103,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
                       {/**END OF CHIP*/}
                     </ScrollView>
                   </View>
-                ) : (
-                  <View />
-                )}
+                ) : null}
                 <Text className="text-l mx-1 my-3 font-light ">All Exercises</Text>
                 {allExercises
                   .filter((exercise) => {
