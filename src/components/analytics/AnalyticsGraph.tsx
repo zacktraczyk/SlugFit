@@ -51,6 +51,13 @@ const ExerciseLine: React.ForwardRefExoticComponent<ExerciseLineProps & LineProp
         }
       }, [metricType, timeframe, analyticsSelector, selectorIsSet]);
 
+      if (
+        analytics?.graphData === null ||
+        analytics?.graphData === undefined ||
+        analytics.graphData.length == 0
+      )
+        return null;
+
       return <Line data={analytics?.graphData || [{ x: 0, y: 0 }]} {...rest} ref={ref} />;
     }
   );
