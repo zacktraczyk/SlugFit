@@ -8,6 +8,7 @@ import { getConsumableExercises } from '../utils/db/consumableexercises';
 import { useAuth } from '../contexts/AuthProvider';
 import { isSet } from '../utils/typeCheck';
 import { formatLbs, getMaxIntensity, getMaxLbs, getTotalVolume } from '../utils/exerciseStats';
+import { isConsumableExerciseEmpty } from '../utils/parsing';
 
 type ProfileProps = NativeStackScreenProps<NavigatorParamList, 'WorkoutSummary'>;
 
@@ -78,6 +79,25 @@ interface ConsumedExerciseStatsCard {
 }
 
 const ConusmedExerciseStatsCard: React.FC<ConsumedExerciseStatsCard> = ({ exercise }) => {
+  const overallStats = {
+    maxLb: getMaxLbs(exercise.exerciseItems),
+    maxIntensity: getMaxIntensity(exercise.exerciseItems),
+    totalVolume: getTotalVolume(exercise.exerciseItems),
+  };
+
+  const isExerciseAllBodyweight = ({ maxLb, maxIntensity, totalVolume }) => {
+    return maxLb == -1 && maxIntensity == -1 && totalVolume == -1;
+  };
+
+  if (isConsumableExerciseEmpty(exercise)) {
+    return (
+      <View className="my-4 flex flex-row justify-between rounded-xl border border-gray-100 bg-white py-5 px-10 shadow">
+        <Text className="w-[90px] text-left font-bebas">{exercise.exerciseName}</Text>
+        <Text className="text-center font-bebas text-red-700">Exercise not started</Text>
+      </View>
+    );
+  }
+
   return (
     <View className="my-4 flex flex-row items-center rounded-xl border border-gray-100 bg-white py-5 px-2 shadow">
       <View className="">
@@ -103,12 +123,19 @@ const ConusmedExerciseStatsCard: React.FC<ConsumedExerciseStatsCard> = ({ exerci
         })}
       </View>
 
-      <View className="ml-4">
-        <OverallStats
-          maxLb={formatLbs(getMaxLbs(exercise.exerciseItems))}
-          maxIntensity={formatLbs(getMaxIntensity(exercise.exerciseItems))}
-          totalVolume={formatLbs(getTotalVolume(exercise.exerciseItems))}
-        />
+      <View className="ml-4 grow">
+        {isExerciseAllBodyweight(overallStats) ? (
+          <View>
+            <Text className="text-center font-bebas text-gray-300">Body Weight</Text>
+            <Text className="text-center font-bebas text-gray-300">(No Stats)</Text>
+          </View>
+        ) : (
+          <OverallStats
+            maxLb={formatLbs(overallStats.maxLb)}
+            maxIntensity={formatLbs(overallStats.maxIntensity)}
+            totalVolume={formatLbs(overallStats.totalVolume)}
+          />
+        )}
       </View>
     </View>
   );

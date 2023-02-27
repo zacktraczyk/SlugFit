@@ -74,7 +74,6 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
   useFonts({
     BebasNeue_400Regular,
   });
-  setRerender((_rerender) => !_rerender);
 
   const updateExerciseCardItem = (index, payload: Partial<ConsumableExerciseData>) => {
     setExercise((oldExercise) => {

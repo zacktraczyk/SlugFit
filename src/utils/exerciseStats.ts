@@ -8,6 +8,11 @@ import { isSet } from './typeCheck';
  * @returns {string} 'Body' or pounds (e.g. '100LB')
  */
 export const formatLbs = (lbs: number): string => {
+  if (isNaN(lbs)) {
+    // console.error('lbs is not a number');
+    return '';
+  }
+
   if (lbs == -1) {
     return 'body';
   }
@@ -71,12 +76,13 @@ export const getMaxIntensity = (exercise: ConsumableExerciseItem[]): number => {
     }
   });
 
+  // No non bodyweight exercises found
   if (maxWeightSet === undefined) {
     return -1;
   }
 
   const { weight, reps } = maxWeightSet as ConsumableExerciseData;
-  return Math.round(Number(weight) * (36 / (37 - Number(reps))));
+  return Math.round(Number(weight) * (36 / (37 - Number(reps)))) || 0;
 };
 
 /**
@@ -104,5 +110,5 @@ export const getTotalVolume = (exercise: ConsumableExerciseItem[]): number => {
     return -1;
   }
 
-  return totalVolume;
+  return totalVolume || 0;
 };
