@@ -13,10 +13,6 @@ interface UseWorkoutHeaderProps {
   onStopPress: () => void;
 }
 
-interface ProgressItem {
-  completed: boolean;
-}
-
 interface WorkoutProgressBarProps {
   exercises: ConsumableExercise[];
   currentIndex: number;

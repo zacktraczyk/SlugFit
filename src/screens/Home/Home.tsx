@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, FlatList, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import Ionicon from '@expo/vector-icons/Ionicons';
@@ -9,6 +9,7 @@ import { useMyConsumableWorkouts } from '../../hooks/useMyConsumableWorkouts';
 import { useAuth } from '../../contexts/AuthProvider';
 import { ConsumableWorkout } from '../../types';
 import { formatDateToISO } from '../../utils/parsing';
+import { ExerciseAnalyticsDisplay } from '../../components/analytics/ExerciseAnalyticsDisplay';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;
 
@@ -115,6 +116,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
           <Text className="text-center font-bebas text-2xl text-white">Start A Workout</Text>
         </TouchableOpacity>
       </View>
+      <ExerciseAnalyticsDisplay />
     </ScrollView>
   );
 };

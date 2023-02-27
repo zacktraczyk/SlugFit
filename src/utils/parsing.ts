@@ -1,14 +1,15 @@
-import {
-  ConsumableExercise,
-  ConsumableExerciseItem,
-  EditableExercise,
-  ConsumableWorkout,
-} from '../types';
+import { ConsumableExercise, ConsumableExerciseItem, ConsumableWorkout } from '../types';
 import { isSet } from './typeCheck';
 import { getConsumableExercise } from './db/consumableexercises';
 
 export const isCompletedSet = (s: ConsumableExerciseItem) => {
-  return isSet(s.ref) && s.data && s.data.reps !== undefined && s.data.reps !== null;
+  return (
+    isSet(s.ref) &&
+    s.data &&
+    s.data.reps !== undefined &&
+    s.data.reps !== null &&
+    parseInt(s.data.reps) > 0
+  );
 };
 
 /**
@@ -123,3 +124,5 @@ export const formatDate = (date) => {
 
   return month + ' ' + day + ', ' + year;
 };
+
+export const milliToDays = (milliseconds: number) => milliseconds / 1000 / 60 / 60 / 24;
