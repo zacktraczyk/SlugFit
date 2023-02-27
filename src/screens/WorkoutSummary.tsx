@@ -7,6 +7,7 @@ import { ConsumableExercise } from '../types';
 import { getConsumableExercises } from '../utils/db/consumableexercises';
 import { useAuth } from '../contexts/AuthProvider';
 import { isSet } from '../utils/typeCheck';
+import { formatLbs, getMaxIntensity, getMaxLbs, getTotalVolume } from '../utils/exerciseStats';
 
 type ProfileProps = NativeStackScreenProps<NavigatorParamList, 'WorkoutSummary'>;
 
@@ -24,37 +25,88 @@ const WorkoutSummary: React.FC<ProfileProps> = ({ route }) => {
     };
     fetch();
   }, [consumableWorkout, session]);
-
   return (
-    <ScrollView className="flex h-full flex-col">
-      <Text className="text-4xl">Good Stuff! 🎉</Text>
+    <ScrollView className="flex h-full flex-col gap-3 bg-white p-3">
+      <View>
+        <Stats
+          maxLb="Max Weight Used"
+          maxIntensity="Max Intensity (1 Rep Max Calculation)"
+          totalVolume="Total Volume (Total Reps * Weight)"
+        />
+      </View>
+
       {consumableWorkout &&
         exercises?.map((exercise, i) => {
           return (
-            <View className="py-10" key={i}>
-              <View className="mb-5 flex flex-row items-center gap-2">
-                <Text className="w-20 text-right">{exercise.exerciseName}</Text>
-                <View className="h-0 w-[110px] border"></View>
-                <Text className="w-10 text-center">Reps</Text>
-                <View className="h-0 w-3 border"></View>
-                <Text className="w-10 text-center">Weight</Text>
+            <View
+              className="my-4 flex flex-row items-center rounded-xl border border-gray-100 bg-white py-5 px-2 shadow"
+              key={i}
+            >
+              <View className="">
+                <View className="mb-1 flex flex-row items-start">
+                  <Text className="w-20 text-left font-bebas">{exercise.exerciseName}</Text>
+                  <View className="w-[5px]"></View>
+                  <Text className="w-10 text-right font-bebas">Reps</Text>
+                  <View className="h-0 w-3"></View>
+                  <Text className="w-20 text-right font-bebas">Weight</Text>
+                </View>
+                {exercise.exerciseItems.map(({ data, ref }, j) => {
+                  if (!isSet(ref)) return null;
+                  return (
+                    <View className="flex flex-row items-center py-1" key={j}>
+                      <Text className="w-20 text-left font-bebas">Set {j + 1}</Text>
+                      <View className="w-[5px]"></View>
+                      <Text className="w-10 text-right font-bebas text-gray-500">{data?.reps}</Text>
+                      <View className="w-3"></View>
+                      <Text className="w-20 text-right font-bebas text-gray-500">
+                        {data?.bodyweight ? 'Body' : data?.weight}
+                      </Text>
+                    </View>
+                  );
+                })}
               </View>
-              {exercise.exerciseItems.map(({ data, ref }, j) => {
-                if (!isSet(ref)) return null;
-                return (
-                  <View className="flex flex-row items-center gap-2 py-4" key={j}>
-                    <Text className="w-20 text-right">Set {j + 1}</Text>
-                    <View className="w-[110px]"></View>
-                    <Text className="w-10 text-center">{data?.reps}</Text>
-                    <View className="w-3"></View>
-                    <Text className="w-10 text-center">{data?.weight}</Text>
-                  </View>
-                );
-              })}
+              <View className="ml-4">
+                <Stats
+                  maxLb={formatLbs(getMaxLbs(exercise.exerciseItems))}
+                  maxIntensity={formatLbs(getMaxIntensity(exercise.exerciseItems))}
+                  totalVolume={formatLbs(getTotalVolume(exercise.exerciseItems))}
+                />
+              </View>
             </View>
           );
         })}
     </ScrollView>
+  );
+};
+
+interface StatsProps {
+  maxLb: string;
+  maxIntensity: string;
+  totalVolume: string;
+}
+
+const Stats: React.FC<StatsProps> = ({ maxLb, maxIntensity, totalVolume }) => {
+  return (
+    <View>
+      <View className="flex flex-row pb-2">
+        <View className="mr-3 flex w-10 items-center rounded bg-gray-300">
+          <Text className="font-bebas text-lg">LB</Text>
+        </View>
+        <Text className="font-bebas text-lg">{maxLb}</Text>
+      </View>
+      <View className="flex flex-row pb-2">
+        <View className="mr-3 flex w-10 items-center rounded bg-gray-300">
+          <Text className="font-bebas text-lg">%</Text>
+        </View>
+        <Text className="font-bebas text-lg">{maxIntensity}</Text>
+      </View>
+      <View className="flex flex-row">
+        <View className="mr-3 flex w-10 items-center rounded bg-gray-300">
+          <Text className="font-bebas text-lg">VOL</Text>
+        </View>
+        <Text className="font-bebas text-lg">{totalVolume}</Text>
+      </View>
+    </View>
   );
 };
 
