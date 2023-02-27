@@ -50,7 +50,7 @@ export const getMaxLbs = (exercise: ConsumableExerciseItem[]): number => {
  * Get 1rm of an exercise using the Brzycki Formula
  *
  * @param {ConsumableExerciseItem[]} exercise an exercise
- * @returns {number} 1rm in pounds
+ * @returns {number} 1rm in pounds (-1 if bodyweight)
  */
 export const getMaxIntensity = (exercise: ConsumableExerciseItem[]): number => {
   let maxWeightSet: ConsumableExerciseData | undefined = undefined;
@@ -83,7 +83,7 @@ export const getMaxIntensity = (exercise: ConsumableExerciseItem[]): number => {
  * Get Total Volume of an exercise
  *
  * @param {ConsumableExerciseItem[]} exercise an exercise
- * @returns {number} total volume in pounds
+ * @returns {number} total volume in pounds (-1 if bodyweight)
  */
 export const getTotalVolume = (exercise: ConsumableExerciseItem[]): number => {
   let totalVolume = 0;
