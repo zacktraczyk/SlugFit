@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { ConsumableWorkout } from '../types';
 import { getConsumableWorkoutsByUserId } from '../utils/db/consumableworkouts';
-import { err } from 'react-native-svg/lib/typescript/xml';
-import ErrorScreen from '../components/ErrorScreen';
 
 /**
  * Hooks into the user's consumable workouts
