@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, FlatList, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import Ionicon from '@expo/vector-icons/Ionicons';
@@ -12,6 +12,7 @@ import { formatDateToISO } from '../../utils/parsing';
 import ErrorBoundary from 'react-native-error-boundary';
 import ErrorScreen from '../../components/ErrorScreen';
 
+import { ExerciseAnalyticsDisplay } from '../../components/analytics/ExerciseAnalyticsDisplay';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;
 
@@ -119,8 +120,35 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
             <Text className="text-center font-bebas text-2xl text-white">Start A Workout</Text>
           </TouchableOpacity>
         </View>
+<<<<<<< HEAD
       </ScrollView>
     </ErrorBoundary>
+=======
+      ) : (
+        <FlatList
+          data={completedWorkouts}
+          renderItem={renderWorkoutBlock}
+          keyExtractor={(item) => item.id}
+          horizontal={true}
+          keyboardShouldPersistTaps="always"
+          className="flex-none pt-3.5 pb-6"
+        />
+      )}
+
+      <View className="flex-col items-center justify-center pt-10">
+        <TouchableOpacity
+          accessibilityRole="button"
+          className="my-2 mt-0 w-60 items-center rounded-lg bg-red-500 p-2"
+          onPress={() => {
+            navigation.navigate('SelectWorkout');
+          }}
+        >
+          <Text className="text-center font-bebas text-2xl text-white">Start A Workout</Text>
+        </TouchableOpacity>
+      </View>
+      <ExerciseAnalyticsDisplay />
+    </ScrollView>
+>>>>>>> development
   );
 };
 
