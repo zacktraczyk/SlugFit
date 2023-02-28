@@ -13,6 +13,10 @@ import {
 import { supabase } from '../../utils/supabaseClient';
 import { AuthStackParamList } from './AuthNavigator';
 import Ionicon from '@expo/vector-icons/Ionicons';
+import ErrorBoundary from 'react-native-error-boundary';
+import ErrorScreen from '../../components/ErrorScreen';
+
+
 
 type FormElements = {
   email: string;
@@ -51,6 +55,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
   };
 
   return (
+    <ErrorBoundary FallbackComponent={ErrorScreen}>
     <KeyboardAvoidingView behavior="padding">
       <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
         <View className="flex h-full flex-col items-stretch p-5">
@@ -176,6 +181,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
+    </ErrorBoundary>
   );
 };
 

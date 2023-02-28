@@ -13,6 +13,8 @@ import NoteCard from '../../components/blocks/NoteCard';
 import CardCreationModal from '../../components/modals/CardCreationModal';
 import { EditableExerciseItem } from '../../types';
 import { updateEditableExercise, getEditableExercise } from '../../utils/db/editableexercises';
+import ErrorBoundary from 'react-native-error-boundary';
+import ErrorScreen from '../../components/ErrorScreen';
 
 type EditExercisePageProps = NativeStackScreenProps<NavigatorParamList, 'EditExercisePage'>;
 
@@ -195,6 +197,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
 
   return (
     <>
+      <ErrorBoundary FallbackComponent={ErrorScreen}>
       <TouchableWithoutFeedback
         accessibilityRole="button"
         onPress={Keyboard.dismiss}
@@ -220,6 +223,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
         />
       </KeyboardAvoidingView>
       <Spinner visible={loading} />
+      </ErrorBoundary>
     </>
   );
 };

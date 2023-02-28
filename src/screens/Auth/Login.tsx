@@ -19,6 +19,10 @@ import {
 import { supabase } from '../../utils/supabaseClient';
 import { AuthStackParamList } from './AuthNavigator';
 
+import ErrorBoundary from 'react-native-error-boundary';
+import ErrorScreen from '../../components/ErrorScreen';
+import ComponentWithError from '../../components/ComponentWithError';
+
 type FormElements = {
   email: string;
   password: string;
@@ -65,6 +69,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
   }
 
   return (
+    <ErrorBoundary FallbackComponent={ErrorScreen}>
     <View className="flex h-full flex-col items-stretch justify-center p-5">
       <View>
         <Text className="pt-1 text-center font-bebas text-8xl">SlugFit</Text>
@@ -160,6 +165,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
       </KeyboardAvoidingView>
       {loading && <ActivityIndicator size="large" />}
     </View>
+    </ErrorBoundary>
   );
 };
 

@@ -9,6 +9,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { createEditableExercise } from '../../utils/db/editableexercises';
 import { useAuth } from '../../contexts/AuthProvider';
 import { updateEditableWorkout } from '../../utils/db/editableworkouts';
+import ErrorBoundary from 'react-native-error-boundary';
+import ErrorScreen from '../../components/ErrorScreen';
 
 type EditWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'EditWorkoutPage'>;
 
@@ -68,6 +70,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
   };
 
   return (
+    <ErrorBoundary FallbackComponent={ErrorScreen}>
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex w-full flex-1 flex-col items-center justify-center bg-white"
@@ -84,6 +87,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
       <AddButton onPress={addTemporaryEditableExerciseBlock} />
       <Spinner visible={loading} />
     </KeyboardAvoidingView>
+    </ErrorBoundary>
   );
 };
 
