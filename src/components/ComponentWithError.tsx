@@ -1,14 +1,14 @@
-import React from 'react'
+import React from 'react';
 
 interface ComponentWithErrorProps {
-    message: string;
+  message: string;
 }
-const ComponentWithError: React.FC<ComponentWithErrorProps>= ({message}) => {
+const ComponentWithError: React.FC<ComponentWithErrorProps> = ({ message }) => {
   React.useEffect(() => {
     throw new Error(message);
-  }, [])
+  }, []);
 
-  return null
-}
+  return null;
+};
 
 export default ComponentWithError;

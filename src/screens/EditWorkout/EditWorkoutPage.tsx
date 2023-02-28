@@ -71,22 +71,22 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
 
   return (
     <ErrorBoundary FallbackComponent={ErrorScreen}>
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex w-full flex-1 flex-col items-center justify-center bg-white"
-      enabled={!loading}
-    >
-      <FlatList
-        data={exercises}
-        renderItem={renderExerciseBlock}
-        keyExtractor={(item) => item}
-        className="w-full"
-        contentContainerStyle={styles.flatList}
-        keyboardShouldPersistTaps="always"
-      />
-      <AddButton onPress={addTemporaryEditableExerciseBlock} />
-      <Spinner visible={loading} />
-    </KeyboardAvoidingView>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="flex w-full flex-1 flex-col items-center justify-center bg-white"
+        enabled={!loading}
+      >
+        <FlatList
+          data={exercises}
+          renderItem={renderExerciseBlock}
+          keyExtractor={(item) => item}
+          className="w-full"
+          contentContainerStyle={styles.flatList}
+          keyboardShouldPersistTaps="always"
+        />
+        <AddButton onPress={addTemporaryEditableExerciseBlock} />
+        <Spinner visible={loading} />
+      </KeyboardAvoidingView>
     </ErrorBoundary>
   );
 };

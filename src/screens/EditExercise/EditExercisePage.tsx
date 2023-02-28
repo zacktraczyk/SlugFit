@@ -198,31 +198,31 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
   return (
     <>
       <ErrorBoundary FallbackComponent={ErrorScreen}>
-      <TouchableWithoutFeedback
-        accessibilityRole="button"
-        onPress={Keyboard.dismiss}
-        disabled={loading}
-      >
-        <View className="h-full bg-white p-10 px-5">
-          <DraggableFlatList
-            data={exerciseItems}
-            onDragEnd={({ data }) => reorderExerciseItems(data)}
-            keyExtractor={(item) => '' + item.id}
-            renderItem={renderItem}
+        <TouchableWithoutFeedback
+          accessibilityRole="button"
+          onPress={Keyboard.dismiss}
+          disabled={loading}
+        >
+          <View className="h-full bg-white p-10 px-5">
+            <DraggableFlatList
+              data={exerciseItems}
+              onDragEnd={({ data }) => reorderExerciseItems(data)}
+              keyExtractor={(item) => '' + item.id}
+              renderItem={renderItem}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+        <KeyboardAvoidingView enabled={!loading}>
+          <AddButton onPress={() => setModalVisible(true)} />
+          <CardCreationModal
+            visible={modalVisible}
+            setVisible={setModalVisible}
+            newNote={appendEmptyNote}
+            newRest={appendEmptyRest}
+            newSet={appendEmptySet}
           />
-        </View>
-      </TouchableWithoutFeedback>
-      <KeyboardAvoidingView enabled={!loading}>
-        <AddButton onPress={() => setModalVisible(true)} />
-        <CardCreationModal
-          visible={modalVisible}
-          setVisible={setModalVisible}
-          newNote={appendEmptyNote}
-          newRest={appendEmptyRest}
-          newSet={appendEmptySet}
-        />
-      </KeyboardAvoidingView>
-      <Spinner visible={loading} />
+        </KeyboardAvoidingView>
+        <Spinner visible={loading} />
       </ErrorBoundary>
     </>
   );

@@ -21,7 +21,6 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { consumableWorkouts, loading, error, fetch } = useMyConsumableWorkouts(session);
   const [completedWorkouts, setCompletedWorkouts] = useState<ConsumableWorkout[]>([]);
 
-
   useEffect(() => {
     setCompletedWorkouts(
       consumableWorkouts?.filter((workout) => workout.ended_at !== undefined) || []
@@ -120,35 +119,9 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
             <Text className="text-center font-bebas text-2xl text-white">Start A Workout</Text>
           </TouchableOpacity>
         </View>
-<<<<<<< HEAD
+        <ExerciseAnalyticsDisplay />
       </ScrollView>
     </ErrorBoundary>
-=======
-      ) : (
-        <FlatList
-          data={completedWorkouts}
-          renderItem={renderWorkoutBlock}
-          keyExtractor={(item) => item.id}
-          horizontal={true}
-          keyboardShouldPersistTaps="always"
-          className="flex-none pt-3.5 pb-6"
-        />
-      )}
-
-      <View className="flex-col items-center justify-center pt-10">
-        <TouchableOpacity
-          accessibilityRole="button"
-          className="my-2 mt-0 w-60 items-center rounded-lg bg-red-500 p-2"
-          onPress={() => {
-            navigation.navigate('SelectWorkout');
-          }}
-        >
-          <Text className="text-center font-bebas text-2xl text-white">Start A Workout</Text>
-        </TouchableOpacity>
-      </View>
-      <ExerciseAnalyticsDisplay />
-    </ScrollView>
->>>>>>> development
   );
 };
 
