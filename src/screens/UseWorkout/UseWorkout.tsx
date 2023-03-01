@@ -9,7 +9,6 @@ import Animated, { FadeInLeft } from 'react-native-reanimated';
 import Block from '../../components/blocks/Block';
 import ConsumableExerciseCard from '../../components/ConsumableExerciseCard';
 import { updateConsumableWorkout } from '../../utils/db/consumableworkouts';
-import PastWorkoutPerformance from '../../components/PastWorkoutPerformance';
 
 type UseWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'UseWorkout'>;
 
@@ -101,7 +100,7 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
         />
       )}
 
-      <View className="flex-1 w-full h-full bg-slate-50">
+      <View className="h-full w-full flex-1 bg-slate-50">
         <FlatList
           ref={flatlistRef}
           data={consumableWorkout.exercises}

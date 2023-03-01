@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Picker } from 'react-native-wheel-pick';
 import Modal from 'react-native-modal/dist/modal';
-import { ConsumableExercise, ConsumableExerciseData } from '../types';
+import { ConsumableExercise } from '../types';
 
 interface PastExericisePerformanceProps {
   index: number;
@@ -32,7 +32,7 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
           accessibilityRole="button"
           onPress={() => {
             renderConsumableExercise(consumableExercise[index]);
-            console.log(consumableExercise[index].exerciseName);
+            // console.log(consumableExercise[index].exerciseName);
             setModalVisible(false);
           }}
         >
@@ -43,8 +43,6 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
           pickerData={consumableExercise.map((exercise) => exercise.consumableWorkoutId)}
           selectedValue={consumableExercise[index].consumableWorkoutId}
           onValueChange={(consumableExericises) => {
-            onChange(consumableExericises);
-
             setIndex(
               consumableExercise
                 .map((exercise) => exercise.consumableWorkoutId)

@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
-import React, {useMemo, useState, useEffect} from 'react';
+import React, { useState, useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import NoteBlock from './blocks/ExerciseNoteBlock';
 import RestBlock from './blocks/ExerciseRestBlock';
 import SetBlock from './blocks/ExerciseSetBlock';
 import { ConsumableExerciseData, EditableExerciseItem, ConsumableExerciseItem, ConsumableExercise } from '../types';
-import {isSet, isNote, isRest} from '../utils/typeCheck';
+import {isSet,} from '../utils/typeCheck';
 import { useConsumableExercise } from '../hooks/useConsumableExercise';
 import { getConsumableExercises, updateConsumableExercise } from '../utils/db/consumableexercises';
 import PastWorkoutPerformance from './PastWorkoutPerformance';
@@ -113,17 +113,16 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
                     {!closePastPerformance &&
                     (<Text className="m-1 mt-3 ml-3 text-sm font-bold text-center">View Past Performance</Text>)}
                     {closePastPerformance &&
-                    
                     (<TouchableOpacity accessibilityRole="button"
                     onPress={() => {
-                        setRerender(true)
+                        setClosePastPerformance(false)
                         renderConsumableExerciseItems(exercise);}}>
                         <Text className="m-1 mt-3 ml-3 text-sm font-bold text-center">Close Past Performance</Text>
                         </TouchableOpacity>)}
                     <TouchableOpacity accessibilityRole="button"
                         onPress={() => 
                             {setpastExerciseVisible(true);
-                            setClosePastPerformance(false);}}
+                            setClosePastPerformance(true);}}
                         className="bg-white">        
                         {pastExericises &&(<Text className="m-1 mt-3 ml-3 text-sm font-bold text-center">{pastExericises[index].consumableWorkoutId}</Text>)}
                         {pastExerciseVisible && pastExericises &&(

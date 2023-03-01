@@ -15,7 +15,7 @@ export const useConsumableExercise = (
   consumableWorkoutId: string,
   useRealtime = false
 ) => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading] = useState<boolean>(false);
   const [listening, setListening] = useState<boolean>(false);
   const [consumableExercise, setConsumableExercise] = useState<Partial<ConsumableExercise>>({
     exerciseName,
