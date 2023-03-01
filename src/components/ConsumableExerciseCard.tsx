@@ -29,6 +29,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
     const [pastExerciseVisible, setpastExerciseVisible] = useState(false);
     const [pastExericises, setPastExericises] = useState<ConsumableExercise[]>()
     const [index, setIndex] = useState(0);
+    const [closePastPerformance,setClosePastPerformance] = useState(false);
     const getPastConsumableExercises = async () =>{
         try{
             const data = await getConsumableExercises({userId,exerciseName})
@@ -40,8 +41,9 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
     }
     
     useEffect(() => {
-        setExercise(consumableExercise)
-        getPastConsumableExercises()
+        setExercise(consumableExercise);
+        getPastConsumableExercises();
+        setIndex(0);
     }, [consumableExercise])
     const renderConsumableExerciseItems=((currentExercise: Partial<ConsumableExercise>) => {
         let numWarmups = 0;
@@ -105,18 +107,33 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
                 <View className='flex-row justify-between w-full h-10 mb-2 border-b content-evenly border-slate-200'>
                     <Text className="m-1 mt-3 ml-3 font-bold text-center ">{exercise.exerciseName}</Text>
                     {/* <Text style={currentSetsDone==maxSets.current?styling.greenText:styling.redText} className="m-1 mt-3 mr-3 font-bold"> {currentSetsDone} / {maxSets.current} Sets Done</Text> */}
+                    
+                </View>
+                <View className ='flex-row'>
+                    {!closePastPerformance &&
+                    (<Text className="m-1 mt-3 ml-3 text-sm font-bold text-center">View Past Performance</Text>)}
+                    {closePastPerformance &&
+                    
+                    (<TouchableOpacity accessibilityRole="button"
+                    onPress={() => {
+                        setRerender(true)
+                        renderConsumableExerciseItems(exercise);}}>
+                        <Text className="m-1 mt-3 ml-3 text-sm font-bold text-center">Close Past Performance</Text>
+                        </TouchableOpacity>)}
                     <TouchableOpacity accessibilityRole="button"
-                        onPress={() => setpastExerciseVisible(true)}
-                        className="bg-white">
-                                <Text className="m-1 mt-3 ml-3 text-sm font-bold text-center">View Past Performance</Text>
-                                {pastExerciseVisible && pastExericises &&(
-                <PastWorkoutPerformance
-                    index={index}  
-                    setIndex={setIndex}              
-                    consumableExercise={pastExericises}
-                    setModalVisible={(bool: boolean) => setpastExerciseVisible(bool)}
-                    renderConsumableExercise={renderConsumableExerciseItems} />
-            )}
+                        onPress={() => 
+                            {setpastExerciseVisible(true);
+                            setClosePastPerformance(false);}}
+                        className="bg-white">        
+                        {pastExericises &&(<Text className="m-1 mt-3 ml-3 text-sm font-bold text-center">{pastExericises[index].consumableWorkoutId}</Text>)}
+                        {pastExerciseVisible && pastExericises &&(
+                        <PastWorkoutPerformance
+                            index={index}  
+                            setIndex={setIndex}              
+                            consumableExercise={pastExericises}
+                            setModalVisible={(bool: boolean) => setpastExerciseVisible(bool)}
+                            renderConsumableExercise={renderConsumableExerciseItems} />
+                        )}
                     </TouchableOpacity>
                 </View>
                 {exerciseItems}

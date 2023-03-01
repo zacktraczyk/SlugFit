@@ -40,6 +40,7 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
           onPress={() => {
             renderConsumableExercise(consumableExercise[index]);
             console.log(consumableExercise[index].exerciseName);
+            setModalVisible(false);
           }}
         >
           <Text className="text-lg font-bold text-center">Select Performance</Text>
