@@ -18,13 +18,6 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
   setModalVisible,
   renderConsumableExercise,
 }) => {
-  const [pastExericise, setPastExericise] = useState<ConsumableExercise[]>(consumableExercise);
-
-  const onChange = (selectedExericise) => {
-    const currentExericise = selectedExericise;
-    setPastExericise(currentExericise);
-  };
-
   return (
     <Modal
       style={{ margin: 0 }}
