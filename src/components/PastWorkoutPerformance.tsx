@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Picker } from 'react-native-wheel-pick';
 import Modal from 'react-native-modal/dist/modal';
 import { ConsumableExercise } from '../types';
+import { formatDateTime } from '../utils/parsing';
 
 interface PastExericisePerformanceProps {
   index: number;
@@ -25,7 +26,7 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
       onBackdropPress={() => setModalVisible(false)}
       onSwipeComplete={() => setModalVisible(false)}
     >
-      <View className="absolute top-1/4 h-full w-full rounded-t-3xl bg-white">
+      <View className="absolute top-2/4 h-full w-full rounded-t-3xl bg-white">
         <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
 
         <TouchableOpacity
@@ -40,12 +41,14 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
         </TouchableOpacity>
 
         <Picker
-          pickerData={consumableExercise.map((exercise) => exercise.consumableWorkoutId)}
-          selectedValue={consumableExercise[index].consumableWorkoutId}
+          pickerData={consumableExercise
+            .map((exercise) => formatDateTime(exercise.created_at))
+            .reverse()}
+          selectedValue={formatDateTime(consumableExercise[index].created_at)}
           onValueChange={(consumableExericises) => {
             setIndex(
               consumableExercise
-                .map((exercise) => exercise.consumableWorkoutId)
+                .map((exercise) => formatDateTime(exercise.created_at))
                 .indexOf(consumableExericises)
             );
           }}

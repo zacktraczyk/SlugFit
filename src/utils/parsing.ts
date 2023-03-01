@@ -124,5 +124,12 @@ export const formatDate = (date) => {
 
   return month + ' ' + day + ', ' + year;
 };
+export const formatDateTime = (date) => {
+  if (date === undefined || date === null) return '';
+  date = new Date(date);
+  return date.toLocaleString('en-US', {
+    timeZone: 'America/Los_Angeles',
+  });
+};
 
 export const milliToDays = (milliseconds: number) => milliseconds / 1000 / 60 / 60 / 24;

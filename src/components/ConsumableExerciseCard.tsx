@@ -11,6 +11,7 @@ import {isSet} from '../utils/typeCheck';
 import { useConsumableExercise } from '../hooks/useConsumableExercise';
 import { getConsumableExercises, updateConsumableExercise } from '../utils/db/consumableexercises';
 import PastWorkoutPerformance from './PastWorkoutPerformance';
+import { formatDateTime } from '../utils/parsing';
 
 /**
  * @param exercise inputs value to a card
@@ -128,7 +129,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
                             {setpastExerciseVisible(true);
                             setClosePastPerformance(true);}}
                         className="bg-white">        
-                        {pastExericises &&(<Text className="m-1 mt-3 ml-3 text-sm font-bold text-center">{pastExericises[index].consumableWorkoutId}</Text>)}
+                        {pastExericises &&(<Text className="m-1 mt-3 ml-3 text-sm font-bold text-center">{formatDateTime(pastExericises[index].created_at)}</Text>)}
                         {pastExerciseVisible && pastExericises &&(
                         <PastWorkoutPerformance
                             index={index}  
