@@ -54,11 +54,14 @@ export const useConsumableExercise = (
   };
 
   const fetch = async () => {
+    setLoading(true);
     try {
       const data = await getConsumableExercise({ consumableWorkoutId, exerciseName });
       setConsumableExercise(data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 

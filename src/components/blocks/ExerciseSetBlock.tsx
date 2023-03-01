@@ -40,8 +40,8 @@ const SetBlock: React.FC<SetBlockProps> = ({
   setRef,
   onChange,
 }) => {
-  const regexReps = React.useRef(/^\d+(?:-\d+)?$/);
-  const regexWeight = React.useRef(/^\d+(\.\d+)?|BODYWEIGHT$/);
+  // const regexReps = React.useRef(/^\d+(?:-\d+)?$/);
+  // const regexWeight = React.useRef(/^\d+(\.\d+)?|BODYWEIGHT$/);
 
   // Load font
   const [fontsLoaded] = useFonts({

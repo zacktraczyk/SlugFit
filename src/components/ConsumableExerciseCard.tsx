@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+
 import React, { useState, useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
@@ -6,7 +7,7 @@ import NoteBlock from './blocks/ExerciseNoteBlock';
 import RestBlock from './blocks/ExerciseRestBlock';
 import SetBlock from './blocks/ExerciseSetBlock';
 import { ConsumableExerciseData, EditableExerciseItem, ConsumableExerciseItem, ConsumableExercise } from '../types';
-import {isSet,} from '../utils/typeCheck';
+import {isSet} from '../utils/typeCheck';
 import { useConsumableExercise } from '../hooks/useConsumableExercise';
 import { getConsumableExercises, updateConsumableExercise } from '../utils/db/consumableexercises';
 import PastWorkoutPerformance from './PastWorkoutPerformance';
@@ -76,7 +77,9 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
         renderConsumableExerciseItems(exercise);
     }, [exercise, rerender]);
 
-    const [fontsLoaded] = useFonts({
+
+    // Load font
+    useFonts({
         BebasNeue_400Regular,
       });
     
@@ -86,6 +89,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
       });
     
     const updateExerciseCardItem = (index, payload: Partial<ConsumableExerciseData>) => {
+
         setExercise((oldExercise) => {
           if (oldExercise.exerciseItems) {
             const oldData = oldExercise.exerciseItems[index].data;
@@ -101,6 +105,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
         });
         
       };
+
     
     return (
         <><ScrollView className='flex-1 w-full h-full p-4 bg-white '>
