@@ -58,6 +58,34 @@ export const countSetsInConsumableWorkout = async (
     );
 };
 
+/**
+ * Count non-empty exercise sets in a consumable exercise
+ *
+ * @param {ConsumableExerciseItem[]} exercise
+ * @returns {number} number of sets started
+ */
+export const countStartedSetsInConsumableExercise = (
+  exercise: ConsumableExerciseItem[]
+): number => {
+  let startedSets = 0;
+  exercise.forEach((item) => {
+    if (!isSet(item.ref)) return;
+    startedSets += item.data?.reps ? 1 : 0;
+  });
+
+  return startedSets;
+};
+
+/**
+ * Checks if a ConsumedExercise has non-empty sets
+ *
+ * @param {ConsumableExercise} exercise
+ * @returns {boolean} true if at least 1 non-empty set in exercise
+ */
+export const isConsumableExerciseEmpty = (exercise: ConsumableExercise): boolean => {
+  return countStartedSetsInConsumableExercise(exercise.exerciseItems) == 0;
+};
+
 export const formatDateToMMDDYYYY = (date: Date) => {
   date = new Date(date);
   const month = (date.getMonth() + 1).toString().padStart(2, '0');

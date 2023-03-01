@@ -7,6 +7,8 @@ import { ConsumableExercise } from '../types';
 import { getConsumableExercises } from '../utils/db/consumableexercises';
 import { useAuth } from '../contexts/AuthProvider';
 import { isSet } from '../utils/typeCheck';
+import { formatLbs, getMaxIntensity, getMaxLbs, getTotalVolume } from '../utils/exerciseStats';
+import { isConsumableExerciseEmpty } from '../utils/parsing';
 
 type ProfileProps = NativeStackScreenProps<NavigatorParamList, 'WorkoutSummary'>;
 
@@ -26,36 +28,116 @@ const WorkoutSummary: React.FC<ProfileProps> = ({ route }) => {
   }, [consumableWorkout, session]);
 
   return (
-    <ScrollView className="flex h-full flex-col">
-      <Text className="text-4xl">Good Stuff! 🎉</Text>
+    <ScrollView className="flex h-full flex-col bg-white p-3">
+      <OverallStats
+        maxLb="Max Weight Used"
+        maxIntensity="Max Intensity (1 Rep Max Calculation)"
+        totalVolume="Total Volume (Total Reps * Weight)"
+      />
+
       {consumableWorkout &&
         exercises?.map((exercise, i) => {
-          return (
-            <View className="py-10" key={i}>
-              <View className="mb-5 flex flex-row items-center gap-2">
-                <Text className="w-20 text-right">{exercise.exerciseName}</Text>
-                <View className="h-0 w-[110px] border"></View>
-                <Text className="w-10 text-center">Reps</Text>
-                <View className="h-0 w-3 border"></View>
-                <Text className="w-10 text-center">Weight</Text>
-              </View>
-              {exercise.exerciseItems.map(({ data, ref }, j) => {
-                if (!isSet(ref)) return null;
-                return (
-                  <View className="flex flex-row items-center gap-2 py-4" key={j}>
-                    <Text className="w-20 text-right">Set {j + 1}</Text>
-                    <View className="w-[110px]"></View>
-                    <Text className="w-10 text-center">{data?.reps}</Text>
-                    <View className="w-3"></View>
-                    <Text className="w-10 text-center">{data?.weight}</Text>
-                  </View>
-                );
-              })}
-            </View>
-          );
+          return <ConusmedExerciseStatsCard exercise={exercise} key={i} />;
         })}
     </ScrollView>
   );
 };
 
+interface StatsProps {
+  maxLb: string;
+  maxIntensity: string;
+  totalVolume: string;
+}
+
+const OverallStats: React.FC<StatsProps> = ({ maxLb, maxIntensity, totalVolume }) => {
+  return (
+    <View>
+      <View className="flex flex-row pb-2">
+        <View className="mr-2 flex w-10 items-center rounded bg-gray-300">
+          <Text className="font-bebas text-lg">LB</Text>
+        </View>
+        <Text className="font-bebas text-lg">{maxLb}</Text>
+      </View>
+      <View className="flex flex-row pb-2">
+        <View className="mr-2 flex w-10 items-center rounded bg-gray-300">
+          <Text className="font-bebas text-lg">%</Text>
+        </View>
+        <Text className="font-bebas text-lg">{maxIntensity}</Text>
+      </View>
+      <View className="flex flex-row">
+        <View className="mr-2 flex w-10 items-center rounded bg-gray-300">
+          <Text className="font-bebas text-lg">VOL</Text>
+        </View>
+        <Text className="font-bebas text-lg">{totalVolume}</Text>
+      </View>
+    </View>
+  );
+};
+
+interface ConsumedExerciseStatsCard {
+  exercise: ConsumableExercise;
+}
+
+const ConusmedExerciseStatsCard: React.FC<ConsumedExerciseStatsCard> = ({ exercise }) => {
+  const overallStats = {
+    maxLb: getMaxLbs(exercise.exerciseItems),
+    maxIntensity: getMaxIntensity(exercise.exerciseItems),
+    totalVolume: getTotalVolume(exercise.exerciseItems),
+  };
+
+  const isExerciseAllBodyweight = ({ maxLb, maxIntensity, totalVolume }) => {
+    return maxLb == -1 && maxIntensity == -1 && totalVolume == -1;
+  };
+
+  if (isConsumableExerciseEmpty(exercise)) {
+    return (
+      <View className="my-4 flex flex-row justify-between rounded-xl border border-gray-100 bg-white py-5 px-10 shadow">
+        <Text className="w-[90px] text-left font-bebas">{exercise.exerciseName}</Text>
+        <Text className="text-center font-bebas text-red-700">Exercise not started</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View className="my-4 flex flex-row items-center rounded-xl border border-gray-100 bg-white py-5 px-2 shadow">
+      <View className="">
+        {/* Table Header */}
+        <View className="mb-1 flex flex-row items-start">
+          <Text className="w-[90px] text-left font-bebas">{exercise.exerciseName}</Text>
+          <Text className="w-10 text-right font-bebas">Reps</Text>
+          <Text className="w-20 text-right font-bebas">Weight</Text>
+        </View>
+
+        {/* Table Rows */}
+        {exercise.exerciseItems.map(({ data, ref }, j) => {
+          if (!isSet(ref)) return null;
+          return (
+            <View className="flex flex-row items-center py-1" key={j}>
+              <Text className="w-[90px] text-left font-bebas">Set {j + 1}</Text>
+              <Text className="w-10 text-right font-bebas text-gray-500">{data?.reps}</Text>
+              <Text className="w-20 text-right font-bebas text-gray-500">
+                {data?.bodyweight ? 'Body' : data?.weight}
+              </Text>
+            </View>
+          );
+        })}
+      </View>
+
+      <View className="ml-4 grow">
+        {isExerciseAllBodyweight(overallStats) ? (
+          <View>
+            <Text className="text-center font-bebas text-gray-300">Body Weight</Text>
+            <Text className="text-center font-bebas text-gray-300">(No Stats)</Text>
+          </View>
+        ) : (
+          <OverallStats
+            maxLb={formatLbs(overallStats.maxLb)}
+            maxIntensity={formatLbs(overallStats.maxIntensity)}
+            totalVolume={formatLbs(overallStats.totalVolume)}
+          />
+        )}
+      </View>
+    </View>
+  );
+};
 export default WorkoutSummary;
