@@ -129,7 +129,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
                             {setpastExerciseVisible(true);
                             setClosePastPerformance(true);}}
                         className="bg-white">        
-                        {pastExericises &&(<Text className="m-1 mt-3 ml-3 text-sm font-bold text-center">{formatDateTime(pastExericises[index].created_at)}</Text>)}
+                        {pastExericises &&(<View className='mt-2 bg-gray-300 rounded-lg' ><Text className="m-1 mt-1 ml-2 text-sm font-bold text-center bg-gray-300 ">{formatDateTime(pastExericises[index].created_at)}</Text></View>)}
                         {pastExerciseVisible && pastExericises &&(
                         <PastWorkoutPerformance
                             index={index}  
