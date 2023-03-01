@@ -52,7 +52,6 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
         setExerciseItems(currentExercise.exerciseItems?.map((item: ConsumableExerciseItem, index: number) => { 
             const { ref, data } = item;
             if('warmup' in ref && 'reps' in ref && data && exercise.consumableWorkoutId && currentExercise.consumableWorkoutId) {
-                console.log(data.reps,data.weight)
                 return(<SetBlock 
                     currentWorkoutKey={currentExercise.consumableWorkoutId}
                     workoutKey={exercise.consumableWorkoutId}
