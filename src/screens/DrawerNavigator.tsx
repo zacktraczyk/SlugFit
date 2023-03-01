@@ -3,6 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import TabNavigator from './TabNavigator';
 import AccountSettings from './Account/AccountSettings';
 import UseWorkoutPage from './UseWorkout/UseWorkout';
+import Settings from './Settings/Settings';
 
 export type NavigatorParamList = {
   Tabs: undefined;
@@ -21,6 +22,7 @@ export type NavigatorParamList = {
     exerciseName: string;
   };
   Profile: undefined;
+  Settings: undefined;
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
@@ -40,6 +42,7 @@ function DrawerNavigator() {
         component={UseWorkoutPage}
         options={{ swipeEnabled: false }}
       />
+      <Drawer.Screen name="Settings" component={Settings} />
     </Drawer.Navigator>
   );
 }
