@@ -3,164 +3,189 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
-  Button,
+  Keyboard,
   KeyboardAvoidingView,
-  Pressable,
   Text,
   TextInput,
   View,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { useAuth } from '../../contexts/AuthProvider';
-import { supabase } from '../../utils/supabaseClient';
 import { NavigatorParamList } from '../DrawerNavigator';
-
-interface ProfileDetails {
-  username: null | string;
-  website: null | string;
-  // avatar_url: null | string;
-}
+import Ionicon from '@expo/vector-icons/Ionicons';
+import { getUserProfile, updateUserProfile } from '../../utils/db/profiles';
+import { ScrollView } from 'react-native-gesture-handler';
 
 type AccountSettingsProps = NativeStackScreenProps<NavigatorParamList, 'AccountSettings'>;
 
-const AccountSettings: React.FC<AccountSettingsProps> = () => {
+const AccountSettings: React.FC<AccountSettingsProps> = ({ navigation }) => {
   const { session } = useAuth();
 
-  const { control, setValue, handleSubmit } = useForm({
+  const {
+    control,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       username: '',
+      full_name: '',
+      avatar_url: '',
       website: '',
+      bodyweight: 0,
     },
   });
 
   const [loading, setLoading] = useState(true);
 
+  // set user's profile data
   useEffect(() => {
     if (!session) return;
 
-    getProfile();
+    const fetchProfile = async () => {
+      const data = await getUserProfile(session);
+      if (data) {
+        setValue('username', data.username ? data.username : '');
+        setValue('full_name', data.full_name ? data.full_name : '');
+        setValue('avatar_url', data.avatar_url ? data.avatar_url : '');
+        setValue('website', data.website ? data.website : '');
+        setValue('bodyweight', data.bodyweight ? data.bodyweight : 0);
+      }
+    };
+
+    fetchProfile().catch(console.error);
+    setLoading(false);
   }, [session]);
 
-  const getProfile = async () => {
-    try {
-      setLoading(true);
-      if (!session || !session.user) {
-        throw 'no user session';
-      }
-
-      const user = session.user;
-
-      const { data, error, status } = await supabase
-        .from('profiles')
-        .select(`username, website, avatar_url`)
-        .eq('id', user.id)
-        .single();
-
-      if (error && status !== 406) throw error;
-
-      if (data) {
-        setValue('username', data.username);
-        setValue('website', data.website);
-      }
-    } catch (error) {
-      let message;
-      if (error instanceof Error) message = error.message;
-      else message = String(error);
-      alert(message);
-    } finally {
-      setLoading(false);
+  // when "save changes" is pressed, only update if there's no errors
+  // if update is successful, navigate to prev screen
+  function onPressSubmitButton(data) {
+    if (!errors.username && !errors.full_name && !errors.bodyweight) {
+      updateUserProfile(data, session);
+      navigation.goBack();
     }
-  };
-
-  const updateProfile = async (data: ProfileDetails) => {
-    const { username, website } = data;
-
-    try {
-      setLoading(true);
-      if (!session || !session.user) {
-        throw 'no user session';
-      }
-
-      const user = session.user;
-
-      const updates = {
-        id: user.id,
-        username,
-        website,
-        updated_at: new Date(),
-      };
-
-      const { error: AuthError } = await supabase.from('profiles').upsert(updates);
-
-      if (AuthError) {
-        throw AuthError;
-      }
-    } catch (error) {
-      let message;
-      if (error instanceof Error) message = error.message;
-      else message = String(error);
-      alert(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }
 
   return (
-    <KeyboardAvoidingView behavior="padding">
-      <View>
-        {loading ? (
-          <ActivityIndicator size="large" />
-        ) : (
-          <>
-            <Text>Email: {session?.user.email}</Text>
-            <View>
-              <Text>Name</Text>
-              <Controller
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    accessibilityLabel="Text input Input"
-                    accessibilityHint="Input to change account name"
-                    className="mb-2 border-2"
-                    returnKeyType="next"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+      <ScrollView className="h-full bg-white">
+        <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
+          <View>
+            {loading ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <>
+                <View className="h-full bg-white p-5">
+                  <View className="items-start pt-12">
+                    <TouchableOpacity accessibilityRole="button">
+                      <Ionicon
+                        name={'arrow-back'}
+                        size={30}
+                        color={'#000000'}
+                        onPress={() => navigation.goBack()}
+                      />
+                    </TouchableOpacity>
+                  </View>
+
+                  <View className="items-center justify-center">
+                    <Text className="pb-4 font-bebas text-4xl">Account Settings</Text>
+                  </View>
+
+                  <Text className="pt-4 font-bebas text-xl">USERNAME</Text>
+                  <Controller
+                    control={control}
+                    rules={{
+                      required: true,
+                    }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <TextInput
+                        accessibilityLabel="Text input Input"
+                        accessibilityHint="Input to change account name"
+                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 p-2 pb-4 text-xl"
+                        autoCapitalize="none"
+                        returnKeyType="done"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                      />
+                    )}
+                    name="username"
                   />
-                )}
-                name="username"
-              />
-            </View>
-            <View>
-              <Text>Website</Text>
-              <Controller
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    accessibilityLabel="Text input field"
-                    accessibilityHint="Input to change account website"
-                    className="mb-2 border-2"
-                    returnKeyType="next"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
+                  {errors.username && errors.username.type === 'required' ? (
+                    <Text className="text-red-500">This field is required.</Text>
+                  ) : (
+                    <Text></Text>
+                  )}
+
+                  <Text className="pt-4 font-bebas text-xl">NAME</Text>
+                  <Controller
+                    control={control}
+                    rules={{
+                      required: true,
+                    }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <TextInput
+                        accessibilityLabel="Text input Input"
+                        accessibilityHint="Input to change account name"
+                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 p-2 pb-4 text-xl"
+                        returnKeyType="done"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                      />
+                    )}
+                    name="full_name"
                   />
-                )}
-                name="website"
-              />
-            </View>
-            <View>
-              <Pressable
-                accessibilityRole="button"
-                className="my-2 w-20 rounded bg-blue-400 p-2"
-                onPress={handleSubmit((data) => updateProfile(data))}
-              >
-                <Text className="text-center text-white">Submit</Text>
-              </Pressable>
-            </View>
-            <Button title="signOut" onPress={() => supabase.auth.signOut()} />
-          </>
-        )}
-      </View>
+                  {errors.full_name && errors.full_name.type === 'required' ? (
+                    <Text className="text-red-500">This field is required.</Text>
+                  ) : (
+                    <Text></Text>
+                  )}
+
+                  <Text className="pt-4 font-bebas text-xl">WEIGHT</Text>
+                  <Controller
+                    control={control}
+                    rules={{
+                      required: true,
+                    }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <TextInput
+                        accessibilityLabel="Text input field"
+                        accessibilityHint="Input to change account website"
+                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 p-2 pb-4 text-xl"
+                        returnKeyType="done"
+                        keyboardType="numeric"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value.toString()}
+                      />
+                    )}
+                    name="bodyweight"
+                  />
+                  {errors.bodyweight && errors.bodyweight.type === 'required' ? (
+                    <Text className="text-red-500">This field is required.</Text>
+                  ) : (
+                    <Text></Text>
+                  )}
+
+                  <View className="items-center pt-8">
+                    <TouchableOpacity
+                      accessibilityRole="button"
+                      className="w-60 rounded-lg bg-red-500 p-2"
+                      onPress={handleSubmit((data) => onPressSubmitButton(data))}
+                    >
+                      <Text className="text-center font-bebas text-2xl text-white">
+                        Save Changes
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </>
+            )}
+          </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
