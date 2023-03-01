@@ -1,22 +1,28 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
-import Picker from 'react-native-wheel-pick';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Picker } from 'react-native-wheel-pick';
 import Modal from 'react-native-modal/dist/modal';
-import { ConsumableWorkout } from '../types';
+import { ConsumableExercise, ConsumableExerciseData } from '../types';
 
-interface PastWorkoutPerformanceProps {
-  consumableWorkouts: ConsumableWorkout[];
+interface PastExericisePerformanceProps {
+  index: number;
+  setIndex: React.Dispatch<React.SetStateAction<number>>;
+  consumableExercise: ConsumableExercise[];
   setModalVisible: (bool: boolean) => void;
+  renderConsumableExercise: (exercise: Partial<ConsumableExercise>) => void;
 }
-const PastWorkoutPerformance: React.FC<PastWorkoutPerformanceProps> = ({
-  consumableWorkouts,
+const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
+  index,
+  setIndex,
+  consumableExercise,
   setModalVisible,
+  renderConsumableExercise,
 }) => {
-  const [pastWorkout, setPastWorkout] = useState<ConsumableWorkout>();
+  const [pastExericise, setPastExericise] = useState<ConsumableExercise[]>(consumableExercise);
 
-  const onChange = (selectedWorkout) => {
-    const currentWorkout = selectedWorkout;
-    setPastWorkout(currentWorkout);
+  const onChange = (selectedExericise) => {
+    const currentExericise = selectedExericise;
+    setPastExericise(currentExericise);
   };
 
   return (
@@ -25,19 +31,37 @@ const PastWorkoutPerformance: React.FC<PastWorkoutPerformanceProps> = ({
       isVisible={true}
       onBackdropPress={() => setModalVisible(false)}
       onSwipeComplete={() => setModalVisible(false)}
-      swipeDirection="down"
     >
-      <View className="absolute top-2/4 h-full w-full rounded-t-3xl bg-white">
-        <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
+      <View className="absolute w-full h-full bg-white top-1/4 rounded-t-3xl">
+        <View className="self-center w-16 h-1 my-3 bg-gray-400 rounded-lg"></View>
+
+        <TouchableOpacity
+          accessibilityRole="button"
+          onPress={() => {
+            renderConsumableExercise(consumableExercise[index]);
+            console.log(consumableExercise[index].exerciseName);
+          }}
+        >
+          <Text className="text-lg font-bold text-center">Select Performance</Text>
+        </TouchableOpacity>
+
         <Picker
-          pickerData={consumableWorkouts.map((workout) => workout.ended_at)}
-          selectedValue={pastWorkout}
-          onValueChange={onChange(consumableWorkouts)}
-          display="spinner"
+          pickerData={consumableExercise.map((exercise) => exercise.consumableWorkoutId)}
+          selectedValue={consumableExercise[index].consumableWorkoutId}
+          onValueChange={(consumableExericises) => {
+            onChange(consumableExericises);
+
+            setIndex(
+              consumableExercise
+                .map((exercise) => exercise.consumableWorkoutId)
+                .indexOf(consumableExericises)
+            );
+          }}
           textColor="black"
+          className="bg-white"
         />
       </View>
     </Modal>
   );
 };
-export default PastWorkoutPerformance;
+export default PastExericisePerformance;

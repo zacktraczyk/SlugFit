@@ -19,7 +19,7 @@ const SelectWorkoutPage: React.FC<SelectWorkoutPageProps> = ({ navigation }) => 
       userId: session?.user.id,
       editableWorkoutId: editableWorkout.id,
     });
-    navigation.navigate('UseWorkout', { consumableWorkoutId: id });
+    navigation.navigate('UseWorkout', { consumableWorkoutId: id, userId: session?.user.id });
   };
 
   const alertConfirmStart = (editableWorkout: EditableWorkout) => {
@@ -46,7 +46,6 @@ const SelectWorkoutPage: React.FC<SelectWorkoutPageProps> = ({ navigation }) => 
 
   return (
     <View className="flex flex-col items-center justify-center flex-1 w-full bg-white">
-
       <FlatList
         data={editableWorkouts}
         keyExtractor={(item) => item.id}
