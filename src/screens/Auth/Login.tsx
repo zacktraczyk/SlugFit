@@ -19,6 +19,10 @@ import {
 import { supabase } from '../../utils/supabaseClient';
 import { AuthStackParamList } from './AuthNavigator';
 
+import ErrorBoundary from 'react-native-error-boundary';
+import ErrorScreen from '../../components/ErrorScreen';
+import ComponentWithError from '../../components/ComponentWithError';
+
 type FormElements = {
   email: string;
   password: string;
@@ -65,101 +69,103 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
   }
 
   return (
-    <View className="flex h-full flex-col items-stretch justify-center p-5">
-      <View>
-        <Text className="pt-1 text-center font-bebas text-8xl">SlugFit</Text>
-        <Text className="text-center font-bebas text-2xl text-stone-700">
-          We see mass in your future
-        </Text>
-      </View>
-      <KeyboardAvoidingView behavior="padding">
-        <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
-          <View className="flex h-96 flex-col items-stretch justify-evenly">
-            <View style={{}}>
-              <Text className="font-bebas text-xl">Email</Text>
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                  pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    accessibilityLabel="Text input field"
-                    accessibilityHint="Input email for login"
-                    className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
-                    autoCapitalize="none"
-                    keyboardType="email-address"
-                    returnKeyType="next"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                )}
-                name="email"
-              />
-              <Text className="text-red-500">
-                {errors.email &&
-                  (errors.email.type === 'required'
-                    ? 'This field is required.'
-                    : 'Not a valid email.')}
-              </Text>
-            </View>
-
-            <View>
-              <Text className="font-bebas text-xl">Password</Text>
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                  minLength: 8,
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    accessibilityLabel="Text input field"
-                    accessibilityHint="Input password for login"
-                    className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
-                    secureTextEntry={true}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                )}
-                name="password"
-              />
-              <Text className="text-red-500">
-                {errors.password &&
-                  (errors.password.type === 'required'
-                    ? 'This is required.'
-                    : 'Password must be at least 8 characters.')}
-              </Text>
-            </View>
-
-            <View style={{ alignItems: 'center' }}>
-              <Pressable
-                accessibilityRole="button"
-                accessibilityHint="Login to application"
-                className="my-2 mt-0 w-60 rounded-lg bg-red-500 p-2"
-                onPress={handleSubmit((data) => onSubmit(data))}
-              >
-                <Text className="text-center font-bebas text-2xl text-white">Sign In</Text>
-              </Pressable>
-              <Text>
-                <Text className="text-sm">Don&apos;t Have an Account?</Text>
-                <Text
-                  className="text-sm font-bold"
-                  onPress={() => navigation.navigate('RegisterScreen')}
-                >
-                  {' '}
-                  Create One
+    <ErrorBoundary FallbackComponent={ErrorScreen}>
+      <View className="flex h-full flex-col items-stretch justify-center p-5">
+        <View>
+          <Text className="pt-1 text-center font-bebas text-8xl">SlugFit</Text>
+          <Text className="text-center font-bebas text-2xl text-stone-700">
+            We see mass in your future
+          </Text>
+        </View>
+        <KeyboardAvoidingView behavior="padding">
+          <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
+            <View className="flex h-96 flex-col items-stretch justify-evenly">
+              <View style={{}}>
+                <Text className="font-bebas text-xl">Email</Text>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                    pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      accessibilityLabel="Text input field"
+                      accessibilityHint="Input email for login"
+                      className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
+                      autoCapitalize="none"
+                      keyboardType="email-address"
+                      returnKeyType="next"
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                  name="email"
+                />
+                <Text className="text-red-500">
+                  {errors.email &&
+                    (errors.email.type === 'required'
+                      ? 'This field is required.'
+                      : 'Not a valid email.')}
                 </Text>
-              </Text>
+              </View>
+
+              <View>
+                <Text className="font-bebas text-xl">Password</Text>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                    minLength: 8,
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      accessibilityLabel="Text input field"
+                      accessibilityHint="Input password for login"
+                      className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
+                      secureTextEntry={true}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                  name="password"
+                />
+                <Text className="text-red-500">
+                  {errors.password &&
+                    (errors.password.type === 'required'
+                      ? 'This is required.'
+                      : 'Password must be at least 8 characters.')}
+                </Text>
+              </View>
+
+              <View style={{ alignItems: 'center' }}>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityHint="Login to application"
+                  className="my-2 mt-0 w-60 rounded-lg bg-red-500 p-2"
+                  onPress={handleSubmit((data) => onSubmit(data))}
+                >
+                  <Text className="text-center font-bebas text-2xl text-white">Sign In</Text>
+                </Pressable>
+                <Text>
+                  <Text className="text-sm">Don&apos;t Have an Account?</Text>
+                  <Text
+                    className="text-sm font-bold"
+                    onPress={() => navigation.navigate('RegisterScreen')}
+                  >
+                    {' '}
+                    Create One
+                  </Text>
+                </Text>
+              </View>
             </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-      {loading && <ActivityIndicator size="large" />}
-    </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+        {loading && <ActivityIndicator size="large" />}
+      </View>
+    </ErrorBoundary>
   );
 };
 

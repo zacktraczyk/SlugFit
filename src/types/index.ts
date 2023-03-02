@@ -63,3 +63,11 @@ export interface ConsumableWorkout {
   ended_at: Date | null;
   exercises: string[];
 }
+
+export type ProfileType = {
+  username?: string;
+  full_name?: string;
+  avatar_url?: string;
+  website?: string;
+  bodyweight?: number;
+};
