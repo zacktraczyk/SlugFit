@@ -59,37 +59,37 @@ const SetBlock: React.FC<SetBlockProps> = ({
       </Text>
       <View
         style={setRef.warmup ? styling.warmUpBackground1 : styling.workingBackground1}
-        className="-2 flex h-8 flex-row rounded-md"
+        className="flex flex-row h-8 rounded-md -2"
       >
         <View
           style={setRef.warmup ? styling.warmUpBackground2 : styling.workingBackground2}
-          className="h-8 w-6 rounded-l-lg"
+          className="w-6 h-8 rounded-l-lg"
         >
-          <Text className="my-auto ml-1 font-bebas text-xl font-bold">DO</Text>
+          <Text className="my-auto ml-1 text-xl font-bold font-bebas">DO</Text>
         </View>
-        <Text className="my-auto ml-3 font-bebas text-xl font-bold">{setRef.reps}</Text>
-        <Text className="mt-3 font-bebas text-xs font-bold"> REPS</Text>
-        <Text className="my-auto ml-6 font-bebas text-xl font-bold">{setRef.rpe}</Text>
-        <Text className="mt-3 font-bebas text-xs font-bold"> RPE</Text>
-        <Text className="my-auto ml-6 font-bebas text-xl font-bold">{setRef.orm}</Text>
-        <Text className="mt-3 font-bebas text-xs font-bold"> %1RM</Text>
-        <View className="flex flex-grow flex-row justify-end border-solid">
+        <Text className="my-auto ml-3 text-xl font-bold font-bebas">{setRef.reps}</Text>
+        <Text className="mt-3 text-xs font-bold font-bebas"> REPS</Text>
+        <Text className="my-auto ml-6 text-xl font-bold font-bebas">{setRef.rpe}</Text>
+        <Text className="mt-3 text-xs font-bold font-bebas"> RPE</Text>
+        <Text className="my-auto ml-6 text-xl font-bold font-bebas">{setRef.orm}</Text>
+        <Text className="mt-3 text-xs font-bold font-bebas"> %1RM</Text>
+        <View className="flex flex-row justify-end flex-grow border-solid">
           <Text
             style={setRef.warmup ? styling.warmUpFontColor : styling.workingFontColor}
-            className="mx-4 my-auto ml-1 font-bebas text-xl font-bold"
+            className="mx-4 my-auto ml-1 text-xl font-bold font-bebas"
           >
             {setRef.warmup ? 'WARMUP' : 'WORKING'}
           </Text>
         </View>
       </View>
       <View className="-2 mt-0.5 flex h-8 flex-row rounded-md bg-gray-200">
-        <View className="bor h-8 w-14 rounded-l-lg bg-gray-300">
-          <Text className="my-auto ml-1 font-bebas text-xl font-bold">RECORD</Text>
+        <View className="h-8 bg-gray-300 rounded-l-lg bor w-14">
+          <Text className="my-auto ml-1 text-xl font-bold font-bebas">RECORD</Text>
         </View>
         <TextInput
           accessibilityLabel="Record Reps"
           accessibilityHint="Input reps you did"
-          className="mx-auto my-auto ml-1 h-5/6 w-16 rounded-md bg-white text-center font-bebas text-xs"
+          className="w-16 mx-auto my-auto ml-1 text-xs text-center bg-white rounded-md h-5/6 font-bebas"
           autoCapitalize="none"
           placeholder="REPS YOU DID"
           returnKeyType="next"
@@ -99,7 +99,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
           editable={workoutKey == currentWorkoutKey}
           backgroundColor={workoutKey == currentWorkoutKey ? 'white' : 'transparent'}
         />
-        <Text className="my-auto mr-1 font-bebas text-xs font-bold"> REPS</Text>
+        <Text className="my-auto mr-1 text-xs font-bold font-bebas"> REPS</Text>
 
         {bodyweight ? (
           <View />
@@ -107,7 +107,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
           <TextInput
             accessibilityLabel="User Recorded Weight"
             accessibilityHint="Input weight you did"
-            className="mx-auto my-auto ml-1 h-5/6 w-16 rounded-md bg-white text-center font-bebas text-xs"
+            className="w-16 mx-auto my-auto ml-1 text-xs text-center bg-white rounded-md h-5/6 font-bebas"
             clearTextOnFocus={true}
             autoCapitalize="none"
             placeholder="Weight"
@@ -118,8 +118,8 @@ const SetBlock: React.FC<SetBlockProps> = ({
             backgroundColor={workoutKey == currentWorkoutKey ? 'white' : 'transparent'}
           />
         )}
-        {bodyweight ? <View /> : <Text className="my-auto font-bebas text-xs font-bold"> LB</Text>}
-        <View className="flex flex-grow flex-row justify-center border-solid">
+        {bodyweight ? <View /> : <Text className="my-auto text-xs font-bold font-bebas"> LB</Text>}
+        <View className="flex flex-row justify-center flex-grow border-solid">
           <View>
             <Checkbox
               checked={bodyweight}
@@ -127,7 +127,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
               disable={workoutKey != currentWorkoutKey}
             />
           </View>
-          <Text className="my-auto font-bebas text-xs font-bold"> BODYWEIGHT</Text>
+          <Text className="my-auto text-xs font-bold font-bebas"> BODYWEIGHT</Text>
         </View>
       </View>
     </View>
