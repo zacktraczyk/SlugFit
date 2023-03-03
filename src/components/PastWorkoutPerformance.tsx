@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Picker } from 'react-native-wheel-pick';
 import Modal from 'react-native-modal/dist/modal';
@@ -19,6 +19,8 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
   setModalVisible,
   renderConsumableExercise,
 }) => {
+  const [tempindex, setTempIndex] = useState(index);
+
   return (
     <Modal
       style={{ margin: 0 }}
@@ -32,7 +34,8 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
         <TouchableOpacity
           accessibilityRole="button"
           onPress={() => {
-            renderConsumableExercise(consumableExercise[index]);
+            setIndex(tempindex);
+            renderConsumableExercise(consumableExercise[tempindex]);
             // console.log(consumableExercise[index].exerciseName);
             setModalVisible(false);
           }}
@@ -41,15 +44,14 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
         </TouchableOpacity>
 
         <Picker
-          pickerData={consumableExercise
-            .map((exercise) => formatDateTime(exercise.created_at))
-            .reverse()}
+          pickerData={consumableExercise.map((exercise) => formatDateTime(exercise.created_at))}
           selectedValue={formatDateTime(consumableExercise[index].created_at)}
-          onValueChange={(consumableExericises) => {
-            setIndex(
+          onValueChange={(currentExericise) => {
+            setTempIndex(
               consumableExercise
+
                 .map((exercise) => formatDateTime(exercise.created_at))
-                .indexOf(consumableExericises)
+                .indexOf(currentExericise)
             );
           }}
           textColor="black"

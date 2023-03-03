@@ -97,6 +97,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
           clearTextOnFocus={true}
           onChangeText={(value) => onChange(index, { reps: value })}
           editable={workoutKey == currentWorkoutKey}
+          backgroundColor={workoutKey == currentWorkoutKey ? 'white' : 'transparent'}
         />
         <Text className="my-auto mr-1 font-bebas text-xs font-bold"> REPS</Text>
 
@@ -114,6 +115,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
             value={weight?.toString()}
             onChangeText={(value) => onChange(index, { weight: value })}
             editable={workoutKey == currentWorkoutKey}
+            backgroundColor={workoutKey == currentWorkoutKey ? 'white' : 'transparent'}
           />
         )}
         {bodyweight ? <View /> : <Text className="my-auto font-bebas text-xs font-bold"> LB</Text>}
@@ -122,6 +124,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
             <Checkbox
               checked={bodyweight}
               onPress={() => onChange(index, { bodyweight: !bodyweight })}
+              disable={workoutKey != currentWorkoutKey}
             />
           </View>
           <Text className="my-auto font-bebas text-xs font-bold"> BODYWEIGHT</Text>
