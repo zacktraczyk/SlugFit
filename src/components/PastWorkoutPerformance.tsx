@@ -19,6 +19,7 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
   setModalVisible,
   renderConsumableExercise,
 }) => {
+  console.log(formatDateTime(consumableExercise[index].created_at));
   return (
     <Modal
       style={{ margin: 0 }}
@@ -26,8 +27,8 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
       onBackdropPress={() => setModalVisible(false)}
       onSwipeComplete={() => setModalVisible(false)}
     >
-      <View className="absolute top-2/4 h-full w-full rounded-t-3xl bg-white">
-        <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
+      <View className="absolute w-full h-full bg-white top-2/4 rounded-t-3xl">
+        <View className="self-center w-16 h-1 my-3 bg-gray-400 rounded-lg"></View>
 
         <TouchableOpacity
           accessibilityRole="button"
@@ -37,13 +38,12 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
             setModalVisible(false);
           }}
         >
-          <Text className="text-center text-lg font-bold">Select Performance</Text>
+          <Text className="text-lg font-bold text-center">Select Performance</Text>
         </TouchableOpacity>
 
         <Picker
           pickerData={consumableExercise
-            .map((exercise) => formatDateTime(exercise.created_at))
-            .reverse()}
+            .map((exercise) => formatDateTime(exercise.created_at))}
           selectedValue={formatDateTime(consumableExercise[index].created_at)}
           onValueChange={(consumableExericises) => {
             setIndex(

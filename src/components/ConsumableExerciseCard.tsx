@@ -1,19 +1,13 @@
 /* eslint-disable prettier/prettier */
 
-
 import React, { useState, useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import NoteBlock from './blocks/ExerciseNoteBlock';
 import RestBlock from './blocks/ExerciseRestBlock';
 import SetBlock from './blocks/ExerciseSetBlock';
-import {
-  ConsumableExerciseData,
-  EditableExerciseItem,
-  ConsumableExerciseItem,
-  ConsumableExercise,
-} from '../types';
-import { isSet } from '../utils/typeCheck';
+import { ConsumableExerciseData, EditableExerciseItem, ConsumableExerciseItem, ConsumableExercise } from '../types';
+import {isSet} from '../utils/typeCheck';
 import { useConsumableExercise } from '../hooks/useConsumableExercise';
 import { getConsumableExercises, updateConsumableExercise } from '../utils/db/consumableexercises';
 import PastWorkoutPerformance from './PastWorkoutPerformance';
@@ -24,7 +18,6 @@ import { formatDateTime } from '../utils/parsing';
  * @param getUserRecordedSets returns array of user input RecordedValue or undefined if user fails to fil out all values
  */
 export interface ConsumableExerciseCardProps {
-
     exerciseName: string;
     consumableWorkoutId: string;
     userId: string;
@@ -32,10 +25,10 @@ export interface ConsumableExerciseCardProps {
 
 const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exerciseName, consumableWorkoutId, userId}) => {
     const { consumableExercise } = useConsumableExercise(exerciseName, consumableWorkoutId);
-    const [exercise, setExercise] = useState<Partial<ConsumableExercise>>(consumableExercise);
+    const [selectedExercise, setExercise] = useState<Partial<ConsumableExercise>>(consumableExercise);
     const [rerender, setRerender] = useState(false);
     const [exerciseItems, setExerciseItems] = useState<JSX.Element[]>([]);
-    const [pastExerciseVisible, setpastExerciseVisible] = useState(false);
+    const [pastExerciseVisible, setPastExerciseVisible] = useState(false);
     const [pastExericises, setPastExericises] = useState<ConsumableExercise[]>()
     const [index, setIndex] = useState(0);
     const [closePastPerformance,setClosePastPerformance] = useState(false);
@@ -54,15 +47,16 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
         getPastConsumableExercises();
         setIndex(0);
     }, [consumableExercise])
+
     const renderConsumableExerciseItems=((currentExercise: Partial<ConsumableExercise>) => {
         let numWarmups = 0;
         let numWorking = 0;
         setExerciseItems(currentExercise.exerciseItems?.map((item: ConsumableExerciseItem, index: number) => { 
             const { ref, data } = item;
-            if('warmup' in ref && 'reps' in ref && data && exercise.consumableWorkoutId && currentExercise.consumableWorkoutId) {
+            if('warmup' in ref && 'reps' in ref && data && selectedExercise.consumableWorkoutId && currentExercise.consumableWorkoutId) {
                 return(<SetBlock 
                     currentWorkoutKey={currentExercise.consumableWorkoutId}
-                    workoutKey={exercise.consumableWorkoutId}
+                    workoutKey={selectedExercise.consumableWorkoutId}
                     key={index} 
                     index={index}
                     setNumber={'warmup' in ref && ref.warmup ? ++numWarmups : ++numWorking} 
@@ -80,9 +74,10 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
             }
         }) || [])
     });
+    
     useEffect(() => {
-        renderConsumableExerciseItems(exercise);
-    }, [exercise, rerender]);
+        renderConsumableExerciseItems(selectedExercise);
+    }, [selectedExercise, rerender]);
 
 
     // Load font
@@ -117,7 +112,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
     return (
         <><ScrollView className='flex-1 w-full h-full p-4 bg-white '>
                 <View className='flex-row justify-between w-full h-10 mb-2 border-b content-evenly border-slate-200'>
-                    <Text className="m-1 mt-3 ml-3 font-bold text-center ">{exercise.exerciseName}</Text>
+                    <Text className="m-1 mt-3 ml-3 font-bold text-center ">{selectedExercise.exerciseName}</Text>
                     {/* <Text style={currentSetsDone==maxSets.current?styling.greenText:styling.redText} className="m-1 mt-3 mr-3 font-bold"> {currentSetsDone} / {maxSets.current} Sets Done</Text> */}
                     
                 </View>
@@ -128,12 +123,12 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
                     (<TouchableOpacity accessibilityRole="button"
                     onPress={() => {
                         setClosePastPerformance(false)
-                        renderConsumableExerciseItems(exercise);}}>
+                        renderConsumableExerciseItems(selectedExercise);}}>
                         <Text className="m-1 mt-3 ml-3 text-sm font-bold text-center">Close Past Performance</Text>
                         </TouchableOpacity>)}
                     <TouchableOpacity accessibilityRole="button"
                         onPress={() => 
-                            {setpastExerciseVisible(true);
+                            {setPastExerciseVisible(true);
                             setClosePastPerformance(true);}}
                         className="bg-white">        
                         {pastExericises &&(<View className='mt-2 bg-gray-300 rounded-lg' ><Text className="m-1 mt-1 ml-2 text-sm font-bold text-center bg-gray-300 ">{formatDateTime(pastExericises[index].created_at)}</Text></View>)}
@@ -142,7 +137,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
                             index={index}  
                             setIndex={setIndex}              
                             consumableExercise={pastExericises}
-                            setModalVisible={(bool: boolean) => setpastExerciseVisible(bool)}
+                            setModalVisible={(bool: boolean) => setPastExerciseVisible(bool)}
                             renderConsumableExercise={renderConsumableExerciseItems} />
                         )}
                     </TouchableOpacity>
@@ -151,34 +146,33 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
             </ScrollView></>)
 }
 
-
 const styling = StyleSheet.create({
-  container: {
-    height: '90%',
-  },
-  greenText: {
-    color: '#3BD15E',
-  },
-  redText: {
-    color: '#ED4E39',
-  },
-});
+    container: {
+        height: '90%',
+    },
+    greenText: {
+        color: '#3BD15E',
+    },
+    redText: {
+        color: '#ED4E39',
+    },
+}); 
 
 /**
  * helper function
  * @param arr array of exercise items
- * @returns number of working sets
+ * @returns number of working sets 
  */
-function calculateNumWorkingSets(arr: EditableExerciseItem[]): number {
-  let numWorkingSets = 0;
-  for (let i = 0; i < arr.length; i++) {
-    if (isSet(arr[i])) {
-      if (!arr[i].warmup) {
-        numWorkingSets++;
-      }
-    }
-  }
-  return numWorkingSets;
+function calculateNumWorkingSets(arr: EditableExerciseItem[]): number { 
+    let numWorkingSets = 0;
+    for(let i = 0; i<arr.length; i++) {
+        if (isSet(arr[i])) {
+            if(!arr[i].warmup)  {
+                numWorkingSets++;
+            }
+        }
+    }    
+    return numWorkingSets;
 }
 
 /**
@@ -187,13 +181,14 @@ function calculateNumWorkingSets(arr: EditableExerciseItem[]): number {
  * @returns number of working sets + warmup sets
  */
 function calculateNumSets(arr: EditableExerciseItem[]): number {
-  let numSets = 0;
-  for (let i = 0; i < arr.length; i++) {
-    if (isSet(arr[i])) {
-      numSets++;
-    }
-  }
-  return numSets;
+    let numSets = 0;
+    for(let i = 0; i<arr.length; i++) {
+        if (isSet(arr[i])) {
+            numSets++;
+        }
+    }    
+    return numSets;
 }
+
 
 export default ConsumableExerciseCard;
