@@ -11,8 +11,7 @@ import { ConsumableWorkout } from '../../types';
 import { formatDateToISO } from '../../utils/parsing';
 import ErrorBoundary from 'react-native-error-boundary';
 import ErrorScreen from '../../components/ErrorScreen';
-
-import { ExerciseAnalyticsDisplay } from '../../components/analytics/ExerciseAnalyticsDisplay';
+import ComponentWithError from '../../components/ComponentWithError';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;
 
@@ -29,7 +28,14 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
 
   // render each workout for CompletedWorkoutBlock
   const renderWorkoutBlock = ({ item }) => {
-    return <CompletedWorkoutBlock consumableWorkout={item} />;
+    return (
+      <CompletedWorkoutBlock
+        consumableWorkout={item}
+        onPress={() => {
+          navigation.navigate('WorkoutSummary', { consumableWorkoutId: item.id });
+        }}
+      />
+    );
   };
 
   // toggle variable "showCalendar", switching between CompletedWorkouts and Calendar
@@ -119,7 +125,6 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
             <Text className="text-center font-bebas text-2xl text-white">Start A Workout</Text>
           </TouchableOpacity>
         </View>
-        <ExerciseAnalyticsDisplay />
       </ScrollView>
     </ErrorBoundary>
   );
