@@ -58,6 +58,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
 
   const onPressHandler = (item: string) => {
     onSelectExercise(item);
+    setSearchOnFocus(false);
   };
 
   return (
@@ -74,9 +75,9 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
           onFocus={() => {
             setSearchOnFocus(true);
           }}
-          onBlur={() => {
-            setSearchOnFocus(false);
-          }}
+          // onBlur={() => {
+          //   setSearchOnFocus(false);
+          // }}
           onChangeText={(value) => {
             setSearchInput(value);
           }}
