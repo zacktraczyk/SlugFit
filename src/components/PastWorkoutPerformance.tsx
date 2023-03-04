@@ -28,8 +28,8 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
       onBackdropPress={() => setModalVisible(false)}
       onSwipeComplete={() => setModalVisible(false)}
     >
-      <View className="absolute w-full h-full bg-white top-2/4 rounded-t-3xl">
-        <View className="self-center w-16 h-1 my-3 bg-gray-400 rounded-lg"></View>
+      <View className="absolute top-2/4 h-full w-full rounded-t-3xl bg-white">
+        <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
 
         <TouchableOpacity
           accessibilityRole="button"
@@ -40,7 +40,7 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
             setModalVisible(false);
           }}
         >
-          <Text className="text-lg font-bold text-center">Select Performance</Text>
+          <Text className="text-center text-lg font-bold">Select Performance</Text>
         </TouchableOpacity>
 
         <Picker
