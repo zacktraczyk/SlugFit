@@ -7,6 +7,7 @@ import { MetricTypeFilter } from './MetricTypeFilter';
 import { SelectedDataDisplay } from './SelectedDataDisplay';
 import { TimeframeFilter } from './TimeframeFilter';
 import Ionicon from '@expo/vector-icons/Ionicons';
+import ExerciseSearchBar from '../ExerciseSearchBar';
 
 interface ExerciseAnalyticsDisplayProps {
   numCanSelect?: number;
@@ -19,10 +20,7 @@ export const AnalyticsColors = ['#F96E46', '#519E8A', '#4E598C'];
 export const ExerciseAnalyticsDisplay: React.FC<ExerciseAnalyticsDisplayProps> = ({
   numCanSelect = 3,
 }) => {
-  const [exerciseNames, setExerciseNames] = useState<string[]>([
-    'Reverse Crunch',
-    'Alternating Heel Touch',
-  ]);
+  const [exerciseNames, setExerciseNames] = useState<string[]>([]);
   const [metricType, setMetricType] = useState<MetricType>(MetricType.INTENSITY);
   const [timeframe, setTimeframe] = useState<Timeframe>(Timeframe.WEEK);
   const [selectedDataPoint, setSelectedDataPoint] = useState<ChartDataPoint | undefined>(undefined);
@@ -58,7 +56,8 @@ export const ExerciseAnalyticsDisplay: React.FC<ExerciseAnalyticsDisplayProps> =
   };
 
   return (
-    <View className="h-full w-full">
+    <View className="w-full">
+      <ExerciseSearchBar onSelectExercise={onSelectExercise} hideBodyOnIdle={true} />
       <FlatList
         data={exerciseNames}
         renderItem={renderExerciseNameChip}
@@ -68,6 +67,7 @@ export const ExerciseAnalyticsDisplay: React.FC<ExerciseAnalyticsDisplayProps> =
           alignSelf: 'center',
           width,
           paddingLeft: 12,
+          marginTop: 5,
           maxHeight: 32,
         }}
         contentContainerStyle={{
