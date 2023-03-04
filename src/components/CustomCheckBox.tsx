@@ -12,7 +12,6 @@ const Checkbox: React.FC<CustomCheckBoxProps> = ({ checked, onPress, disable }) 
     <TouchableOpacity
       accessibilityRole="button"
       onPress={onPress}
-      disabled={disable}
       className="border-cyan-30 my-auto rounded border bg-transparent p-0.5"
       disabled={disable}
     >

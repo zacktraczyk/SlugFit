@@ -30,19 +30,27 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
     >
       <View className="absolute top-2/4 h-full w-full rounded-t-3xl bg-white">
         <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
-
-        <TouchableOpacity
-          accessibilityRole="button"
-          onPress={() => {
-            setIndex(tempindex);
-            renderConsumableExercise(consumableExercise[tempindex]);
-            // console.log(consumableExercise[index].exerciseName);
-            setModalVisible(false);
-          }}
-        >
+        <View className="flex-row content-evenly justify-around">
+          <TouchableOpacity
+            accessibilityRole="button"
+            onPress={() => {
+              setModalVisible(false);
+            }}
+          >
+            <Text className="text-center text-lg font-bold text-red-500">Close</Text>
+          </TouchableOpacity>
           <Text className="text-center text-lg font-bold">Select Performance</Text>
-        </TouchableOpacity>
-
+          <TouchableOpacity
+            accessibilityRole="button"
+            onPress={() => {
+              setIndex(tempindex);
+              renderConsumableExercise(consumableExercise[tempindex]);
+              setModalVisible(false);
+            }}
+          >
+            <Text className="text-center text-lg font-bold text-red-500">View</Text>
+          </TouchableOpacity>
+        </View>
         <Picker
           pickerData={consumableExercise.map((exercise) => formatDateTime(exercise.created_at))}
           selectedValue={formatDateTime(consumableExercise[index].created_at)}
