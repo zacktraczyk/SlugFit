@@ -8,9 +8,13 @@ import { formatDate } from '../../utils/parsing';
 
 interface CompletedWorkoutBlockProps {
   consumableWorkout: ConsumableWorkout;
+  onPress: () => void;
 }
 
-const CompletedWorkoutBlock: React.FC<CompletedWorkoutBlockProps> = ({ consumableWorkout }) => {
+const CompletedWorkoutBlock: React.FC<CompletedWorkoutBlockProps> = ({
+  consumableWorkout,
+  onPress,
+}) => {
   const [done, setDone] = useState(0);
   const [total, setTotal] = useState(0);
 
@@ -29,6 +33,7 @@ const CompletedWorkoutBlock: React.FC<CompletedWorkoutBlockProps> = ({ consumabl
         accessibilityRole="button"
         className="flex-1 p-2"
         hitSlop={{ top: 3, right: 3 }}
+        onPress={onPress}
       >
         <View className="flex-row justify-between">
           <Text className="font-bebas text-base">{formatDate(consumableWorkout?.ended_at)}</Text>

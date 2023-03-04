@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { useAuth } from '../../contexts/AuthProvider';
@@ -11,6 +11,7 @@ import {
   updateProfilePicture,
   deleteProfilePicture,
 } from '../../utils/db/profiles';
+import { ExerciseAnalyticsDisplay } from '../../components/analytics/ExerciseAnalyticsDisplay';
 
 type ProfileProps = NativeStackScreenProps<NavigatorParamList, 'Profile'>;
 
@@ -51,7 +52,7 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
   };
 
   return (
-    <View className="h-full w-full bg-white">
+    <ScrollView className="h-full w-full bg-white">
       <View className="h-52 w-full rounded-b-[20px] bg-red-500 px-8 pt-16">
         <View className="items-end pb-2">
           <TouchableOpacity accessibilityRole="button">
@@ -118,7 +119,8 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
       </View>
 
       <Text className="pl-4 font-bebas text-3xl">Workout Analytics</Text>
-    </View>
+      <ExerciseAnalyticsDisplay />
+    </ScrollView>
   );
 };
 
