@@ -119,21 +119,24 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
                 <View className ='flex-row'>
                     {!closePastPerformance &&
                     (<TouchableOpacity accessibilityRole="button"
+                    className=" ml-2 rounded-lg  bg-gray-200"
                     onPress={() => {
                         setClosePastPerformance(true)
                         }}>
-                        <Text className="m-1 mt-3 text-sm font-bold text-center w-48 h-6 text-gray-500 font-bebas bg-gray-200 rounded-md">View Past Performance</Text>
+                        <Text className="m-1 mt-1 text-lg font-bold text text-gray-500 text-center w-48 h-6 font-bebas bg-gray-200">View Past Performance</Text>
                         </TouchableOpacity>)}
 
                     {closePastPerformance &&
                     (<TouchableOpacity accessibilityRole="button"
+                    className=" ml-2 rounded-lg  bg-gray-200"
                     onPress={() => {
                         setClosePastPerformance(false)
                         renderConsumableExerciseItems(selectedExercise);
                         setIndex(0);
                         }}>
                         
-                        <Text className="m-1 mt-3 text-lg font-bold text text-gray-500 text-center w-48 h-6 font-bebas bg-gray-200 rounded-md">Close Past Performance</Text>
+                        <Text className="m-1 mt-1 text-lg font-bold text text-gray-500 text-center w-48 h-6 font-bebas bg-gray-200
+                ">Close Past Performance</Text>
                         </TouchableOpacity>)}
                     <TouchableOpacity accessibilityRole="button"
                         onPress={() => 
@@ -145,7 +148,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({exercise
                             }
                         }
                         className="bg-white">        
-                        {pastExericises && closePastPerformance &&(<View className='mt-2' ><Text className="m-1 mt-1 ml-2  font-bebas text-lg font-bold text-center ">{closePastPerformance? formatDateTime(pastExericises[index].created_at):formatDateTime(selectedExercise.created_at)}</Text></View>)}
+                        {pastExericises && closePastPerformance &&(<View className='mt-1' ><Text className=" ml-2  font-bebas text-lg font-bold text-center ">{closePastPerformance? formatDateTime(pastExericises[index].created_at):formatDateTime(selectedExercise.created_at)}</Text></View>)}
                         {pastExerciseVisible && pastExericises &&(
                         <PastWorkoutPerformance
                             index={index}  
