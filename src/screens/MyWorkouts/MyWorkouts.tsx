@@ -14,6 +14,8 @@ import {
   deleteEditableWorkout,
 } from '../../utils/db/editableworkouts';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import ErrorBoundary from 'react-native-error-boundary';
+import ErrorScreen from '../../components/ErrorScreen';
 
 export type MyWorkoutsProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkouts'>;
 
@@ -76,23 +78,25 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex w-full flex-1 flex-col items-center justify-center bg-white"
-      enabled={!loading}
-    >
-      <FlatList
-        data={editableWorkouts}
-        renderItem={renderWorkoutBlock}
-        keyExtractor={(item) => item.id}
-        className="w-full"
-        contentContainerStyle={styles.flatList}
-        keyboardShouldPersistTaps="always"
-      />
-      <AddButton onPress={addWorkoutBlock} />
+    <ErrorBoundary FallbackComponent={ErrorScreen}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="flex w-full flex-1 flex-col items-center justify-center bg-white"
+        enabled={!loading}
+      >
+        <FlatList
+          data={editableWorkouts}
+          renderItem={renderWorkoutBlock}
+          keyExtractor={(item) => item.id}
+          className="w-full"
+          contentContainerStyle={styles.flatList}
+          keyboardShouldPersistTaps="always"
+        />
+        <AddButton onPress={addWorkoutBlock} />
 
-      <Spinner visible={loading} />
-    </KeyboardAvoidingView>
+        <Spinner visible={loading} />
+      </KeyboardAvoidingView>
+    </ErrorBoundary>
   );
 };
 

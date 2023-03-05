@@ -2,22 +2,37 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { supabase } from '../utils/supabaseClient';
+import Chip from './CustomChip';
+import ExerciseFilterModal from './ExerciseFilterModal';
 
 export type ExerciseSearchBarProps = {
   onSelectExercise: (exercise: string) => void;
+  hideBodyOnIdle?: boolean;
 };
 
-const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise }) => {
-  const [allExercises, setAllExercises] = useState<string[]>([]);
-  const [searchInput, setSearchInput] = useState('');
-  const recentlyUsedExercise = useRef('');
-  const searchArray = useRef<string[]>([]);
+type Exercise = {
+  name: string;
+  muscleGroup: string;
+};
 
+const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({
+  onSelectExercise,
+  hideBodyOnIdle,
+}) => {
+  const [allExercises, setAllExercises] = useState<Exercise[]>([]);
+  const [searchInput, setSearchInput] = useState('');
+  const searchArray = useRef<Exercise[]>([]);
+  const [filters, setFilters] = useState<string[]>([]);
+  const [searchOnFocus, setSearchOnFocus] = useState(false);
   if (searchInput.length > 0) {
     searchArray.current = [];
-    const tempArr = allExercises.filter((exercise) =>
-      exercise.toLowerCase().includes(searchInput.toLowerCase())
-    );
+    const tempArr = allExercises.filter((exercise) => {
+      let val = true;
+      for (let i = 0; i < filters.length; i++) {
+        val = val && exercise.muscleGroup.toLowerCase().includes(filters[i].toLowerCase());
+      }
+      return val && exercise.name.toLowerCase().includes(searchInput.toLowerCase());
+    });
     tempArr.map((exercise) => {
       searchArray.current.push(exercise);
     });
@@ -29,9 +44,9 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
       alert(error);
     }
     if (data != null) {
-      const temp: string[] = [];
+      const temp: Exercise[] = [];
       data.map((exercise) => {
-        temp.push(exercise.name);
+        temp.push({ name: exercise.name, muscleGroup: exercise.muscle_group });
       });
       setAllExercises(temp);
     }
@@ -42,13 +57,13 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
   }, []);
 
   const onPressHandler = (item: string) => {
-    recentlyUsedExercise.current = item;
     onSelectExercise(item);
+    setSearchOnFocus(false);
   };
 
   return (
-    <View className="h-full w-screen items-center bg-white">
-      <View className="mt-7 h-12  w-11/12 rounded-t  border-x border-t border-slate-200 bg-slate-50">
+    <View className="z-50 w-screen items-center bg-white">
+      <View className="mt-7 flex  h-12 w-11/12 flex-row justify-between rounded border border-slate-200 bg-white">
         <TextInput
           accessibilityLabel="Exercise Search Text Field "
           accessibilityHint="Input characters to search for an exercise"
@@ -57,64 +72,84 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
           placeholder="Search for an exercise"
           returnKeyType="next"
           value={searchInput}
+          onFocus={() => {
+            setSearchOnFocus(true);
+          }}
+          // onBlur={() => {
+          //   setSearchOnFocus(false);
+          // }}
           onChangeText={(value) => {
             setSearchInput(value);
           }}
-          autoFocus
         />
+        <View className="mr-2">
+          <ExerciseFilterModal
+            onClose={(filterArr) => {
+              setFilters(new Array(...filterArr));
+            }}
+          />
+        </View>
       </View>
-      <View className="divide-y-10 invisible  h-60 w-11/12 overflow-scroll border border-slate-200 bg-slate-50">
-        <ScrollView keyboardShouldPersistTaps="always">
-          {searchInput.length <= 0 ? (
-            <View className="mx-5 ">
-              {recentlyUsedExercise.current.length > 0 ? (
-                <View>
-                  <Text className="text-l mx-1 my-3 font-light">Recently Used</Text>
-                  <TouchableOpacity
-                    accessibilityRole="button"
-                    key={'recently-used-' + recentlyUsedExercise.current}
-                    onPress={() => onPressHandler(recentlyUsedExercise.current)}
-                    className="mb-1 rounded border border-slate-200 p-3"
-                  >
-                    <Text className="text-l font-bold ">{recentlyUsedExercise.current}</Text>
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <View />
-              )}
-              <Text className="text-l mx-1 my-3 font-light ">All Exercises</Text>
-              {allExercises.map((item) => {
-                return (
-                  <TouchableOpacity
-                    accessibilityRole="button"
-                    key={item}
-                    onPress={() => onPressHandler(item)}
-                    className="mb-1 rounded border border-slate-200 p-3"
-                  >
-                    <Text className="text-l font-bold">{item}</Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          ) : (
-            <View className="mx-5 ">
-              <Text className="my-1 text-xs font-light "> Search Result:</Text>
-              {searchArray.current.map((item) => {
-                return (
-                  <TouchableOpacity
-                    accessibilityRole="button"
-                    key={item}
-                    onPress={() => onPressHandler(item)}
-                    className="mb-1 rounded border border-slate-200 p-3"
-                  >
-                    <Text className="text-l font-bold ">{item}</Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          )}
-        </ScrollView>
-      </View>
+      {hideBodyOnIdle && !searchOnFocus ? null : (
+        <View className="divide-y-10 absolute z-50 mt-20 h-60 w-11/12 overflow-scroll rounded border border-slate-200 bg-white">
+          <ScrollView keyboardShouldPersistTaps="always">
+            {searchInput.length <= 0 ? (
+              <View className="mx-5 ">
+                {filters.length > 0 ? (
+                  <View className="border-b-0.5 flex flex-row border-slate-400 pb-2">
+                    <ScrollView horizontal={true}>
+                      {filters.map((item) => {
+                        return <Chip key={item} value={item} closeable={false} />;
+                      })}
+                      {/**END OF CHIP*/}
+                    </ScrollView>
+                  </View>
+                ) : null}
+                <Text className="text-l mx-1 my-3 font-light ">All Exercises</Text>
+                {allExercises
+                  .filter((exercise) => {
+                    let val = true;
+                    for (let i = 0; i < filters.length; i++) {
+                      val =
+                        val &&
+                        exercise.muscleGroup.toLowerCase().includes(filters[i].toLowerCase());
+                    }
+                    return val;
+                  })
+                  .map((item) => {
+                    return (
+                      <TouchableOpacity
+                        accessibilityRole="button"
+                        key={item.name}
+                        onPress={() => onPressHandler(item.name)}
+                        className="mb-1 rounded border border-slate-200 p-3"
+                      >
+                        <Text className="text-l font-bold">{item.name}</Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+              </View>
+            ) : (
+              <View className="mx-5 ">
+                <Text className="my-1 text-xs font-light"> Search Result:</Text>
+                {searchArray.current.map((item) => {
+                  return (
+                    <TouchableOpacity
+                      accessibilityRole="button"
+                      key={item.name}
+                      onPress={() => onPressHandler(item.name)}
+                      className="mb-1 rounded border border-slate-200 p-3"
+                    >
+                      <Text className="text-l font-bold ">{item.name}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            )}
+          </ScrollView>
+          <View className="h-10 w-10"></View>
+        </View>
+      )}
     </View>
   );
 };

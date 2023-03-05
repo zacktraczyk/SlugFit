@@ -5,13 +5,14 @@
 // your site."
 
 module.exports = {
-  content: ["./App.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
+  content: ['./App.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
       fontFamily: {
-        display: "",
-        body: "",
-        'bebas': ['BebasNeue_400Regular']   // Add loaded font to taillwind font family
+        display: '',
+        body: '',
+        bebas: ['BebasNeue_400Regular'], // Add loaded font to taillwind font family
+        sans: ['BebasNeue_400Regular'],
       },
     },
   },

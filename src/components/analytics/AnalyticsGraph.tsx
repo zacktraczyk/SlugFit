@@ -121,7 +121,7 @@ export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({
       style={{
         height: (width / 12) * 10,
         width: (width / 12) * 10,
-        alignSelf: 'flex-end',
+        alignSelf: 'center',
       }}
       padding={{ bottom: 20, top: 20, left: 20, right: 20 }}
       data={[]}
