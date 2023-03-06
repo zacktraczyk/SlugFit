@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Entypo } from '@expo/vector-icons';
 import { View, Text, TouchableOpacity, Keyboard } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { ExerciseTemplate } from '../types';
@@ -55,6 +56,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
   const onExerciseSelect = (item: string) => {
     onSelectExercise(item);
     setSearchOnFocus(false);
+    setSearchInput('');
     Keyboard.dismiss();
   };
 
@@ -82,7 +84,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
           returnKeyType="next"
           value={searchInput}
           onFocus={() => setSearchOnFocus(true)}
-          onBlur={() => setSearchOnFocus(false)}
+          // onBlur={() => setSearchOnFocus(false)}
           onChangeText={onSearchChangeText}
         />
         <View className="mr-2">
@@ -107,21 +109,31 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
               )}
 
               {/* Search Results */}
-              {searchResults.map((item) => {
-                return (
-                  <TouchableOpacity
-                    accessibilityRole="button"
-                    key={item.name}
-                    onPress={() => onExerciseSelect(item.name)}
-                    className="mb-1 rounded border border-slate-200 p-3"
-                  >
-                    <Text className="text-l font-bold">{item.name}</Text>
-                  </TouchableOpacity>
-                );
-              })}
+              {searchResults.length > 0 ? (
+                searchResults.map((item) => {
+                  return (
+                    <TouchableOpacity
+                      accessibilityRole="button"
+                      key={item.name}
+                      onPress={() => onExerciseSelect(item.name)}
+                      className="mb-1 rounded border border-slate-200 p-3"
+                    >
+                      <Text className="font-bold">{item.name}</Text>
+                    </TouchableOpacity>
+                  );
+                })
+              ) : (
+                <Text className="p-3 text-slate-500">No Matching Exercises</Text>
+              )}
             </View>
           </ScrollView>
-          <View className="h-5"></View>
+          <TouchableOpacity
+            className="flex w-full items-center p-3"
+            accessibilityRole="button"
+            onPress={() => setSearchOnFocus(false)}
+          >
+            <Entypo name="chevron-thin-up" size={24} color="black" />
+          </TouchableOpacity>
         </View>
       )}
     </View>
