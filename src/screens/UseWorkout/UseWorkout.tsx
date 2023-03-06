@@ -30,6 +30,7 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
         <ConsumableExerciseCard
           exerciseName={exerciseName}
           consumableWorkoutId={route.params.consumableWorkoutId}
+          userId={route.params.userId}
         />
       </AnimatedExerciseCardContainer>
     );
@@ -98,6 +99,7 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
           onStopPress={onStopPress}
         />
       )}
+
       <View className="h-full w-full flex-1 bg-slate-50">
         <FlatList
           ref={flatlistRef}

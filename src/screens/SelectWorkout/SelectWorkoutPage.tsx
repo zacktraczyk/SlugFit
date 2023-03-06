@@ -13,14 +13,13 @@ type SelectWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'Select
 const SelectWorkoutPage: React.FC<SelectWorkoutPageProps> = ({ navigation }) => {
   const { session } = useAuth();
   const { editableWorkouts } = useMyEditableWorkouts(session);
-
   const startWorkout = async (editableWorkout: EditableWorkout) => {
     if (!session) return;
     const { id } = await createConsumableWorkout({
       userId: session?.user.id,
       editableWorkoutId: editableWorkout.id,
     });
-    navigation.navigate('UseWorkout', { consumableWorkoutId: id });
+    navigation.navigate('UseWorkout', { consumableWorkoutId: id, userId: session?.user.id });
   };
 
   const alertConfirmStart = (editableWorkout: EditableWorkout) => {
