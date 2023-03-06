@@ -26,8 +26,8 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
     setFilters([...filterArr]);
 
     if (filterArr.length == 0) {
-      console.log('onSelectFilters: No filters selected');
       setFilteredExercises(allExercises);
+      setSearchResults(allExercises);
       return;
     }
 

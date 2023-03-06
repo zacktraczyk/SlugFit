@@ -60,11 +60,7 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
 
   return (
     <View className="z-50 my-auto">
-      <TouchableOpacity
-        accessibilityRole="button"
-        onPress={() => setModalVisible(true)}
-        className="z-50 border-2"
-      >
+      <TouchableOpacity accessibilityRole="button" onPress={() => setModalVisible(true)}>
         <Ionicons name="filter-sharp" size={24} color="grey" />
       </TouchableOpacity>
 
