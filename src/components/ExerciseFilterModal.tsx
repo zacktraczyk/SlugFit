@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native';
 import Checkbox from './CustomCheckBox';
 
 export type ExerciseFilterModalProps = {
-  onClose: (filters: string[] | undefined) => void;
+  onClose: (filters: string[]) => void;
 };
 
-const PRIMARYFILTER = ['Chest', 'Back', 'Shoulders', 'Triceps', 'Biceps', 'Legs', 'Abs'];
+const PRIMARYFILTER = ['Chest', 'Back', 'Shoulders', 'Triceps', 'Biceps', 'Legs', 'Abdominals'];
 const SECONDARYFILTER = [
   'Upper Chest',
   'Lower Chest',
@@ -24,7 +24,7 @@ const SECONDARYFILTER = [
   'Quadriceps',
   'Calves',
   'Traps',
-  ' Rotator Cuff',
+  'Rotator Cuff',
 ];
 
 const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) => {
@@ -59,8 +59,12 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
   };
 
   return (
-    <View className="my-auto">
-      <TouchableOpacity accessibilityRole="button" onPress={() => setModalVisible(true)}>
+    <View className="z-50 my-auto">
+      <TouchableOpacity
+        accessibilityRole="button"
+        onPress={() => setModalVisible(true)}
+        className="z-50 border-2"
+      >
         <Ionicons name="filter-sharp" size={24} color="grey" />
       </TouchableOpacity>
 
@@ -73,7 +77,7 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
         }}
       >
         <View style={styling.modalMask} className="h-full w-full items-center justify-center">
-          <View className="flex h-4/6 w-10/12 flex-col rounded-lg border border-2 border-slate-200 bg-white py-4 shadow-2xl">
+          <View className="flex h-4/6 w-10/12 flex-col rounded-lg border-2 border-slate-200 bg-white py-4 shadow-2xl">
             <View className="flex flex-row justify-end">
               <TouchableOpacity
                 className="fixed m-2 mr-4"

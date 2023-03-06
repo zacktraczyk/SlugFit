@@ -1,5 +1,5 @@
 import { supabase } from '../supabaseClient';
-import { EditableExercise, EditableExerciseItem } from '../../types';
+import { EditableExercise, EditableExerciseItem, ExerciseTemplate } from '../../types';
 
 export const EDITABLE_EXERCISES_TABLE_NAME = 'editableexercises';
 
@@ -85,6 +85,19 @@ export const getEditableExercise = async ({
   if (error) throw error;
 
   return data as EditableExercise;
+};
+
+/**
+ * Get all exercise templates from supabase
+ * @returns {Array} Array of exercises [{name, muscle_group}]
+ */
+export const getAllEditableExercises = async () => {
+  const { data, error } = await supabase.from('exercises').select('name, muscle_group');
+
+  if (error) throw error;
+
+  // console.log('getAllEditableExercises:', data);
+  return data as ExerciseTemplate[];
 };
 
 /**
