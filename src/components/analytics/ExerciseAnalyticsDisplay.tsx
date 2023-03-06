@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, Dimensions } from 'react-native';
+import { View, Text, FlatList, Dimensions, Keyboard } from 'react-native';
 import { ChartDataPoint } from 'react-native-responsive-linechart';
 import { MetricType, Timeframe } from '../../utils/analytics';
 import { AnalyticsGraph } from './AnalyticsGraph';
@@ -8,6 +8,7 @@ import { SelectedDataDisplay } from './SelectedDataDisplay';
 import { TimeframeFilter } from './TimeframeFilter';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import ExerciseSearchBar from '../ExerciseSearchBar';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 interface ExerciseAnalyticsDisplayProps {
   numCanSelect?: number;
@@ -75,14 +76,17 @@ export const ExerciseAnalyticsDisplay: React.FC<ExerciseAnalyticsDisplayProps> =
         }}
       />
       <MetricTypeFilter onChange={setMetricType} metricType={metricType} />
-      <AnalyticsGraph
-        exerciseNames={exerciseNames}
-        colors={AnalyticsColors}
-        metricType={metricType}
-        timeframe={timeframe}
-        onDataPointSelected={setSelectedDataPoint}
-      />
-      <SelectedDataDisplay dataPoint={selectedDataPoint} metricType={metricType} />
+
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <AnalyticsGraph
+          exerciseNames={exerciseNames}
+          colors={AnalyticsColors}
+          metricType={metricType}
+          timeframe={timeframe}
+          onDataPointSelected={setSelectedDataPoint}
+        />
+        <SelectedDataDisplay dataPoint={selectedDataPoint} metricType={metricType} />
+      </TouchableWithoutFeedback>
 
       <TimeframeFilter onChange={setTimeframe} timeframe={timeframe} />
     </View>
