@@ -13,7 +13,10 @@ import {
  * @param useRealtime Set to true if you want to create a realtime listener for this workout
  * @returns `{workout, fetch, listening}`
  */
-export const useConsumableWorkout = (consumableWorkoutId: string, useRealtime = false) => {
+export const useConsumableWorkout = (
+  consumableWorkoutId: string | undefined,
+  useRealtime = false
+) => {
   const [listening, setListening] = useState<boolean>(false);
   const [consumableWorkout, setConsumableWorkout] = useState<Partial<ConsumableWorkout>>({
     id: consumableWorkoutId,
@@ -49,6 +52,7 @@ export const useConsumableWorkout = (consumableWorkoutId: string, useRealtime = 
   };
 
   const fetch = async () => {
+    if (consumableWorkoutId === undefined) return;
     try {
       const data = await getConsumableWorkout({ consumableWorkoutId });
       setConsumableWorkout(data);
@@ -58,8 +62,8 @@ export const useConsumableWorkout = (consumableWorkoutId: string, useRealtime = 
   };
 
   useEffect(() => {
-    fetch();
-    if (useRealtime) {
+    if (consumableWorkoutId) fetch();
+    if (consumableWorkoutId && useRealtime) {
       const unsubscribe = listen();
       return unsubscribe;
     }

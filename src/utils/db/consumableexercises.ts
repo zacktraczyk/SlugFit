@@ -1,5 +1,5 @@
 import { supabase } from '../supabaseClient';
-import { ConsumableExercise } from '../../types';
+import { ConsumableExercise, ConsumableExerciseItem } from '../../types';
 import { getEditableExercise } from './editableexercises';
 
 export const CONSUMABLE_EXERCISES_TABLE_NAME = 'consumableexercises';
@@ -34,6 +34,7 @@ export const getConsumableExercises = async ({
 
 /**
  * Create -- 'consumableexercises'
+ * Requires either exerciseItems or editableWorkoutId
  * @param exerciseName
  * @param consumableWorkoutId
  * @param editableWorkoutId
@@ -44,14 +45,18 @@ export const createConsumableExercise = async ({
   exerciseName,
   consumableWorkoutId,
   editableWorkoutId,
+  exerciseItems = [],
   userId,
 }: {
   exerciseName: string;
   consumableWorkoutId: string;
-  editableWorkoutId: string;
+  editableWorkoutId?: string;
+  exerciseItems?: ConsumableExerciseItem[];
   userId: string;
 }): Promise<ConsumableExercise> => {
-  const editableExercise = await getEditableExercise({ exerciseName, editableWorkoutId });
+  let editableExercise;
+  if (editableWorkoutId)
+    editableExercise = await getEditableExercise({ exerciseName, editableWorkoutId });
 
   const { data, error } = await supabase
     .from(CONSUMABLE_EXERCISES_TABLE_NAME)
@@ -59,7 +64,9 @@ export const createConsumableExercise = async ({
       exerciseName: exerciseName,
       consumableWorkoutId,
       created_by: userId,
-      exerciseItems: editableExercise.exerciseItems.map((item) => ({ data: {}, ref: item })),
+      exerciseItems: editableWorkoutId
+        ? editableExercise.exerciseItems.map((item) => ({ data: {}, ref: item }))
+        : exerciseItems,
     })
     .select('*')
     .single();

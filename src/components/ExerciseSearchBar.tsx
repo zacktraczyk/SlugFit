@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { supabase } from '../utils/supabaseClient';
 import Chip from './CustomChip';
-import ExerciseFilterModal from './ExerciseFilterModal';
+import ExerciseFilterModal from './modals/ExerciseFilterModal';
 
 export type ExerciseSearchBarProps = {
   onSelectExercise: (exercise: string) => void;

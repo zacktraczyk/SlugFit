@@ -6,20 +6,22 @@ import { useAuth } from '../../contexts/AuthProvider';
 import Block from '../../components/blocks/Block';
 import { EditableWorkout } from '../../types';
 import { useMyEditableWorkouts } from '../../hooks/useMyEditableWorkouts';
-import { createConsumableWorkout } from '../../utils/db/consumableworkouts';
+import { useActiveWorkout } from '../../hooks/useActiveWorkout';
 
 type SelectWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'SelectWorkout'>;
 
 const SelectWorkoutPage: React.FC<SelectWorkoutPageProps> = ({ navigation }) => {
   const { session } = useAuth();
   const { editableWorkouts } = useMyEditableWorkouts(session);
+  const [readyActiveWorkout, startActiveWorkout] = useActiveWorkout((state) => [
+    state.ready,
+    state.start,
+  ]);
   const startWorkout = async (editableWorkout: EditableWorkout) => {
     if (!session) return;
-    const { id } = await createConsumableWorkout({
-      userId: session?.user.id,
-      editableWorkoutId: editableWorkout.id,
-    });
-    navigation.navigate('UseWorkout', { consumableWorkoutId: id, userId: session?.user.id });
+    await readyActiveWorkout(editableWorkout.id, session?.user.id);
+    startActiveWorkout();
+    navigation.navigate('UseWorkout', { userId: session?.user.id });
   };
 
   const alertConfirmStart = (editableWorkout: EditableWorkout) => {

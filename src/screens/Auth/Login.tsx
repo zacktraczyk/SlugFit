@@ -21,7 +21,6 @@ import { AuthStackParamList } from './AuthNavigator';
 
 import ErrorBoundary from 'react-native-error-boundary';
 import ErrorScreen from '../../components/ErrorScreen';
-import ComponentWithError from '../../components/ComponentWithError';
 
 type FormElements = {
   email: string;

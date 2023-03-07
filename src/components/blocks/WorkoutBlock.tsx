@@ -1,6 +1,6 @@
 import React, { SetStateAction, useState } from 'react';
 import { TextInput } from 'react-native';
-import DoneButton from '../DoneButton';
+import DoneButton from '../buttons/DoneButton';
 import { EditableWorkout } from '../../types';
 import Block from './Block';
 import { BlockContainer } from './BlockContainer';

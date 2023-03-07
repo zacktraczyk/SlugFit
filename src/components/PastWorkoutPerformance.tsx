@@ -8,14 +8,14 @@ import { formatDateTime } from '../utils/parsing';
 interface PastExericisePerformanceProps {
   index: number;
   setIndex: React.Dispatch<React.SetStateAction<number>>;
-  consumableExercise: ConsumableExercise[];
+  consumableExercises: ConsumableExercise[];
   setModalVisible: (bool: boolean) => void;
   renderConsumableExercise: (exercise: Partial<ConsumableExercise>) => void;
 }
 const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
   index,
   setIndex,
-  consumableExercise,
+  consumableExercises,
   setModalVisible,
   renderConsumableExercise,
 }) => {
@@ -44,7 +44,7 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
             accessibilityRole="button"
             onPress={() => {
               setIndex(tempindex);
-              renderConsumableExercise(consumableExercise[tempindex]);
+              renderConsumableExercise(consumableExercises[tempindex]);
               setModalVisible(false);
             }}
           >
@@ -52,11 +52,11 @@ const PastExericisePerformance: React.FC<PastExericisePerformanceProps> = ({
           </TouchableOpacity>
         </View>
         <Picker
-          pickerData={consumableExercise.map((exercise) => formatDateTime(exercise.created_at))}
-          selectedValue={formatDateTime(consumableExercise[index].created_at)}
+          pickerData={consumableExercises.map((exercise) => formatDateTime(exercise.created_at))}
+          selectedValue={formatDateTime(consumableExercises[index].created_at)}
           onValueChange={(currentExericise) => {
             setTempIndex(
-              consumableExercise
+              consumableExercises
 
                 .map((exercise) => formatDateTime(exercise.created_at))
                 .indexOf(currentExericise)

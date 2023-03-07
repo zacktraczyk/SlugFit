@@ -1,6 +1,7 @@
 import { ConsumableExercise, ConsumableExerciseItem, ConsumableWorkout } from '../types';
 import { isSet } from './typeCheck';
 import { getConsumableExercise } from './db/consumableexercises';
+import { LocalConsumableExercise } from '../hooks/useActiveWorkout';
 
 export const isCompletedSet = (s: ConsumableExerciseItem) => {
   return (
@@ -82,7 +83,9 @@ export const countStartedSetsInConsumableExercise = (
  * @param {ConsumableExercise} exercise
  * @returns {boolean} true if at least 1 non-empty set in exercise
  */
-export const isConsumableExerciseEmpty = (exercise: ConsumableExercise): boolean => {
+export const isConsumableExerciseEmpty = (
+  exercise: ConsumableExercise | LocalConsumableExercise
+): boolean => {
   return countStartedSetsInConsumableExercise(exercise.exerciseItems) == 0;
 };
 
