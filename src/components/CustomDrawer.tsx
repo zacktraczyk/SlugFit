@@ -7,13 +7,35 @@ import { useAuth } from '../contexts/AuthProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DrawerWorkoutBlock from './blocks/DrawerWorkoutBlocks';
 import { Ionicons } from '@expo/vector-icons';
+import { getUserProfile } from '../utils/db/profiles';
+import { ProfileType } from '../types';
 
 const CustomDrawer = () => {
   const navigation = useNavigation();
-  const [refresh, setRefresh] = React.useState<boolean>(false);
   const { session } = useAuth();
   const { editableWorkouts, fetch } = useMyEditableWorkouts(session);
-  
+  const [userData, setUserData] = React.useState<ProfileType>({});
+
+  React.useEffect(() => {
+    const fetchProfile = async () => {
+      const data = await getUserProfile(session);
+      setUserData(data);
+    };
+
+    fetchProfile().catch(console.error);
+  }, []);
+
+  const refresh = () => {
+    if (fetch != undefined) {
+      fetch();
+    }
+    getUserProfile(session)
+      .then((data) => {
+        setUserData(data);
+      })
+      .catch(console.error);
+  };
+
   return (
     <View className="h-full w-full">
       <LinearGradient className="mb-3 h-32" colors={['#888787', '#9A9A9A', '#FFFFFF']}>
@@ -26,7 +48,17 @@ const CustomDrawer = () => {
               }}
             >
               <Image
-                source={require('../assets/genericProfilePic.jpg')}
+                source={
+                  userData.avatar_url
+                    ? {
+                        uri:
+                          'https://veorawmuwkuyzbxadxgv.supabase.co/storage/v1/object/public/avatars/' +
+                          session?.user.id +
+                          '/' +
+                          userData.avatar_url,
+                      }
+                    : require('../assets/genericProfilePic.jpg')
+                }
                 className="mt-4 ml-4 h-[70] w-[70] rounded-full"
               ></Image>
             </TouchableOpacity>
@@ -42,8 +74,7 @@ const CustomDrawer = () => {
             <TouchableOpacity
               accessibilityRole="button"
               onPress={() => {
-                fetch();
-                setRefresh(!refresh);
+                refresh();
               }}
               className="m-1 flex flex-col justify-end"
             >
