@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
-import { FlatList, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
+import { FlatList, KeyboardAvoidingView, ListRenderItem, Platform, StyleSheet } from 'react-native';
 import AddButton from '../../components/buttons/AddButton';
 import { NavigatorParamList } from '../DrawerNavigator';
 import ExerciseBlock from '../../components/blocks/ExerciseBlock';
@@ -51,7 +51,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
     }
   };
 
-  const navigateToEditableExercise = (exerciseName) => {
+  const navigateToEditableExercise = (exerciseName: string) => {
     navigation.navigate('EditExercisePage', {
       editableWorkoutId: route.params.editableWorkoutId,
       editableWorkoutName: route.params.editableWorkoutName,
@@ -59,7 +59,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
     });
   };
 
-  const renderExerciseBlock = ({ item }) => {
+  const renderExerciseBlock: ListRenderItem<string> = ({ item }) => {
     return (
       <ExerciseBlock
         exerciseName={item}

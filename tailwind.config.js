@@ -15,5 +15,11 @@ module.exports = {
         sans: ['BebasNeue_400Regular'],
       },
     },
+    colors: {
+      darkBlue: '#19639E',
+      lightBlue: '#BADEFB',
+      darkRed: '#B92916',
+      lightRed: '#FFC0B8',
+    },
   },
 };

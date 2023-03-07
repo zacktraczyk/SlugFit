@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, TouchableOpacity, View } from 'react-native';
-import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
+import DraggableFlatList, { RenderItem, ScaleDecorator } from 'react-native-draggable-flatlist';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AddButton from '../../components/buttons/AddButton';
 import SetCard from '../../components/blocks/SetCard';
@@ -11,38 +11,36 @@ import Spinner from 'react-native-loading-spinner-overlay/lib';
 import RestCard from '../../components/blocks/RestCard';
 import NoteCard from '../../components/blocks/NoteCard';
 import CardCreationModal from '../../components/modals/CardCreationModal';
-import { EditableExerciseItem } from '../../types';
+import { EditableExerciseItem, ExerciseNote, ExerciseRest, ExerciseSet } from '../../types';
 import { updateEditableExercise, getEditableExercise } from '../../utils/db/editableexercises';
 import ErrorBoundary from 'react-native-error-boundary';
 import ErrorScreen from '../../components/ErrorScreen';
+import { isSet, isNote, isRest } from '../../utils/typeCheck';
 
 type EditExercisePageProps = NativeStackScreenProps<NavigatorParamList, 'EditExercisePage'>;
-
-// const emptySet = {};
-
-// data validation
-// sets 999
-// rpe 0-10
-// 0-100
 
 // Default ExerciseItem data
 const createEmptySet = (id: number) => ({ id, reps: '', rpe: '', orm: '', warmup: false });
 const createEmptyRest = (id: number) => ({ id, minutes: '', seconds: '' });
 const createEmptyNote = (id: number) => ({ id, text: '' });
 
-// TODO: Append rests or sets, not just sets
 const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
   const { exerciseName, editableWorkoutId } = route.params;
   const [exerciseItems, setExerciseItems] = useState<EditableExerciseItem[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
+
   // Card Operations
-  const updateCard = async (id, property, val) => {
+  const updateCard = async (
+    id: number,
+    property: keyof ExerciseSet | keyof ExerciseNote | keyof ExerciseRest,
+    val: string | boolean
+  ) => {
     const _exerciseItems = exerciseItems.map((item) => {
       if (item.id === id) {
-        const _set = { ...item };
-        _set[property] = val;
-        return _set;
+        const _exerciseItem = { ...item };
+        _exerciseItem[property] = val;
+        return _exerciseItem;
       }
       return item;
     });
@@ -57,7 +55,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
     });
   };
 
-  const duplicateCard = (id) => {
+  const duplicateCard = (id: number) => {
     if (id === undefined) {
       throw 'ExerciseItem id not given';
     }
@@ -85,7 +83,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
     });
   };
 
-  const deleteCard = (id) => {
+  const deleteCard = (id: number) => {
     if (id === undefined) {
       throw 'ExerciseItem id not given';
     }
@@ -134,53 +132,36 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
     });
   };
 
-  useEffect(() => {
-    const fetchSets = async () => {
-      const exercise = await getEditableExercise({ exerciseName, editableWorkoutId });
-      setExerciseItems(exercise ? exercise.exerciseItems : []);
-      setLoading(false);
-    };
-
-    fetchSets().catch(console.error);
-  }, []);
-
-  const renderItem = ({ item, drag, isActive }) => {
+  const renderItem: RenderItem<EditableExerciseItem> = ({ item, drag, isActive }) => {
     // Identify card by property
     let Card = <></>;
-    if (item.reps !== undefined) {
+    if (isSet(item)) {
+      const set = item as ExerciseSet;
       Card = (
         <SetCard
-          reps={item.reps}
-          setReps={(val) => updateCard(item.id, 'reps', val)}
-          rpe={item.rpe}
-          setRpe={(val) => updateCard(item.id, 'rpe', val)}
-          orm={item.orm}
-          setOrm={(val) => updateCard(item.id, 'orm', val)}
-          warmupSet={item.warmup}
-          setWarmupSet={(val) => updateCard(item.id, 'warmup', val)}
-          id={item.id}
+          {...set}
+          setReps={(val) => updateCard(set.id, 'reps', val)}
+          setRpe={(val) => updateCard(set.id, 'rpe', val)}
+          setOrm={(val) => updateCard(set.id, 'orm', val)}
+          warmupSet={set.warmup}
+          setWarmupSet={(val) => updateCard(set.id, 'warmup', val)}
           {...cardProps}
         />
       );
-    } else if (item.minutes !== undefined) {
+    } else if (isRest(item)) {
+      const rest = item as ExerciseRest;
       Card = (
         <RestCard
-          minutes={item.minutes}
-          setMinutes={(val) => updateCard(item.id, 'minutes', val)}
-          seconds={item.seconds}
-          setSeconds={(val) => updateCard(item.id, 'seconds', val)}
-          id={item.id}
+          {...rest}
+          setMinutes={(val) => updateCard(rest.id, 'minutes', val)}
+          setSeconds={(val) => updateCard(rest.id, 'seconds', val)}
           {...cardProps}
         />
       );
-    } else if (item.text !== undefined) {
+    } else if (isNote(item)) {
+      const note = item as ExerciseNote;
       Card = (
-        <NoteCard
-          text={item.text}
-          setText={(val) => updateCard(item.id, 'text', val)}
-          id={item.id}
-          {...cardProps}
-        />
+        <NoteCard {...note} setText={(val) => updateCard(note.id, 'text', val)} {...cardProps} />
       );
     } else {
       throw "Can't identify ExerciseItem in renderItem";
@@ -194,6 +175,16 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
       </ScaleDecorator>
     );
   };
+
+  useEffect(() => {
+    const fetchSets = async () => {
+      const exercise = await getEditableExercise({ exerciseName, editableWorkoutId });
+      setExerciseItems(exercise ? exercise.exerciseItems : []);
+      setLoading(false);
+    };
+
+    fetchSets().catch(console.error);
+  }, []);
 
   return (
     <>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import { TextInput } from 'react-native-gesture-handler';
 import Checkbox from '../CustomCheckBox';
@@ -54,17 +54,13 @@ const SetBlock: React.FC<SetBlockProps> = ({
 
   return (
     <View className="mx-2 mt-2 ">
-      <Text className="ml-1 font-bebas font-extralight text-stone-700">
+      <Text className="text-stone-700 ml-1 font-bebas font-extralight">
         {setRef.warmup ? 'WARMUP' : ''} SET {setNumber}
       </Text>
       <View
-        style={setRef.warmup ? styling.warmUpBackground1 : styling.workingBackground1}
-        className="-2 flex h-8 flex-row rounded-md"
+        className={`flex h-8 flex-row rounded-md ${setRef.warmup ? 'bg-lightBlue' : 'bg-lightRed'}`}
       >
-        <View
-          style={setRef.warmup ? styling.warmUpBackground2 : styling.workingBackground2}
-          className="h-8 w-6 rounded-l-lg"
-        >
+        <View className={`h-8 w-6 rounded-l-lg ${setRef.warmup ? 'bg-darkBlue' : 'bg-darkRed'}`}>
           <Text className="my-auto ml-1 font-bebas text-xl font-bold">DO</Text>
         </View>
         <Text className="my-auto ml-3 font-bebas text-xl font-bold">{setRef.reps}</Text>
@@ -75,21 +71,24 @@ const SetBlock: React.FC<SetBlockProps> = ({
         <Text className="mt-3 font-bebas text-xs font-bold"> %1RM</Text>
         <View className="flex flex-grow flex-row justify-end border-solid">
           <Text
-            style={setRef.warmup ? styling.warmUpFontColor : styling.workingFontColor}
-            className="mx-4 my-auto ml-1 font-bebas text-xl font-bold"
+            className={`mx-4 my-auto ml-1 font-bebas text-xl font-bold ${
+              setRef.warmup ? 'text-darkBlue' : 'text-darkRed'
+            }`}
           >
             {setRef.warmup ? 'WARMUP' : 'WORKING'}
           </Text>
         </View>
       </View>
-      <View className="-2 mt-0.5 flex h-8 flex-row rounded-md bg-gray-200">
-        <View className="bor h-8 w-14 rounded-l-lg bg-gray-300">
+      <View className="-2 bg-gray-200 mt-0.5 flex h-8 flex-row rounded-md">
+        <View className="bor bg-gray-300 h-8 w-14 rounded-l-lg">
           <Text className="my-auto ml-1 font-bebas text-xl font-bold">RECORD</Text>
         </View>
         <TextInput
           accessibilityLabel="Record Reps"
           accessibilityHint="Input reps you did"
-          className="mx-auto my-auto ml-1 h-5/6 w-16 rounded-md bg-white text-center font-bebas text-xs"
+          className={`bg-white mx-auto my-auto ml-1 h-5/6 w-16 rounded-md text-center font-bebas text-xs ${
+            workoutKey == currentWorkoutKey ? 'bg-white' : 'bg-transparent'
+          }`}
           autoCapitalize="none"
           placeholder="REPS YOU DID"
           returnKeyType="next"
@@ -97,7 +96,6 @@ const SetBlock: React.FC<SetBlockProps> = ({
           clearTextOnFocus={true}
           onChangeText={(value) => onChange(index, { reps: value, weight, bodyweight })}
           editable={workoutKey == currentWorkoutKey}
-          backgroundColor={workoutKey == currentWorkoutKey ? 'white' : 'transparent'}
         />
         <Text className="my-auto mr-1 font-bebas text-xs font-bold"> REPS</Text>
 
@@ -107,7 +105,9 @@ const SetBlock: React.FC<SetBlockProps> = ({
           <TextInput
             accessibilityLabel="User Recorded Weight"
             accessibilityHint="Input weight you did"
-            className="mx-auto my-auto ml-1 h-5/6 w-16 rounded-md bg-white text-center font-bebas text-xs"
+            className={`mx-auto my-auto ml-1 h-5/6 w-16 rounded-md text-center font-bebas text-xs ${
+              workoutKey == currentWorkoutKey ? 'bg-white' : 'bg-transparent'
+            }`}
             clearTextOnFocus={true}
             autoCapitalize="none"
             placeholder="Weight"
@@ -115,7 +115,6 @@ const SetBlock: React.FC<SetBlockProps> = ({
             value={weight?.toString()}
             onChangeText={(value) => onChange(index, { reps, weight: value, bodyweight })}
             editable={workoutKey == currentWorkoutKey}
-            backgroundColor={workoutKey == currentWorkoutKey ? 'white' : 'transparent'}
           />
         )}
         {bodyweight ? <View /> : <Text className="my-auto font-bebas text-xs font-bold"> LB</Text>}
@@ -133,26 +132,5 @@ const SetBlock: React.FC<SetBlockProps> = ({
     </View>
   );
 };
-
-const styling = StyleSheet.create({
-  warmUpBackground1: {
-    backgroundColor: '#BADEFB',
-  },
-  warmUpBackground2: {
-    backgroundColor: '#19639E',
-  },
-  warmUpFontColor: {
-    color: '#003560',
-  },
-  workingBackground1: {
-    backgroundColor: '#FFC0B8',
-  },
-  workingBackground2: {
-    backgroundColor: '#B92916',
-  },
-  workingFontColor: {
-    color: '#B92916',
-  },
-});
 
 export default SetBlock;
