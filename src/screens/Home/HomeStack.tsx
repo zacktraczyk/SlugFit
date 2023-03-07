@@ -5,8 +5,10 @@ import { NavigatorParamList } from '../DrawerNavigator';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Home from './Home';
 import SelectWorkoutPage from '../SelectWorkout/SelectWorkoutPage';
-import BackButton from '../../components/BackButton';
+import BackButton from '../../components/buttons/BackButton';
 import WorkoutSummary from '../WorkoutSummary';
+import DiscardButton from '../../components/buttons/DiscardButton';
+import SaveButton from '../../components/buttons/SaveButton';
 
 type HomeStackProps = NativeStackScreenProps<NavigatorParamList, 'HomeStack'>;
 
@@ -32,7 +34,30 @@ const HomeStack: React.FC<HomeStackProps> = () => {
           ),
         })}
       />
-      <Stack.Screen name="WorkoutSummary" component={WorkoutSummary} />
+      <Stack.Screen
+        name="WorkoutSummary"
+        component={WorkoutSummary}
+        options={({ navigation, route }) => ({
+          headerLeft: () =>
+            route.params.consumableWorkoutId ? (
+              <BackButton onPress={navigation.goBack} />
+            ) : (
+              <DiscardButton
+                goHome={() => {
+                  navigation.navigate('Home');
+                }}
+              />
+            ),
+          headerRight: () =>
+            route.params.consumableWorkoutId ? null : (
+              <SaveButton
+                goHome={() => {
+                  navigation.navigate('Home');
+                }}
+              />
+            ),
+        })}
+      />
     </Stack.Navigator>
   );
 };

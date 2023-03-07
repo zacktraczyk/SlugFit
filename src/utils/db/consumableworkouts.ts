@@ -2,6 +2,7 @@ import { supabase } from '../supabaseClient';
 import { ConsumableExercise, ConsumableWorkout } from '../../types';
 import { getEditableWorkout } from './editableworkouts';
 import { createConsumableExercise, deleteConsumableExercise } from './consumableexercises';
+import { LocalConsumableExercise, LocalConsumableWorkout } from '../../hooks/useActiveWorkout';
 
 export const CONSUMABLE_WORKOUTS_TABLE_NAME = 'consumableworkouts';
 
@@ -67,6 +68,41 @@ export const createConsumableWorkout = async ({
   await Promise.all(promises);
 
   return data as ConsumableWorkout;
+};
+
+export const createConsumableWorkoutFromLocal = async ({
+  userId,
+  workout,
+  started_at,
+  ended_at,
+  exercises,
+}: {
+  userId: string;
+  workout: LocalConsumableWorkout;
+  started_at: Date;
+  ended_at: Date;
+  exercises: LocalConsumableExercise[];
+}) => {
+  const { data: consumableWorkout, error } = await supabase
+    .from(CONSUMABLE_WORKOUTS_TABLE_NAME)
+    .insert({ ...workout, started_at, ended_at })
+    .select(`*`)
+    .single();
+
+  if (error) throw error;
+
+  const promises: Promise<ConsumableExercise>[] = [];
+  for (const exercise of exercises) {
+    promises.push(
+      createConsumableExercise({
+        exerciseName: exercise.exerciseName,
+        consumableWorkoutId: consumableWorkout.id,
+        exerciseItems: exercise.exerciseItems,
+        userId,
+      })
+    );
+  }
+  await Promise.all(promises);
 };
 
 /**

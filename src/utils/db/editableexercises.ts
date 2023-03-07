@@ -17,7 +17,7 @@ export const getEditableExercises = async ({
   editableWorkoutId?: string;
   exerciseName?: string;
 }): Promise<EditableExercise[]> => {
-  let request = supabase.from(EDITABLE_EXERCISES_TABLE_NAME).select('*').eq('userId', userId);
+  let request = supabase.from(EDITABLE_EXERCISES_TABLE_NAME).select('*').eq('created_by', userId);
 
   if (editableWorkoutId) request = request.eq('editableWorkoutId', editableWorkoutId);
 

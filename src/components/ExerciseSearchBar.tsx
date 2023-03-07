@@ -5,11 +5,13 @@ import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { ExerciseTemplate } from '../types';
 import { getAllEditableExercises } from '../utils/db/editableexercises';
 import Chip from './CustomChip';
-import ExerciseFilterModal from './ExerciseFilterModal';
+import ExerciseFilterModal from './modals/ExerciseFilterModal';
 
 export type ExerciseSearchBarProps = {
   onSelectExercise: (exercise: string) => void;
 };
+
+const MAX_SEARCH_RESULTS = 50;
 
 const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise }) => {
   const [searchOnFocus, setSearchOnFocus] = useState(false);
@@ -57,6 +59,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
     onSelectExercise(item);
     setSearchOnFocus(false);
     setSearchInput('');
+    setSearchResults(allExercises);
     Keyboard.dismiss();
   };
 
@@ -84,7 +87,6 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
           returnKeyType="next"
           value={searchInput}
           onFocus={() => setSearchOnFocus(true)}
-          // onBlur={() => setSearchOnFocus(false)}
           onChangeText={onSearchChangeText}
         />
         <View className="mr-2">
@@ -110,7 +112,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
 
               {/* Search Results */}
               {searchResults.length > 0 ? (
-                searchResults.map((item) => {
+                searchResults.slice(0, MAX_SEARCH_RESULTS).map((item) => {
                   return (
                     <TouchableOpacity
                       accessibilityRole="button"
