@@ -9,24 +9,51 @@ import { useAuth } from '../contexts/AuthProvider';
 import { isSet } from '../utils/typeCheck';
 import { formatLbs, getMaxIntensity, getMaxLbs, getTotalVolume } from '../utils/exerciseStats';
 import { isConsumableExerciseEmpty } from '../utils/parsing';
+import { useActiveWorkout, LocalConsumableExercise } from '../hooks/useActiveWorkout';
+import { ConsumableWorkout } from '../types';
 
 type ProfileProps = NativeStackScreenProps<NavigatorParamList, 'WorkoutSummary'>;
 
 const WorkoutSummary: React.FC<ProfileProps> = ({ route }) => {
-  const { consumableWorkoutId } = route.params;
   const { session } = useAuth();
+  const { consumableWorkoutId } = route.params;
   const { consumableWorkout } = useConsumableWorkout(consumableWorkoutId);
-
+  const [localConsumableWorkout, localExercises] = useActiveWorkout((state) => [
+    state.workout,
+    state.exercises,
+  ]);
   const [exercises, setExercises] = useState<ConsumableExercise[]>([]);
 
   useEffect(() => {
+    if (consumableWorkoutId === undefined) return;
     const fetch = async () => {
       if (!session) return;
       setExercises(await getConsumableExercises({ userId: session.user.id, consumableWorkoutId }));
     };
     fetch();
-  }, [consumableWorkout, session]);
+  }, [consumableWorkoutId, session]);
 
+  if (consumableWorkoutId) {
+    return <WorkoutSummaryComponent consumableWorkout={consumableWorkout} exercises={exercises} />;
+  } else {
+    return (
+      <WorkoutSummaryComponent
+        consumableWorkout={localConsumableWorkout}
+        exercises={localExercises}
+      />
+    );
+  }
+};
+
+interface WorkoutSummaryComponentProps {
+  consumableWorkout: Partial<ConsumableWorkout>;
+  exercises: LocalConsumableExercise[];
+}
+
+const WorkoutSummaryComponent: React.FC<WorkoutSummaryComponentProps> = ({
+  consumableWorkout,
+  exercises,
+}) => {
   return (
     <ScrollView className="flex h-full flex-col bg-white p-3">
       <OverallStats
@@ -75,7 +102,7 @@ const OverallStats: React.FC<StatsProps> = ({ maxLb, maxIntensity, totalVolume }
 };
 
 interface ConsumedExerciseStatsCard {
-  exercise: ConsumableExercise;
+  exercise: LocalConsumableExercise;
 }
 
 const ConusmedExerciseStatsCard: React.FC<ConsumedExerciseStatsCard> = ({ exercise }) => {

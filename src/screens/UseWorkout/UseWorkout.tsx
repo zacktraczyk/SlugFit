@@ -2,18 +2,17 @@ import React, { useRef, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { NavigatorParamList } from '../DrawerNavigator';
 import { View, StyleSheet, Dimensions, FlatList, Alert } from 'react-native';
-import { useConsumableWorkout } from '../../hooks/useConsumableWorkout';
 import AnimatedExerciseCardContainer from '../../components/AnimatedExerciseCardContainer';
-import UseWorkoutHeader from '../../components/UseWorkoutHeader';
+import UseWorkoutHeader from '../../components/headers/UseWorkoutHeader';
 import Animated, { FadeInLeft } from 'react-native-reanimated';
 import Block from '../../components/blocks/Block';
 import ConsumableExerciseCard from '../../components/ConsumableExerciseCard';
-import { updateConsumableWorkout } from '../../utils/db/consumableworkouts';
+import { useActiveWorkout } from '../../hooks/useActiveWorkout';
 
 type UseWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'UseWorkout'>;
 
 const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) => {
-  const { consumableWorkout } = useConsumableWorkout(route.params.consumableWorkoutId, true);
+  const [consumableWorkout, stop] = useActiveWorkout((state) => [state.workout, state.stop]);
   const [visibleIndex, setVisibleIndex] = useState(0);
   const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 90 });
   const onViewableItemsChanged = useRef(({ viewableItems }) => {
@@ -27,11 +26,7 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
   const renderCardItem = ({ item: exerciseName, index }) => {
     return (
       <AnimatedExerciseCardContainer visible={index === visibleIndex} className="bg-white">
-        <ConsumableExerciseCard
-          exerciseName={exerciseName}
-          consumableWorkoutId={route.params.consumableWorkoutId}
-          userId={route.params.userId}
-        />
+        <ConsumableExerciseCard exerciseName={exerciseName} userId={route.params.userId} />
       </AnimatedExerciseCardContainer>
     );
   };
@@ -62,15 +57,8 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
   };
 
   const endWorkout = async () => {
-    await updateConsumableWorkout({
-      consumableWorkoutId: route.params.consumableWorkoutId,
-      payload: {
-        ended_at: new Date(),
-      },
-    });
-    navigation.navigate('WorkoutSummary', {
-      consumableWorkoutId: route.params.consumableWorkoutId,
-    });
+    stop();
+    navigation.navigate('WorkoutSummary', {});
   };
 
   const onStopPress = () => {

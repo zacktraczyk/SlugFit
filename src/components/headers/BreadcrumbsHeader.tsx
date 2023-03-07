@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { NavigatorParamList } from '../screens/DrawerNavigator';
+import { NavigatorParamList } from '../../screens/DrawerNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface BreadcrumbsHeaderProps {

@@ -9,12 +9,12 @@ interface SetBlockProps {
   currentWorkoutKey: string;
   workoutKey: string;
   setNumber: number;
-  reps: number;
-  weight: number;
+  reps: string;
+  weight: string;
   bodyweight: boolean;
   setRef: ExerciseSet;
   index: number;
-  onChange: (index: number, updates: Partial<ConsumableExerciseData>) => void;
+  onChange: (index: number, updates: ConsumableExerciseData) => void;
 }
 /**
  *
@@ -95,7 +95,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
           returnKeyType="next"
           value={reps?.toString()}
           clearTextOnFocus={true}
-          onChangeText={(value) => onChange(index, { reps: value })}
+          onChangeText={(value) => onChange(index, { reps: value, weight, bodyweight })}
           editable={workoutKey == currentWorkoutKey}
           backgroundColor={workoutKey == currentWorkoutKey ? 'white' : 'transparent'}
         />
@@ -113,7 +113,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
             placeholder="Weight"
             returnKeyType="next"
             value={weight?.toString()}
-            onChangeText={(value) => onChange(index, { weight: value })}
+            onChangeText={(value) => onChange(index, { reps, weight: value, bodyweight })}
             editable={workoutKey == currentWorkoutKey}
             backgroundColor={workoutKey == currentWorkoutKey ? 'white' : 'transparent'}
           />
@@ -123,7 +123,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
           <View>
             <Checkbox
               checked={bodyweight}
-              onPress={() => onChange(index, { bodyweight: !bodyweight })}
+              onPress={() => onChange(index, { reps, weight, bodyweight: !bodyweight })}
               disable={workoutKey != currentWorkoutKey}
             />
           </View>

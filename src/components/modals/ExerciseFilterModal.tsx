@@ -3,7 +3,7 @@ import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
-import Checkbox from './CustomCheckBox';
+import Checkbox from '../CustomCheckBox';
 
 export type ExerciseFilterModalProps = {
   onClose: (filters: string[] | undefined) => void;
