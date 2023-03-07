@@ -25,7 +25,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
 
   // Update Filteres Exercises and constrain search results to filtered
   // Exercises
-  const onSelectFilters = (filterArr) => {
+  const onSelectFilters = (filterArr: string[]) => {
     setFilters([...filterArr]);
 
     if (filterArr.length == 0) {
@@ -45,7 +45,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
   };
 
   // Search from already filtered exercises
-  const onSearchChangeText = (search) => {
+  const onSearchChangeText = (search: string) => {
     setSearchInput(search);
 
     const _searchResults = filteredExercises.filter((exercise) => {
@@ -75,9 +75,9 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
   }, []);
 
   return (
-    <View className="z-50 flex w-screen items-center bg-white">
+    <View className="bg-white z-50 flex w-screen items-center">
       {/* Search Bar */}
-      <View className="mt-7 flex h-12 w-11/12 flex-row items-center justify-between rounded border border-slate-200">
+      <View className="border-slate-200 mt-7 flex h-12 w-11/12 flex-row items-center justify-between rounded border">
         <TextInput
           accessibilityLabel="Exercise Search Text Field "
           accessibilityHint="Input characters to search for an exercise"
@@ -96,12 +96,12 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
 
       {/* Results Modal */}
       {searchOnFocus && (
-        <View className="divide-y-10 absolute z-50 mt-20 h-60 w-11/12 overflow-scroll rounded border border-slate-200 bg-white">
+        <View className="divide-y-10 border-slate-200 bg-white absolute z-50 mt-20 h-60 w-11/12 overflow-scroll rounded border">
           <ScrollView>
             <View className="m-5">
               {/* Filter Chips */}
               {filters.length > 0 && (
-                <View className="border-b-0.5 mb-3 flex flex-row border-slate-400 pb-2">
+                <View className="border-b-0.5 border-slate-400 mb-3 flex flex-row pb-2">
                   <ScrollView horizontal={true}>
                     {filters.map((item) => {
                       return <Chip key={item} value={item} closeable={false} />;
@@ -118,14 +118,14 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
                       accessibilityRole="button"
                       key={item.name}
                       onPress={() => onExerciseSelect(item.name)}
-                      className="mb-1 rounded border border-slate-200 p-3"
+                      className="border-slate-200 mb-1 rounded border p-3"
                     >
                       <Text className="font-bold">{item.name}</Text>
                     </TouchableOpacity>
                   );
                 })
               ) : (
-                <Text className="p-3 text-slate-500">No Matching Exercises</Text>
+                <Text className="text-slate-500 p-3">No Matching Exercises</Text>
               )}
             </View>
           </ScrollView>

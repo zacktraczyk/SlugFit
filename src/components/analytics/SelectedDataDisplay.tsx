@@ -12,7 +12,7 @@ interface SelectedDataDisplayProps {
 
 export const SelectedDataDisplay: React.FC<SelectedDataDisplayProps> = ({ dataPoint }) => {
   return (
-    <View className="mb-0 flex h-8 w-32 flex-row items-center justify-center self-center rounded-t-lg bg-slate-200 pl-4 pr-4">
+    <View className="bg-slate-200 mb-0 flex h-8 w-32 flex-row items-center justify-center self-center rounded-t-lg pl-4 pr-4">
       {dataPoint?.meta?.created_at ? (
         <Text className="font-medium">{formatDate(dataPoint?.meta?.created_at)}</Text>
       ) : null}

@@ -24,7 +24,7 @@ const DiscardButton: React.FC<DiscardButtonProps> = ({ goHome }) => {
   };
   return (
     <TouchableOpacity onPress={onPress} accessibilityRole="button" className="p-1">
-      <Text className="text-center font-normal text-red-500">Discard</Text>
+      <Text className="text-red-500 text-center font-normal">Discard</Text>
     </TouchableOpacity>
   );
 };

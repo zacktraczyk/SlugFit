@@ -107,7 +107,7 @@ const UseWorkoutHeader: React.FC<UseWorkoutHeaderProps> = ({
   }, [index]);
 
   return (
-    <View className="flex h-24 w-full flex-col border-b border-b-slate-100 bg-white pt-10 shadow">
+    <View className="border-b-slate-100 bg-white flex h-24 w-full flex-col border-b pt-10 shadow">
       <View className="flex w-full flex-grow flex-row">
         <View className="flex flex-1 items-center justify-center">
           <TouchableOpacity accessibilityRole="button" className="p-0" onPress={toggleView}>

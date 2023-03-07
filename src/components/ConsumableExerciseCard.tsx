@@ -103,8 +103,8 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
 
   return (
     <>
-      <ScrollView className="h-full w-full flex-1 bg-white p-4 ">
-        <View className="mb-2 h-10 w-full flex-row content-evenly justify-between border-b border-slate-200">
+      <ScrollView className="bg-white h-full w-full flex-1 p-4 ">
+        <View className="border-slate-200 mb-2 h-10 w-full flex-row content-evenly justify-between border-b">
           <Text className="m-1 mt-3 ml-3 text-center font-bold ">
             {selectedExercise.exerciseName}
           </Text>
@@ -114,12 +114,12 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
           {!closePastPerformance && (
             <TouchableOpacity
               accessibilityRole="button"
-              className=" ml-2 rounded-lg  bg-gray-200"
+              className=" bg-gray-200 ml-2  rounded-lg"
               onPress={() => {
                 setClosePastPerformance(true);
               }}
             >
-              <Text className="text m-1 mt-1 h-6 w-48 bg-gray-200 text-center font-bebas text-lg font-bold text-gray-500">
+              <Text className="text bg-gray-200 text-gray-500 m-1 mt-1 h-6 w-48 text-center font-bebas text-lg font-bold">
                 View Past Performance
               </Text>
             </TouchableOpacity>
@@ -128,7 +128,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
           {closePastPerformance && (
             <TouchableOpacity
               accessibilityRole="button"
-              className=" ml-2 rounded-lg  bg-gray-200"
+              className=" bg-gray-200 ml-2  rounded-lg"
               onPress={() => {
                 setClosePastPerformance(false);
                 renderConsumableExerciseItems(selectedExercise);
@@ -136,7 +136,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
               }}
             >
               <Text
-                className="text m-1 mt-1 h-6 w-48 bg-gray-200 text-center font-bebas text-lg font-bold text-gray-500
+                className="text bg-gray-200 text-gray-500 m-1 mt-1 h-6 w-48 text-center font-bebas text-lg font-bold
                 "
               >
                 Close Past Performance

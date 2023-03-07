@@ -7,11 +7,6 @@ interface LoadingWheelProps {
 const LoadingWheel: React.FC<LoadingWheelProps> = ({ listening }) => {
   const animationRef = useRef<Lottie>(null);
 
-  //   useEffect(() => {
-
-  //     animationRef.current?.play(30, 54);
-  //   })
-
   return (
     <Lottie
       ref={animationRef}

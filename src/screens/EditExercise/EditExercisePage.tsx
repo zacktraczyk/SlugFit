@@ -31,11 +31,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   // Card Operations
-  const updateCard = async (
-    id: number,
-    property: keyof ExerciseSet | keyof ExerciseNote | keyof ExerciseRest,
-    val: string | boolean
-  ) => {
+  const updateCard = async (id: number, property: string, val: string | boolean | number) => {
     const _exerciseItems = exerciseItems.map((item) => {
       if (item.id === id) {
         const _exerciseItem = { ...item };
@@ -45,6 +41,33 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
       return item;
     });
 
+    setExerciseItems(_exerciseItems);
+    updateEditableExercise({
+      editableWorkoutId,
+      exerciseName,
+      payload: {
+        exerciseItems: _exerciseItems,
+      },
+    });
+  };
+
+  const deleteCard = (id: number) => {
+    if (id === undefined) {
+      throw 'ExerciseItem id not given';
+    }
+
+    const _exerciseItems: EditableExerciseItem[] = [];
+    let acc = 0;
+    for (let i = 0; i < exerciseItems.length; i++) {
+      const item = exerciseItems[i];
+      if (item.id === id) {
+        continue;
+      }
+
+      item.id = acc;
+      _exerciseItems.push(exerciseItems[i]);
+      acc++;
+    }
     setExerciseItems(_exerciseItems);
     updateEditableExercise({
       editableWorkoutId,
@@ -67,33 +90,6 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
         item.id = acc;
         _exerciseItems.push({ ...exerciseItems[i] });
         acc++;
-      }
-
-      item.id = acc;
-      _exerciseItems.push(exerciseItems[i]);
-      acc++;
-    }
-    setExerciseItems(_exerciseItems);
-    updateEditableExercise({
-      editableWorkoutId,
-      exerciseName,
-      payload: {
-        exerciseItems: _exerciseItems,
-      },
-    });
-  };
-
-  const deleteCard = (id: number) => {
-    if (id === undefined) {
-      throw 'ExerciseItem id not given';
-    }
-
-    const _exerciseItems: EditableExerciseItem[] = [];
-    let acc = 0;
-    for (let i = 0; i < exerciseItems.length; i++) {
-      const item = exerciseItems[i];
-      if (item.id === id) {
-        continue;
       }
 
       item.id = acc;
@@ -194,7 +190,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
           onPress={Keyboard.dismiss}
           disabled={loading}
         >
-          <View className="h-full bg-white p-10 px-5">
+          <View className="bg-white h-full p-10 px-5">
             <DraggableFlatList
               data={exerciseItems}
               onDragEnd={({ data }) => reorderExerciseItems(data)}

@@ -84,7 +84,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                     <TextInput
                       accessibilityLabel="Text input field"
                       accessibilityHint="Input email for register"
-                      className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
+                      className="w-90 bg-white-500 border-gray-200 my-2 mt-0 rounded-md border-2 p-2 text-xl"
                       autoCapitalize="none"
                       keyboardType="email-address"
                       returnKeyType="next"
@@ -95,7 +95,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                   )}
                   name="email"
                 />
-                <Text className="pb-4 text-red-500">
+                <Text className="text-red-500 pb-4">
                   {errors.email &&
                     (errors.email.type === 'required'
                       ? 'This field is required.'
@@ -115,7 +115,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                     <TextInput
                       accessibilityLabel="Text input field"
                       accessibilityHint="Input password for register"
-                      className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
+                      className="w-90 bg-white-500 border-gray-200 my-2 mt-0 rounded-md border-2 p-2 text-xl"
                       secureTextEntry={true}
                       onBlur={onBlur}
                       onChangeText={onChange}
@@ -124,7 +124,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                   )}
                   name="password"
                 />
-                <Text className="pb-4 text-red-500">
+                <Text className="text-red-500 pb-4">
                   {errors.password &&
                     (errors.password.type === 'required'
                       ? 'This is required.'
@@ -149,7 +149,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                     <TextInput
                       accessibilityLabel="Text input field"
                       accessibilityHint="Input password confirmation for register"
-                      className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
+                      className="w-90 bg-white-500 border-gray-200 my-2 mt-0 rounded-md border-2 p-2 text-xl"
                       secureTextEntry={true}
                       onBlur={onBlur}
                       onChangeText={onChange}
@@ -158,7 +158,7 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
                   )}
                   name="passwordConfirm"
                 />
-                <Text className="pb-4 text-red-500">
+                <Text className="text-red-500 pb-4">
                   {errors.passwordConfirm &&
                     (errors.passwordConfirm.type === 'required'
                       ? 'This is required.'
@@ -169,10 +169,10 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
               <View className="items-center">
                 <TouchableOpacity
                   accessibilityRole="button"
-                  className="w-60 rounded-lg bg-red-500 p-2"
+                  className="bg-red-500 w-60 rounded-lg p-2"
                   onPress={handleSubmit((data) => onSubmit(data))}
                 >
-                  <Text className="text-center font-bebas text-2xl text-white">Register</Text>
+                  <Text className="text-white text-center font-bebas text-2xl">Register</Text>
                 </TouchableOpacity>
               </View>
             </View>

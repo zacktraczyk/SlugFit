@@ -8,8 +8,8 @@ interface RestCardProps {
   seconds: string;
   setSeconds: (val: string) => void;
   id: number;
-  deleteCard: (id) => void;
-  duplicateCard: (id) => void;
+  deleteCard: (id: number) => void;
+  duplicateCard: (id: number) => void;
 }
 
 const RestCard: React.FC<RestCardProps> = ({
