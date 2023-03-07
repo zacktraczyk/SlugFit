@@ -57,7 +57,7 @@ export const ExerciseAnalyticsDisplay: React.FC<ExerciseAnalyticsDisplayProps> =
 
   return (
     <View className="w-full">
-      <ExerciseSearchBar onSelectExercise={onSelectExercise} hideBodyOnIdle={true} />
+      <ExerciseSearchBar onSelectExercise={onSelectExercise} />
       <FlatList
         data={exerciseNames}
         renderItem={renderExerciseNameChip}
