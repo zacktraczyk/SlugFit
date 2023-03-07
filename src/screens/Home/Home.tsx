@@ -92,7 +92,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   return (
     <ErrorBoundary FallbackComponent={ErrorScreen}>
       <ScrollView
-        className="bg-white h-full"
+        className="h-full bg-white"
         refreshControl={<RefreshControl refreshing={loading} onRefresh={fetch} />}
       >
         <View className="flex-row justify-between px-3 pt-3.5">
@@ -108,7 +108,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
           </View>
         ) : completedWorkouts.length === 0 ? (
           <View className="items-center pt-3.5 pb-6">
-            <Text className="text-gray-400 font-bebas text-xl">No completed workouts.</Text>
+            <Text className="font-bebas text-xl text-gray-400">No completed workouts.</Text>
           </View>
         ) : (
           <FlatList
@@ -124,12 +124,12 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
         <View className="flex-col items-center justify-center pt-10">
           <TouchableOpacity
             accessibilityRole="button"
-            className="bg-red-500 my-2 mt-0 w-60 items-center rounded-lg p-2"
+            className="my-2 mt-0 w-60 items-center rounded-lg bg-red-500 p-2"
             onPress={() => {
               navigation.navigate('SelectWorkout');
             }}
           >
-            <Text className="text-white text-center font-bebas text-2xl">Start A Workout</Text>
+            <Text className="text-center font-bebas text-2xl text-white">Start A Workout</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

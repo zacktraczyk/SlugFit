@@ -26,14 +26,14 @@ const FilterOption: React.FC<FilterOptionProps> = ({ selected, title, rounded, o
         (rounded === 'bottom' ? ' rounded-b-lg' : '')
       }
     >
-      <Text className={selected ? 'text-white font-bold' : 'font-medium'}>{title}</Text>
+      <Text className={selected ? 'font-bold text-white' : 'font-medium'}>{title}</Text>
     </TouchableOpacity>
   );
 };
 
 export const MetricTypeFilter: React.FC<MetricTypeFilterProps> = ({ metricType, onChange }) => {
   return (
-    <View className="bg-slate-200 relative left-4 top-1 z-40 flex h-28 w-10 flex-col rounded-lg">
+    <View className="relative left-4 top-1 z-40 flex h-28 w-10 flex-col rounded-lg bg-slate-200">
       <FilterOption
         title="LB"
         selected={metricType === MetricType.WEIGHT}

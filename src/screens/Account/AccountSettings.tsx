@@ -70,14 +70,14 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-      <ScrollView className="bg-white h-full">
+      <ScrollView className="h-full bg-white">
         <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
           <View>
             {loading ? (
               <ActivityIndicator size="large" />
             ) : (
               <>
-                <View className="bg-white h-full p-5">
+                <View className="h-full bg-white p-5">
                   <View className="items-start pt-12">
                     <TouchableOpacity accessibilityRole="button">
                       <Ionicon
@@ -103,7 +103,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ navigation }) => {
                       <TextInput
                         accessibilityLabel="Text input Input"
                         accessibilityHint="Input to change account name"
-                        className="w-90 bg-white-500 border-gray-200 my-2 mt-0 rounded-md border-2 p-2 pb-4 text-xl"
+                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 pb-4 text-xl"
                         autoCapitalize="none"
                         returnKeyType="done"
                         onBlur={onBlur}
@@ -129,7 +129,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ navigation }) => {
                       <TextInput
                         accessibilityLabel="Text input Input"
                         accessibilityHint="Input to change account name"
-                        className="w-90 bg-white-500 border-gray-200 my-2 mt-0 rounded-md border-2 p-2 pb-4 text-xl"
+                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 pb-4 text-xl"
                         returnKeyType="done"
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -154,7 +154,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ navigation }) => {
                       <TextInput
                         accessibilityLabel="Text input field"
                         accessibilityHint="Input to change account website"
-                        className="w-90 bg-white-500 border-gray-200 my-2 mt-0 rounded-md border-2 p-2 pb-4 text-xl"
+                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 pb-4 text-xl"
                         returnKeyType="done"
                         keyboardType="numeric"
                         onBlur={onBlur}
@@ -173,10 +173,10 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ navigation }) => {
                   <View className="items-center pt-8">
                     <TouchableOpacity
                       accessibilityRole="button"
-                      className="bg-red-500 w-60 rounded-lg p-2"
+                      className="w-60 rounded-lg bg-red-500 p-2"
                       onPress={handleSubmit((data) => onPressSubmitButton(data))}
                     >
-                      <Text className="text-white text-center font-bebas text-2xl">
+                      <Text className="text-center font-bebas text-2xl text-white">
                         Save Changes
                       </Text>
                     </TouchableOpacity>

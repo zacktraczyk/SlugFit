@@ -78,7 +78,7 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
         />
       )}
 
-      <View className="bg-slate-50 h-full w-full flex-1">
+      <View className="h-full w-full flex-1 bg-slate-50">
         <FlatList
           ref={flatlistRef}
           data={consumableWorkout.exercises}

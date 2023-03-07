@@ -26,14 +26,14 @@ const FilterOption: React.FC<FilterOptionProps> = ({ selected, title, onPress, r
       }
       onPress={onPress}
     >
-      <Text className={selected ? 'text-white font-bold' : 'font-medium'}>{title}</Text>
+      <Text className={selected ? 'font-bold text-white' : 'font-medium'}>{title}</Text>
     </TouchableOpacity>
   );
 };
 
 export const TimeframeFilter: React.FC<TimeframeFilterProps> = ({ timeframe, onChange }) => {
   return (
-    <View className="bg-slate-200 flex h-8 w-11/12 flex-row self-center rounded-lg">
+    <View className="flex h-8 w-11/12 flex-row self-center rounded-lg bg-slate-200">
       <FilterOption
         title="1 W"
         selected={timeframe === Timeframe.WEEK}
