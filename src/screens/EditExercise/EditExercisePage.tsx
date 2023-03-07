@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, TouchableOpacity, View } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import AddButton from '../../components/AddButton';
+import AddButton from '../../components/buttons/AddButton';
 import SetCard from '../../components/blocks/SetCard';
 import { NavigatorParamList } from '../DrawerNavigator';
 import Spinner from 'react-native-loading-spinner-overlay/lib';

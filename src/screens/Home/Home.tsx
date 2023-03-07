@@ -11,13 +11,12 @@ import { ConsumableWorkout } from '../../types';
 import { formatDateToISO } from '../../utils/parsing';
 import ErrorBoundary from 'react-native-error-boundary';
 import ErrorScreen from '../../components/ErrorScreen';
-import ComponentWithError from '../../components/ComponentWithError';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { session } = useAuth();
-  const { consumableWorkouts, loading, error, fetch } = useMyConsumableWorkouts(session);
+  const { consumableWorkouts, loading, fetch } = useMyConsumableWorkouts(session);
   const [completedWorkouts, setCompletedWorkouts] = useState<ConsumableWorkout[]>([]);
 
   useEffect(() => {

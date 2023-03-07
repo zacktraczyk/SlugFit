@@ -32,7 +32,7 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
     };
 
     fetchProfile().catch(console.error);
-  });
+  }, []);
 
   // Image Picker
   // lets user select an image from gallery and set as their profile picture
@@ -68,23 +68,25 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
         <View className="items-center justify-center">
           <Text className="pb-4 font-bebas text-3xl text-white">{userData.username}</Text>
 
-          <Image
-            className="shadow-1xl h-40 w-40 justify-center rounded-xl border-4 border-white"
-            accessibilityIgnoresInvertColors
-            source={require('../../assets/genericProfilePic.jpg')}
-          />
-
-          <Image
-            className="absolute top-[35px] h-40 w-40 justify-center rounded-xl border-4 border-white shadow-2xl"
-            accessibilityIgnoresInvertColors
-            source={{
-              uri:
-                'https://veorawmuwkuyzbxadxgv.supabase.co/storage/v1/object/public/avatars/' +
-                session?.user.id +
-                '/' +
-                userData.avatar_url,
-            }}
-          />
+          {image ? (
+            <Image
+              className="shadow-1xl h-40 w-40 justify-center rounded-xl border-4 border-white"
+              accessibilityIgnoresInvertColors
+              source={require('../../assets/genericProfilePic.jpg')}
+            />
+          ) : (
+            <Image
+              className="absolute top-[35px] h-40 w-40 justify-center rounded-xl border-4 border-white shadow-2xl"
+              accessibilityIgnoresInvertColors
+              source={{
+                uri:
+                  'https://veorawmuwkuyzbxadxgv.supabase.co/storage/v1/object/public/avatars/' +
+                  session?.user.id +
+                  '/' +
+                  userData.avatar_url,
+              }}
+            />
+          )}
 
           <Image
             className="absolute top-[35px] h-40 w-40 justify-center rounded-xl border-4 border-white shadow-2xl"

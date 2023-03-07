@@ -1,5 +1,9 @@
 export type EditableExerciseItem = ExerciseSet | ExerciseRest | ExerciseNote;
 
+export interface ExerciseTemplate {
+  name: string;
+  muscle_group: string;
+}
 export interface EditableExercise {
   exerciseName: string; // Primary Key, Relation
   editableWorkoutId: string; // Primary Key, Relation

@@ -6,13 +6,15 @@ import Checkbox from '../CustomCheckBox';
 import { ConsumableExerciseData, ExerciseSet } from '../../types';
 
 interface SetBlockProps {
+  currentWorkoutKey: string;
+  workoutKey: string;
   setNumber: number;
-  reps: number;
-  weight: number;
+  reps: string;
+  weight: string;
   bodyweight: boolean;
   setRef: ExerciseSet;
   index: number;
-  onChange: (index: number, updates: Partial<ConsumableExerciseData>) => void;
+  onChange: (index: number, updates: ConsumableExerciseData) => void;
 }
 /**
  *
@@ -28,6 +30,8 @@ interface SetBlockProps {
  * @returns // working/warmup set block
  */
 const SetBlock: React.FC<SetBlockProps> = ({
+  currentWorkoutKey,
+  workoutKey,
   setNumber,
   index,
   reps,
@@ -72,7 +76,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
         <View className="flex flex-grow flex-row justify-end border-solid">
           <Text
             style={setRef.warmup ? styling.warmUpFontColor : styling.workingFontColor}
-            className="my-auto mx-4 ml-1 font-bebas text-xl font-bold"
+            className="mx-4 my-auto ml-1 font-bebas text-xl font-bold"
           >
             {setRef.warmup ? 'WARMUP' : 'WORKING'}
           </Text>
@@ -85,13 +89,15 @@ const SetBlock: React.FC<SetBlockProps> = ({
         <TextInput
           accessibilityLabel="Record Reps"
           accessibilityHint="Input reps you did"
-          className="my-auto mx-auto ml-1 h-5/6 w-16 rounded-md bg-white text-center font-bebas text-xs"
+          className="mx-auto my-auto ml-1 h-5/6 w-16 rounded-md bg-white text-center font-bebas text-xs"
           autoCapitalize="none"
           placeholder="REPS YOU DID"
           returnKeyType="next"
           value={reps?.toString()}
           clearTextOnFocus={true}
-          onChangeText={(value) => onChange(index, { reps: value })}
+          onChangeText={(value) => onChange(index, { reps: value, weight, bodyweight })}
+          editable={workoutKey == currentWorkoutKey}
+          backgroundColor={workoutKey == currentWorkoutKey ? 'white' : 'transparent'}
         />
         <Text className="my-auto mr-1 font-bebas text-xs font-bold"> REPS</Text>
 
@@ -101,13 +107,15 @@ const SetBlock: React.FC<SetBlockProps> = ({
           <TextInput
             accessibilityLabel="User Recorded Weight"
             accessibilityHint="Input weight you did"
-            className="my-auto mx-auto ml-1 h-5/6 w-16 rounded-md bg-white text-center font-bebas text-xs"
+            className="mx-auto my-auto ml-1 h-5/6 w-16 rounded-md bg-white text-center font-bebas text-xs"
             clearTextOnFocus={true}
             autoCapitalize="none"
             placeholder="Weight"
             returnKeyType="next"
             value={weight?.toString()}
-            onChangeText={(value) => onChange(index, { weight: value })}
+            onChangeText={(value) => onChange(index, { reps, weight: value, bodyweight })}
+            editable={workoutKey == currentWorkoutKey}
+            backgroundColor={workoutKey == currentWorkoutKey ? 'white' : 'transparent'}
           />
         )}
         {bodyweight ? <View /> : <Text className="my-auto font-bebas text-xs font-bold"> LB</Text>}
@@ -115,7 +123,8 @@ const SetBlock: React.FC<SetBlockProps> = ({
           <View>
             <Checkbox
               checked={bodyweight}
-              onPress={() => onChange(index, { bodyweight: !bodyweight })}
+              onPress={() => onChange(index, { reps, weight, bodyweight: !bodyweight })}
+              disable={workoutKey != currentWorkoutKey}
             />
           </View>
           <Text className="my-auto font-bebas text-xs font-bold"> BODYWEIGHT</Text>

@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import { FlatList, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
-import AddButton from '../../components/AddButton';
+import AddButton from '../../components/buttons/AddButton';
 import { NavigatorParamList } from '../DrawerNavigator';
 import ExerciseBlock from '../../components/blocks/ExerciseBlock';
 import { useEditableWorkout } from '../../hooks/useEditableWorkout';

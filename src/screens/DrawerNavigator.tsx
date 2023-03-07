@@ -19,8 +19,8 @@ export type NavigatorParamList = {
   Home: undefined;
   HomeStack: undefined;
   SelectWorkout: undefined;
-  WorkoutSummary: { consumableWorkoutId: string };
-  UseWorkout: { consumableWorkoutId: string };
+  WorkoutSummary: { consumableWorkoutId?: string };
+  UseWorkout: { userId: string };
   MyWorkouts: undefined;
   MyWorkoutsStack: undefined;
   EditWorkoutPage: { editableWorkoutId: string; editableWorkoutName: string; exerciseName: string };
