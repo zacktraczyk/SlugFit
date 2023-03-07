@@ -7,8 +7,8 @@ interface RestBlockProps {
 }
 const RestBlock: React.FC<RestBlockProps> = ({ minutes, seconds }) => {
   return (
-    <View className="mx-2 mt-2 flex h-8 flex-row rounded-md bg-gray-200">
-      <View className="bor h-8 w-10 rounded-l-lg bg-gray-300">
+    <View className="bg-gray-200 mx-2 mt-2 flex h-8 flex-row rounded-md">
+      <View className="bor bg-gray-300 h-8 w-10 rounded-l-lg">
         <Text className="my-auto ml-1 font-bebas text-xl font-bold">REST</Text>
       </View>
       <Text className="my-auto ml-3 font-bebas text-xl font-bold">{minutes}</Text>

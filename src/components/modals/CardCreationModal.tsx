@@ -26,11 +26,11 @@ const CardCreationModal: React.FC<BlockActionsModalProps> = ({
       onSwipeComplete={() => setVisible(false)}
       swipeDirection="down"
     >
-      <View className="absolute top-3/4 h-full w-full divide-y rounded-t-3xl bg-white">
-        <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
+      <View className="bg-white absolute top-3/4 h-full w-full divide-y rounded-t-3xl">
+        <View className="bg-gray-400 my-3 h-1 w-16 self-center rounded-lg"></View>
         <TouchableOpacity
           accessibilityRole="button"
-          className="flex flex-row items-center space-x-4 border-gray-200 p-2"
+          className="border-gray-200 flex flex-row items-center space-x-4 p-2"
           onPress={() => {
             newRest();
             setVisible(false);
@@ -41,7 +41,7 @@ const CardCreationModal: React.FC<BlockActionsModalProps> = ({
         </TouchableOpacity>
         <TouchableOpacity
           accessibilityRole="button"
-          className="flex flex-row items-center space-x-4 border-gray-200 p-2"
+          className="border-gray-200 flex flex-row items-center space-x-4 p-2"
           onPress={() => {
             setVisible(false);
             newNote();
@@ -52,7 +52,7 @@ const CardCreationModal: React.FC<BlockActionsModalProps> = ({
         </TouchableOpacity>
         <TouchableOpacity
           accessibilityRole="button"
-          className="flex flex-row items-center space-x-4 border-gray-200 p-2"
+          className="border-gray-200 flex flex-row items-center space-x-4 p-2"
           onPress={() => {
             setVisible(false);
             newSet();

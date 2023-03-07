@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import NoteBlock from './blocks/ExerciseNoteBlock';
 import RestBlock from './blocks/ExerciseRestBlock';
 import SetBlock from './blocks/ExerciseSetBlock';
 import {
   ConsumableExerciseData,
-  EditableExerciseItem,
   ConsumableExerciseItem,
   ConsumableExercise,
+  ExerciseSet,
+  ExerciseRest,
 } from '../types';
-import { isSet } from '../utils/typeCheck';
+import { isRest, isSet } from '../utils/typeCheck';
 import { getConsumableExercises } from '../utils/db/consumableexercises';
 import PastWorkoutPerformance from './PastWorkoutPerformance';
 import { formatDateTime } from '../utils/parsing';
 import { LocalConsumableExercise, useActiveWorkout } from '../hooks/useActiveWorkout';
 
-/**
- * @param exercise inputs value to a card
- * @param getUserRecordedSets returns array of user input RecordedValue or undefined if user fails to fil out all values
- */
 export interface ConsumableExerciseCardProps {
   exerciseName: string;
   userId: string;
@@ -62,7 +59,8 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
     setExerciseItems(
       currentExercise.exerciseItems?.map((item: ConsumableExerciseItem, index: number) => {
         const { ref, data } = item;
-        if ('warmup' in ref && 'reps' in ref && data) {
+        if (isSet(ref)) {
+          const set = ref as ExerciseSet;
           return (
             <SetBlock
               currentWorkoutKey={currentExercise.consumableWorkoutId || ''}
@@ -70,15 +68,16 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
               key={index}
               index={index}
               setNumber={'warmup' in ref && ref.warmup ? ++numWarmups : ++numWorking}
-              setRef={ref}
-              reps={data?.reps}
-              weight={data?.weight}
-              bodyweight={data?.bodyweight}
+              setRef={set}
+              reps={data?.reps ?? ''}
+              weight={data?.weight ?? ''}
+              bodyweight={data?.bodyweight ?? false}
               onChange={updateExerciseCardItem}
             />
           );
-        } else if ('minutes' in ref && 'seconds' in ref) {
-          return <RestBlock key={index} minutes={ref.minutes} seconds={ref.seconds} />;
+        } else if (isRest(ref)) {
+          const rest = ref as ExerciseRest;
+          return <RestBlock key={index} minutes={rest.minutes} seconds={rest.seconds} />;
         } else {
           return <NoteBlock key={index} note={'text' in ref ? ref.text : ''} />;
         }
@@ -95,7 +94,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
     BebasNeue_400Regular,
   });
 
-  const updateExerciseCardItem = (index, payload: ConsumableExerciseData) => {
+  const updateExerciseCardItem = (index: number, payload: ConsumableExerciseData) => {
     updateExerciseItem(exerciseName, index, payload);
     setRerender((_old) => !_old);
   };
@@ -104,8 +103,8 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
 
   return (
     <>
-      <ScrollView className="h-full w-full flex-1 bg-white p-4 ">
-        <View className="mb-2 h-10 w-full flex-row content-evenly justify-between border-b border-slate-200">
+      <ScrollView className="bg-white h-full w-full flex-1 p-4 ">
+        <View className="border-slate-200 mb-2 h-10 w-full flex-row content-evenly justify-between border-b">
           <Text className="m-1 mt-3 ml-3 text-center font-bold ">
             {selectedExercise.exerciseName}
           </Text>
@@ -115,12 +114,12 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
           {!closePastPerformance && (
             <TouchableOpacity
               accessibilityRole="button"
-              className=" ml-2 rounded-lg  bg-gray-200"
+              className=" bg-gray-200 ml-2  rounded-lg"
               onPress={() => {
                 setClosePastPerformance(true);
               }}
             >
-              <Text className="text m-1 mt-1 h-6 w-48 bg-gray-200 text-center font-bebas text-lg font-bold text-gray-500">
+              <Text className="text bg-gray-200 text-gray-500 m-1 mt-1 h-6 w-48 text-center font-bebas text-lg font-bold">
                 View Past Performance
               </Text>
             </TouchableOpacity>
@@ -129,7 +128,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
           {closePastPerformance && (
             <TouchableOpacity
               accessibilityRole="button"
-              className=" ml-2 rounded-lg  bg-gray-200"
+              className=" bg-gray-200 ml-2  rounded-lg"
               onPress={() => {
                 setClosePastPerformance(false);
                 renderConsumableExerciseItems(selectedExercise);
@@ -137,7 +136,7 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
               }}
             >
               <Text
-                className="text m-1 mt-1 h-6 w-48 bg-gray-200 text-center font-bebas text-lg font-bold text-gray-500
+                className="text bg-gray-200 text-gray-500 m-1 mt-1 h-6 w-48 text-center font-bebas text-lg font-bold
                 "
               >
                 Close Past Performance
@@ -179,49 +178,5 @@ const ConsumableExerciseCard: React.FC<ConsumableExerciseCardProps> = ({
     </>
   );
 };
-
-const styling = StyleSheet.create({
-  container: {
-    height: '90%',
-  },
-  greenText: {
-    color: '#3BD15E',
-  },
-  redText: {
-    color: '#ED4E39',
-  },
-});
-
-/**
- * helper function
- * @param arr array of exercise items
- * @returns number of working sets
- */
-function calculateNumWorkingSets(arr: EditableExerciseItem[]): number {
-  let numWorkingSets = 0;
-  for (let i = 0; i < arr.length; i++) {
-    if (isSet(arr[i])) {
-      if (!arr[i].warmup) {
-        numWorkingSets++;
-      }
-    }
-  }
-  return numWorkingSets;
-}
-
-/**
- * helper function
- * @param arr array of exercise items
- * @returns number of working sets + warmup sets
- */
-function calculateNumSets(arr: EditableExerciseItem[]): number {
-  let numSets = 0;
-  for (let i = 0; i < arr.length; i++) {
-    if (isSet(arr[i])) {
-      numSets++;
-    }
-  }
-  return numSets;
-}
 
 export default ConsumableExerciseCard;

@@ -52,8 +52,8 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
   };
 
   return (
-    <ScrollView className="h-full w-full bg-white">
-      <View className="h-52 w-full rounded-b-[20px] bg-red-500 px-8 pt-16">
+    <ScrollView className="bg-white h-full w-full">
+      <View className="bg-red-500 h-52 w-full rounded-b-[20px] px-8 pt-16">
         <View className="items-end pb-2">
           <TouchableOpacity accessibilityRole="button">
             <Ionicon
@@ -66,17 +66,17 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
         </View>
 
         <View className="items-center justify-center">
-          <Text className="pb-4 font-bebas text-3xl text-white">{userData.username}</Text>
+          <Text className="text-white pb-4 font-bebas text-3xl">{userData.username}</Text>
 
           {image ? (
             <Image
-              className="shadow-1xl h-40 w-40 justify-center rounded-xl border-4 border-white"
+              className="shadow-1xl border-white h-40 w-40 justify-center rounded-xl border-4"
               accessibilityIgnoresInvertColors
               source={require('../../assets/genericProfilePic.jpg')}
             />
           ) : (
             <Image
-              className="absolute top-[35px] h-40 w-40 justify-center rounded-xl border-4 border-white shadow-2xl"
+              className="border-white absolute top-[35px] h-40 w-40 justify-center rounded-xl border-4 shadow-2xl"
               accessibilityIgnoresInvertColors
               source={{
                 uri:
@@ -89,14 +89,14 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
           )}
 
           <Image
-            className="absolute top-[35px] h-40 w-40 justify-center rounded-xl border-4 border-white shadow-2xl"
+            className="border-white absolute top-[35px] h-40 w-40 justify-center rounded-xl border-4 shadow-2xl"
             accessibilityIgnoresInvertColors
             source={{
               uri: image,
             }}
           />
 
-          <View className="absolute right-[114px] top-[54px] h-[18px] w-[20px] bg-gray-400 shadow-2xl "></View>
+          <View className="bg-gray-400 absolute right-[114px] top-[54px] h-[18px] w-[20px] shadow-2xl "></View>
           <View className="absolute right-[115px] top-[50px] shadow-2xl ">
             <TouchableOpacity accessibilityRole="button">
               <Ionicon name={'images-sharp'} size={21} color={'#f5f5f5'} onPress={pickImage} />
@@ -107,7 +107,7 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
 
       <View className="flex-column items-center pt-[95px]">
         <View className="flex-row">
-          <Text className="pl-9 font-bebas text-4xl text-black">{userData.full_name} </Text>
+          <Text className="text-black pl-9 font-bebas text-4xl">{userData.full_name} </Text>
           <TouchableOpacity accessibilityRole="button">
             <Ionicon
               name={'pencil-sharp'}
@@ -117,7 +117,7 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
-        <Text className="pb-6 font-bebas text-2xl text-gray-400">{userData.bodyweight} lbs</Text>
+        <Text className="text-gray-400 pb-6 font-bebas text-2xl">{userData.bodyweight} lbs</Text>
       </View>
 
       <Text className="pl-4 font-bebas text-3xl">Workout Analytics</Text>

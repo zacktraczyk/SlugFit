@@ -40,10 +40,10 @@ export const ExerciseAnalyticsDisplay: React.FC<ExerciseAnalyticsDisplayProps> =
     return (
       <View
         key={exerciseName}
-        className="ml-1 mr-1 flex flex-row items-center justify-center rounded-lg p-2 shadow-md shadow-slate-200"
+        className="shadow-slate-200 ml-1 mr-1 flex flex-row items-center justify-center rounded-lg p-2 shadow-md"
         style={{ backgroundColor: AnalyticsColors[index] }}
       >
-        <Text className="font-medium text-white">{exerciseName}</Text>
+        <Text className="text-white font-medium">{exerciseName}</Text>
         <Ionicon
           name="close-circle"
           color="rgba(0, 0, 0, 0.8)"

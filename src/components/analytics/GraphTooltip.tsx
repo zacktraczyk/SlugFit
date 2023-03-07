@@ -15,7 +15,7 @@ interface GraphTooltipProps {
 export const GraphTooltip: React.FC<GraphTooltipProps> = ({ value, position }) => {
   return (
     <View
-      className="min-w-12 flex h-8 items-center justify-center rounded-lg bg-slate-900 pl-1 pr-1"
+      className="min-w-12 bg-slate-900 flex h-8 items-center justify-center rounded-lg pl-1 pr-1"
       style={{ position: 'absolute', top: (position?.y || 0) - 20, left: position?.x || 0 }}
     >
       <Text className="text-white">{value?.y.toFixed(2)}</Text>

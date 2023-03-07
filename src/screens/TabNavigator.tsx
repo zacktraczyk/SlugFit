@@ -13,7 +13,7 @@ function TabNavigator() {
     <Tabs.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+          let iconName: keyof typeof Ionicon.glyphMap = 'home-outline';
           switch (route.name) {
             case 'HomeStack':
               iconName = focused ? 'home' : 'home-outline';

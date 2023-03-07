@@ -72,7 +72,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
       <View className="flex h-full flex-col items-stretch justify-center p-5">
         <View>
           <Text className="pt-1 text-center font-bebas text-8xl">SlugFit</Text>
-          <Text className="text-center font-bebas text-2xl text-stone-700">
+          <Text className="text-stone-700 text-center font-bebas text-2xl">
             We see mass in your future
           </Text>
         </View>
@@ -91,7 +91,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                     <TextInput
                       accessibilityLabel="Text input field"
                       accessibilityHint="Input email for login"
-                      className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
+                      className="w-90 bg-white-500 border-gray-200 my-2 mt-0 rounded-md border-2 p-2 text-xl"
                       autoCapitalize="none"
                       keyboardType="email-address"
                       returnKeyType="next"
@@ -122,7 +122,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                     <TextInput
                       accessibilityLabel="Text input field"
                       accessibilityHint="Input password for login"
-                      className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
+                      className="w-90 bg-white-500 border-gray-200 my-2 mt-0 rounded-md border-2 p-2 text-xl"
                       secureTextEntry={true}
                       onBlur={onBlur}
                       onChangeText={onChange}
@@ -143,10 +143,10 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
                 <Pressable
                   accessibilityRole="button"
                   accessibilityHint="Login to application"
-                  className="my-2 mt-0 w-60 rounded-lg bg-red-500 p-2"
+                  className="bg-red-500 my-2 mt-0 w-60 rounded-lg p-2"
                   onPress={handleSubmit((data) => onSubmit(data))}
                 >
-                  <Text className="text-center font-bebas text-2xl text-white">Sign In</Text>
+                  <Text className="text-white text-center font-bebas text-2xl">Sign In</Text>
                 </Pressable>
                 <Text>
                   <Text className="text-sm">Don&apos;t Have an Account?</Text>

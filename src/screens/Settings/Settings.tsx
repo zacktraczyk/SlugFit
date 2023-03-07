@@ -10,7 +10,7 @@ type SettingsProps = NativeStackScreenProps<NavigatorParamList, 'Settings'>;
 const Settings: React.FC<SettingsProps> = ({ navigation }) => {
   return (
     <KeyboardAvoidingView behavior="padding">
-      <View className="h-full bg-white p-5 px-5 pt-16">
+      <View className="bg-white h-full p-5 px-5 pt-16">
         <View className="items-start">
           <TouchableOpacity accessibilityRole="button">
             <Ionicon
@@ -29,10 +29,10 @@ const Settings: React.FC<SettingsProps> = ({ navigation }) => {
         <View className="items-center justify-center pt-80">
           <TouchableOpacity
             accessibilityRole="button"
-            className="w-60 rounded-lg bg-red-500 p-2"
+            className="bg-red-500 w-60 rounded-lg p-2"
             onPress={() => supabase.auth.signOut()}
           >
-            <Text className="text-center font-bebas text-2xl text-white">SIGN OUT</Text>
+            <Text className="text-white text-center font-bebas text-2xl">SIGN OUT</Text>
           </TouchableOpacity>
         </View>
       </View>
