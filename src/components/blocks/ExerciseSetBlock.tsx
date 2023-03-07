@@ -54,7 +54,7 @@ const SetBlock: React.FC<SetBlockProps> = ({
 
   return (
     <View className="mx-2 mt-2 ">
-      <Text className="text-stone-700 ml-1 font-bebas font-extralight">
+      <Text className="ml-1 font-bebas font-extralight text-stone-700">
         {setRef.warmup ? 'WARMUP' : ''} SET {setNumber}
       </Text>
       <View
@@ -79,14 +79,14 @@ const SetBlock: React.FC<SetBlockProps> = ({
           </Text>
         </View>
       </View>
-      <View className="-2 bg-gray-200 mt-0.5 flex h-8 flex-row rounded-md">
-        <View className="bor bg-gray-300 h-8 w-14 rounded-l-lg">
+      <View className="-2 mt-0.5 flex h-8 flex-row rounded-md bg-gray-200">
+        <View className="bor h-8 w-14 rounded-l-lg bg-gray-300">
           <Text className="my-auto ml-1 font-bebas text-xl font-bold">RECORD</Text>
         </View>
         <TextInput
           accessibilityLabel="Record Reps"
           accessibilityHint="Input reps you did"
-          className={`bg-white mx-auto my-auto ml-1 h-5/6 w-16 rounded-md text-center font-bebas text-xs ${
+          className={`mx-auto my-auto ml-1 h-5/6 w-16 rounded-md bg-white text-center font-bebas text-xs ${
             workoutKey == currentWorkoutKey ? 'bg-white' : 'bg-transparent'
           }`}
           autoCapitalize="none"

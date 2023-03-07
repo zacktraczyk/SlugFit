@@ -55,7 +55,7 @@ const WorkoutSummaryComponent: React.FC<WorkoutSummaryComponentProps> = ({
   exercises,
 }) => {
   return (
-    <ScrollView className="bg-white flex h-full flex-col p-3">
+    <ScrollView className="flex h-full flex-col bg-white p-3">
       <OverallStats
         maxLb="Max Weight Used"
         maxIntensity="Max Intensity (1 Rep Max Calculation)"
@@ -80,19 +80,19 @@ const OverallStats: React.FC<StatsProps> = ({ maxLb, maxIntensity, totalVolume }
   return (
     <View>
       <View className="flex flex-row pb-2">
-        <View className="bg-gray-300 mr-2 flex w-10 items-center rounded">
+        <View className="mr-2 flex w-10 items-center rounded bg-gray-300">
           <Text className="font-bebas text-lg">LB</Text>
         </View>
         <Text className="font-bebas text-lg">{maxLb}</Text>
       </View>
       <View className="flex flex-row pb-2">
-        <View className="bg-gray-300 mr-2 flex w-10 items-center rounded">
+        <View className="mr-2 flex w-10 items-center rounded bg-gray-300">
           <Text className="font-bebas text-lg">%</Text>
         </View>
         <Text className="font-bebas text-lg">{maxIntensity}</Text>
       </View>
       <View className="flex flex-row">
-        <View className="bg-gray-300 mr-2 flex w-10 items-center rounded">
+        <View className="mr-2 flex w-10 items-center rounded bg-gray-300">
           <Text className="font-bebas text-lg">VOL</Text>
         </View>
         <Text className="font-bebas text-lg">{totalVolume}</Text>
@@ -118,15 +118,15 @@ const ConusmedExerciseStatsCard: React.FC<ConsumedExerciseStatsCard> = ({ exerci
 
   if (isConsumableExerciseEmpty(exercise)) {
     return (
-      <View className="border-gray-100 bg-white my-4 flex flex-row justify-between rounded-xl border py-5 px-10 shadow">
+      <View className="my-4 flex flex-row justify-between rounded-xl border border-gray-100 bg-white py-5 px-10 shadow">
         <Text className="w-[90px] text-left font-bebas">{exercise.exerciseName}</Text>
-        <Text className="text-red-700 text-center font-bebas">Exercise not started</Text>
+        <Text className="text-center font-bebas text-red-700">Exercise not started</Text>
       </View>
     );
   }
 
   return (
-    <View className="border-gray-100 bg-white my-4 flex flex-row items-center rounded-xl border py-5 px-2 shadow">
+    <View className="my-4 flex flex-row items-center rounded-xl border border-gray-100 bg-white py-5 px-2 shadow">
       <View className="">
         {/* Table Header */}
         <View className="mb-1 flex flex-row items-start">
@@ -141,8 +141,8 @@ const ConusmedExerciseStatsCard: React.FC<ConsumedExerciseStatsCard> = ({ exerci
           return (
             <View className="flex flex-row items-center py-1" key={j}>
               <Text className="w-[90px] text-left font-bebas">Set {j + 1}</Text>
-              <Text className="text-gray-500 w-10 text-right font-bebas">{data?.reps}</Text>
-              <Text className="text-gray-500 w-20 text-right font-bebas">
+              <Text className="w-10 text-right font-bebas text-gray-500">{data?.reps}</Text>
+              <Text className="w-20 text-right font-bebas text-gray-500">
                 {data?.bodyweight ? 'Body' : data?.weight}
               </Text>
             </View>
@@ -153,8 +153,8 @@ const ConusmedExerciseStatsCard: React.FC<ConsumedExerciseStatsCard> = ({ exerci
       <View className="ml-4 grow">
         {isStatsAllBodyweight(overallStats) ? (
           <View>
-            <Text className="text-gray-300 text-center font-bebas">Body Weight</Text>
-            <Text className="text-gray-300 text-center font-bebas">(No Stats)</Text>
+            <Text className="text-center font-bebas text-gray-300">Body Weight</Text>
+            <Text className="text-center font-bebas text-gray-300">(No Stats)</Text>
           </View>
         ) : (
           <OverallStats

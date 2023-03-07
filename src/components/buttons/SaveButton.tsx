@@ -14,7 +14,7 @@ const SaveButton: React.FC<SaveButtonProps> = ({ goHome }) => {
   };
   return (
     <TouchableOpacity onPress={onPress} accessibilityRole="button" className="p-1">
-      <Text className="text-green-500 text-center font-normal">Save</Text>
+      <Text className="text-center font-normal text-green-500">Save</Text>
     </TouchableOpacity>
   );
 };

@@ -73,7 +73,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
     <ErrorBoundary FallbackComponent={ErrorScreen}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className="bg-white flex w-full flex-1 flex-col items-center justify-center"
+        className="flex w-full flex-1 flex-col items-center justify-center bg-white"
         enabled={!loading}
       >
         <FlatList

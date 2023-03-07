@@ -190,7 +190,7 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
           onPress={Keyboard.dismiss}
           disabled={loading}
         >
-          <View className="bg-white h-full p-10 px-5">
+          <View className="h-full bg-white p-10 px-5">
             <DraggableFlatList
               data={exerciseItems}
               onDragEnd={({ data }) => reorderExerciseItems(data)}

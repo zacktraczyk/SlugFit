@@ -73,7 +73,7 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
         }}
       >
         <View style={styling.modalMask} className="h-full w-full items-center justify-center">
-          <View className="border-slate-200 bg-white flex h-4/6 w-10/12 flex-col rounded-lg border-2 py-4 shadow-2xl">
+          <View className="flex h-4/6 w-10/12 flex-col rounded-lg border-2 border-slate-200 bg-white py-4 shadow-2xl">
             <View className="flex flex-row justify-end">
               <TouchableOpacity
                 className="fixed m-2 mr-4"
@@ -88,7 +88,7 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
 
             {/* Primary Filters */}
             <ScrollView>
-              <View className=" border-slate-200 ml-4 w-10/12 border-b pb-2">
+              <View className=" ml-4 w-10/12 border-b border-slate-200 pb-2">
                 <Text className="font-bebas text-lg font-bold">Primary:</Text>
               </View>
               <View className="mt-4 flex flex-row justify-between px-8">
@@ -138,7 +138,7 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
               </View>
 
               {/* Secondary Filters */}
-              <View className=" border-slate-200 ml-4 mt-10 w-10/12 border-b  pb-2">
+              <View className=" ml-4 mt-10 w-10/12 border-b border-slate-200  pb-2">
                 <Text className="font-bebas text-lg">Secondary:</Text>
               </View>
               <View className="mt-4 flex flex-row justify-between px-8">

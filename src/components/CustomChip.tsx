@@ -23,7 +23,7 @@ const Chip: React.FC<ChipProps> = ({ value, index, color, closeable = true, onRe
   });
 
   return (
-    <View className="border-width border-slate-200 m-1 mt-3 flex flex-row rounded-md border border-solid p-1 shadow-sm ">
+    <View className="border-width m-1 mt-3 flex flex-row rounded-md border border-solid border-slate-200 p-1 shadow-sm ">
       {color ? (
         <View style={styling.colorProp} className="mx-1 my-auto h-2 w-2 rounded-full" />
       ) : (

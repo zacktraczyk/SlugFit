@@ -7,7 +7,7 @@ interface CompletedBlockContainerProps {
 
 export const CompletedBlockContainer: React.FC<CompletedBlockContainerProps> = ({ children }) => {
   return (
-    <View className="border-slate-200 mx-3 rounded-xl border shadow-sm" style={styles.container}>
+    <View className="mx-3 rounded-xl border border-slate-200 shadow-sm" style={styles.container}>
       {children}
     </View>
   );
