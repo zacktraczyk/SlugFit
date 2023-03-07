@@ -3,7 +3,4 @@
   "compilerOptions": {
     "strict": true
   },
-  "files": [
-    "my-app.d.ts"
-  ]
 }
