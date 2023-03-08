@@ -1,3 +1,4 @@
+/* eslint-disable react-native-a11y/has-valid-accessibility-ignores-invert-colors */
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,6 +17,7 @@ const CustomDrawer = () => {
   const { editableWorkouts, fetch } = useMyEditableWorkouts(session);
   const [userData, setUserData] = React.useState<ProfileType>({});
 
+  //loads user profile data
   React.useEffect(() => {
     const fetchProfile = async () => {
       const data = await getUserProfile(session);
@@ -25,6 +27,10 @@ const CustomDrawer = () => {
     fetchProfile().catch(console.error);
   }, []);
 
+  /**
+   * on refresh, fetches profile data
+   * + editable workouts and rerenders
+   */
   const refresh = () => {
     if (fetch != undefined) {
       fetch();
@@ -38,6 +44,7 @@ const CustomDrawer = () => {
 
   return (
     <View className="h-full w-full">
+      {/**Banner + Profile Block */}
       <LinearGradient className="mb-3 h-32" colors={['#888787', '#9A9A9A', '#FFFFFF']}>
         <View className="flex h-full w-full flex-row border-b-2 border-neutral-300">
           <View className="my-auto">
@@ -64,9 +71,11 @@ const CustomDrawer = () => {
             </TouchableOpacity>
           </View>
           <View className="my-auto ml-2 flex flex-col">
-            <Text className="mt-4 font-bebas text-lg text-neutral-700">{'John Doe'}</Text>
-            <View className="flex flex-row justify-center gap-1">
-              <Text className="font-bebas text-[10px]">{'150 lbs'}</Text>
+            <Text className="mt-4 font-bebas text-lg text-neutral-700">
+              {userData.full_name ? userData.full_name : 'NO NAME'}
+            </Text>
+            <View className="flex flex-row gap-1">
+              <Text className="font-bebas text-[10px]">{userData.bodyweight + ' lbs'}</Text>
               <MaterialCommunityIcons name="weight-lifter" size={14} color="black" />
             </View>
           </View>
@@ -76,14 +85,15 @@ const CustomDrawer = () => {
               onPress={() => {
                 refresh();
               }}
-              className="m-1 flex flex-col justify-end"
+              className="m-3 flex flex-col justify-end"
             >
-              <Ionicons name="refresh" size={25} color="#888787" />
+              <Ionicons name="refresh" size={20} color="#888787" />
             </TouchableOpacity>
           </View>
         </View>
       </LinearGradient>
-
+      {/**END OF BANNER + PROF BLOCK */}
+      {/** WORKOUT + EXERCISE BLOCKS */}
       <View className="flex w-full flex-col px-4">
         <View className="w-[100] border-b-2 border-neutral-300">
           <TouchableOpacity
@@ -113,16 +123,13 @@ const CustomDrawer = () => {
                     },
                   });
                 }}
-                editableExerciseNavigate={(id, workoutName, exerciseName) => {
-                  navigation.navigate('Tabs', {
-                    screen: 'MyWorkoutsStack',
+                editableExerciseNavigate={(id, workoutName, exercise) => {
+                  navigation.navigate('MyWorkoutsStack', {
+                    screen: 'EditExercisePage',
                     params: {
-                      screen: 'EditExercisePage',
-                      params: {
-                        editableWorkoutId: id,
-                        editableWorkoutName: workoutName,
-                        exerciseName: exerciseName,
-                      },
+                      editableWorkoutId: id,
+                      editableWorkoutName: workoutName,
+                      exerciseName: exercise,
                     },
                   });
                 }}
@@ -131,8 +138,15 @@ const CustomDrawer = () => {
           })}
         </ScrollView>
       </View>
+      {/**END OF BANNER + PROF BLOCKS */}
     </View>
   );
 };
 
 export default CustomDrawer;
+
+{
+  /**
+
+*/
+}

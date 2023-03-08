@@ -25,7 +25,11 @@ const DrawerWorkoutBlock: React.FC<DrawerWorkoutBlockProps> = ({
             onPress={() => setShowExercises(!showExercises)}
             className="my-auto"
           >
-            <Ionicons name="caret-down" size={18} color="#323232" className="my-auto" />
+            {showExercises ? (
+              <Ionicons name="caret-down" size={18} color="#323232" className="my-auto" />
+            ) : (
+              <Ionicons name="caret-up" size={18} color="#323232" className="my-auto" />
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             accessibilityRole="button"
@@ -42,9 +46,9 @@ const DrawerWorkoutBlock: React.FC<DrawerWorkoutBlockProps> = ({
               return (
                 <TouchableOpacity
                   key={item}
-                  onPress={() =>
-                    editableExerciseNavigate(editableWorkout.id, editableWorkout.name, item)
-                  }
+                  onPress={() => {
+                    editableExerciseNavigate(editableWorkout.id, editableWorkout.name, item);
+                  }}
                   accessibilityRole="button"
                   onaccessibilityRole="button"
                   className="flex h-[50] flex-row"

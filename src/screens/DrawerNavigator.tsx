@@ -3,15 +3,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import TabNavigator from './TabNavigator';
 import UseWorkoutPage from './UseWorkout/UseWorkout';
 import Settings from './Settings/Settings';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import CustomDrawer from '../components/CustomDrawer';
-import MyWorkouts from './MyWorkouts/MyWorkouts';
-import EditWorkoutPage from './EditWorkout/EditWorkoutPage';
-import EditExercisePage from './EditExercise/EditExercisePage';
-import ToggleDrawerButton from '../components/ToggleDrawerButton';
-import BreadcrumbHeader from '../components/BreadcrumbsHeader';
-import MyWorkoutsStack from './MyWorkouts/MyWorkoutsStack';
-
+import AccountSettings from './Account/AccountSettings';
 
 export type NavigatorParamList = {
   Tabs: undefined;
@@ -38,21 +31,20 @@ const Drawer = createDrawerNavigator<NavigatorParamList>();
 function DrawerNavigator() {
   return (
     <Drawer.Navigator
-      screenOptions={({ route, navigation }) => ({
+      screenOptions={() => ({
         drawerPosition: 'left',
         headerShown: false,
       })}
-      drawerContent={(props) => <CustomDrawer {...props} />}
+      drawerContent={() => <CustomDrawer />}
     >
       <Drawer.Screen name="Tabs" component={TabNavigator} />
-      <Drawer.Screen name="MyWorkouts" component={MyWorkouts} />
+      <Drawer.Screen name="AccountSettings" component={AccountSettings} />
       <Drawer.Screen
-        name="MyWorkoutsStack"
-        component={MyWorkoutsStack}
-        options={{ headerShown: false }}
+        name="UseWorkout"
+        component={UseWorkoutPage}
+        options={{ swipeEnabled: false }}
       />
-      <Drawer.Screen name="EditWorkoutPage" component={EditWorkoutPage} />
-      <Drawer.Screen name="EditExercisePage" component={EditExercisePage} />
+      <Drawer.Screen name="Settings" component={Settings} />
     </Drawer.Navigator>
   );
 }
