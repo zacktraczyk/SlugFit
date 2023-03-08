@@ -6,17 +6,22 @@ import { NavigatorParamList } from '../DrawerNavigator';
 import ExerciseBlock from '../../components/blocks/ExerciseBlock';
 import { useEditableWorkout } from '../../hooks/useEditableWorkout';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { createEditableExercise } from '../../utils/db/editableexercises';
+import { createEditableExercise, deleteEditableExercise } from '../../utils/db/editableexercises';
 import { useAuth } from '../../contexts/AuthProvider';
-import { updateEditableWorkout } from '../../utils/db/editableworkouts';
+import updateWorkout from '../MyWorkouts/MyWorkouts';
 import ErrorBoundary from 'react-native-error-boundary';
 import ErrorScreen from '../../components/ErrorScreen';
+import { updateEditableWorkout } from '../../utils/db/editableworkouts';
 
 type EditWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'EditWorkoutPage'>;
 
 const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) => {
   const { session } = useAuth();
-  const { editableWorkout, loading } = useEditableWorkout(route.params.editableWorkoutId, true);
+  const {
+    editableWorkout,
+    fetch: fetchEditableExercises,
+    loading,
+  } = useEditableWorkout(route.params.editableWorkoutId, true);
   const [exercises, setExercises] = useState<string[]>([]);
 
   useEffect(() => {
@@ -44,6 +49,25 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
       },
     });
   };
+  const deleteExerciseBlock = async (exerciseName: string) => {
+    await deleteEditableExercise({
+      exerciseName,
+      editableWorkoutId: route.params.editableWorkoutId,
+    });
+    setExercises((_exercises) => _exercises.filter((ex) => ex !== ''));
+
+    await updateEditableWorkout({
+      editableWorkoutId: route.params.editableWorkoutId,
+      payload: {
+        exercises: editableWorkout.exercises?.splice(
+          editableWorkout.exercises?.indexOf(exerciseName),
+          1
+        ),
+      },
+    });
+
+    //if (fetchEditableExercises) await fetchEditableExercises();
+  };
 
   const addTemporaryEditableExerciseBlock = () => {
     if (!exercises.find((ex) => ex === '')) {
@@ -65,6 +89,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
         exerciseName={item}
         update={updateEditableExercise}
         onPress={navigateToEditableExercise}
+        deleteExerciseBlock={deleteExerciseBlock}
       />
     );
   };
@@ -73,7 +98,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
     <ErrorBoundary FallbackComponent={ErrorScreen}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className="flex w-full flex-1 flex-col items-center justify-center bg-white"
+        className="flex flex-col items-center justify-center flex-1 w-full bg-white"
         enabled={!loading}
       >
         <FlatList
