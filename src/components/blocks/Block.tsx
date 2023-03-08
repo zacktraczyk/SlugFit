@@ -5,19 +5,11 @@ import { BlockContainer } from './BlockContainer';
 import MaterialCommunityIcon from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface BlockProps {
-  // Name of the block
-  title: string;
-
+  title: string; // Name of the block
   subtitle?: string;
-
-  // Handler for when the main block body is pressed
-  onPress?: () => void;
-
-  // Handler for when the options ellipsis are pressed
-  onOptionsPress?: () => void;
-
-  // name of Ionicon icon
-  icon?: keyof typeof Ionicon.glyphMap;
+  onPress?: () => void; // Handler for when the main block body is pressed
+  onOptionsPress?: () => void; // Handler for when the options ellipsis are pressed
+  icon?: keyof typeof Ionicon.glyphMap; // name of Ionicon icon
 }
 
 const Block: React.FC<BlockProps> = ({

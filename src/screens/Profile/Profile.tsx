@@ -32,7 +32,7 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
     };
 
     fetchProfile().catch(console.error);
-  });
+  }, []);
 
   // Image Picker
   // lets user select an image from gallery and set as their profile picture
@@ -73,7 +73,6 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
             accessibilityIgnoresInvertColors
             source={require('../../assets/genericProfilePic.jpg')}
           />
-
           <Image
             className="absolute top-[35px] h-40 w-40 justify-center rounded-xl border-4 border-white shadow-2xl"
             accessibilityIgnoresInvertColors

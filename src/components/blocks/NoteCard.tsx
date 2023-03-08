@@ -6,8 +6,8 @@ interface RestCardProps {
   text: string;
   setText: (val: string) => void;
   id: number;
-  deleteCard: (id) => void;
-  duplicateCard: (id) => void;
+  deleteCard: (id: number) => void;
+  duplicateCard: (id: number) => void;
 }
 
 const NoteCard: React.FC<RestCardProps> = ({ text, setText, ...cardProps }) => {

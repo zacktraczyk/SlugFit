@@ -13,8 +13,8 @@ interface SetCardProps {
   id: number;
   warmupSet: boolean;
   setWarmupSet: (val: boolean) => void;
-  deleteCard: (id) => void;
-  duplicateCard: (id) => void;
+  deleteCard: (id: number) => void;
+  duplicateCard: (id: number) => void;
 }
 
 const SetCard: React.FC<SetCardProps> = ({

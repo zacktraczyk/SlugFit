@@ -1,6 +1,14 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useEffect } from 'react';
-import { Text, View, FlatList, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
+import {
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+  ListRenderItem,
+} from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import CompletedWorkoutBlock from '../../components/blocks/CompletedWorkoutBlock';
@@ -11,13 +19,12 @@ import { ConsumableWorkout } from '../../types';
 import { formatDateToISO } from '../../utils/parsing';
 import ErrorBoundary from 'react-native-error-boundary';
 import ErrorScreen from '../../components/ErrorScreen';
-import ComponentWithError from '../../components/ComponentWithError';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { session } = useAuth();
-  const { consumableWorkouts, loading, error, fetch } = useMyConsumableWorkouts(session);
+  const { consumableWorkouts, loading, fetch } = useMyConsumableWorkouts(session);
   const [completedWorkouts, setCompletedWorkouts] = useState<ConsumableWorkout[]>([]);
 
   useEffect(() => {
@@ -27,7 +34,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   }, [consumableWorkouts]);
 
   // render each workout for CompletedWorkoutBlock
-  const renderWorkoutBlock = ({ item }) => {
+  const renderWorkoutBlock: ListRenderItem<ConsumableWorkout> = ({ item }) => {
     return (
       <CompletedWorkoutBlock
         consumableWorkout={item}

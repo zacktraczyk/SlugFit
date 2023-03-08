@@ -7,8 +7,8 @@ interface DraggableCardProps {
   title: string;
   children: React.ReactNode;
   id: number;
-  deleteCard: (id) => void;
-  duplicateCard: (id) => void;
+  deleteCard: (id: number) => void;
+  duplicateCard: (id: number) => void;
 }
 
 const Card: React.FC<DraggableCardProps> = ({ title, children, id, deleteCard, duplicateCard }) => {
