@@ -55,22 +55,15 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
         exerciseName,
         editableWorkoutId: route.params.editableWorkoutId,
       });
-
+      editableWorkout.exercises?.splice(editableWorkout.exercises?.indexOf(exerciseName), 1);
       await updateEditableWorkout({
         editableWorkoutId: route.params.editableWorkoutId,
         payload: {
-          exercises: editableWorkout.exercises.splice(
-            editableWorkout.exercises.indexOf(exerciseName),
-            1
-          ),
+          exercises: editableWorkout.exercises,
         },
       });
-      setExercises(
-        editableWorkout.exercises?.splice(editableWorkout.exercises?.indexOf(exerciseName), 1)
-      );
+      setExercises(editableWorkout.exercises);
     }
-
-    //if (fetchEditableExercises) await fetchEditableExercises();
   };
 
   const addTemporaryEditableExerciseBlock = () => {
@@ -102,7 +95,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
     <ErrorBoundary FallbackComponent={ErrorScreen}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className="flex flex-col items-center justify-center flex-1 w-full bg-white"
+        className="flex w-full flex-1 flex-col items-center justify-center bg-white"
         enabled={!loading}
       >
         <FlatList

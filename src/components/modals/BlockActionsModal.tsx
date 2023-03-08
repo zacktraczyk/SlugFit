@@ -24,40 +24,40 @@ const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
       onSwipeComplete={() => setModalVisible(false)}
       swipeDirection="down"
     >
-      <View className="absolute w-full h-full bg-white divide-y top-3/4 rounded-t-3xl">
-        <View className="self-center w-16 h-1 my-3 bg-gray-400 rounded-lg"></View>
+      <View className="absolute top-3/4 h-full w-full divide-y rounded-t-3xl bg-white">
+        <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
         <TouchableOpacity
           accessibilityRole="button"
-          className="flex flex-row items-center p-2 space-x-4 border-gray-200"
+          className="flex flex-row items-center space-x-4 border-gray-200 p-2"
           onPress={deleteBlock}
         >
           <Ionicon name="trash" size={16} />
-          <Text className="text-lg font-bold text-center">Delete</Text>
+          <Text className="text-center text-lg font-bold">Delete</Text>
         </TouchableOpacity>
         {renameBlock && (
           <TouchableOpacity
             accessibilityRole="button"
-            className="flex flex-row items-center p-2 space-x-4 border-gray-200"
+            className="flex flex-row items-center space-x-4 border-gray-200 p-2"
             onPress={() => {
               setModalVisible(false);
               renameBlock();
             }}
           >
             <Ionicon name="pencil" size={16} />
-            <Text className="text-lg font-bold text-center">Rename</Text>
+            <Text className="text-center text-lg font-bold">Rename</Text>
           </TouchableOpacity>
         )}
         {duplicateBlock && (
           <TouchableOpacity
             accessibilityRole="button"
-            className="flex flex-row items-center p-2 space-x-4 border-gray-200"
+            className="flex flex-row items-center space-x-4 border-gray-200 p-2"
             onPress={() => {
               setModalVisible(false);
               duplicateBlock();
             }}
           >
             <Ionicon name="duplicate" size={16} />
-            <Text className="text-lg font-bold text-center">Duplicate</Text>
+            <Text className="text-center text-lg font-bold">Duplicate</Text>
           </TouchableOpacity>
         )}
       </View>
