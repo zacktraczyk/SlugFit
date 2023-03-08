@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { NavigatorParamList } from '../DrawerNavigator';
-import { View, StyleSheet, Dimensions, FlatList, Alert } from 'react-native';
+import { View, StyleSheet, Dimensions, FlatList, Alert, ListRenderItem } from 'react-native';
 import AnimatedExerciseCardContainer from '../../components/AnimatedExerciseCardContainer';
 import UseWorkoutHeader from '../../components/headers/UseWorkoutHeader';
 import Animated, { FadeInLeft } from 'react-native-reanimated';
@@ -23,7 +23,7 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
   const [cardView, setCardView] = useState(true);
   const flatlistRef = useRef<FlatList>(null);
 
-  const renderCardItem = ({ item: exerciseName, index }) => {
+  const renderCardItem: ListRenderItem<string> = ({ item: exerciseName, index }) => {
     return (
       <AnimatedExerciseCardContainer visible={index === visibleIndex} className="bg-white">
         <ConsumableExerciseCard exerciseName={exerciseName} userId={route.params.userId} />
@@ -31,7 +31,7 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
     );
   };
 
-  const renderListItem = ({ item: exerciseName, index }) => {
+  const renderListItem: ListRenderItem<string> = ({ item: exerciseName, index }) => {
     const goToCard = () => {
       setCardView(true);
       setTimeout(() => {
@@ -39,19 +39,9 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
       }, 500);
     };
 
-    // const numSets = exercise.exerciseItems.reduce((acc, item) => {
-    //   return item.ref.reps !== undefined && item.ref.reps !== null ? acc + 1 : acc;
-    // }, 0);
-
     return (
       <Animated.View entering={FadeInLeft.duration(200).delay(100 * index)} className="self-center">
-        <Block
-          title={exerciseName}
-          // subtitle={`${numSets} set${numSets > 1 ? 's' : ''}`}
-          icon="expand"
-          onPress={goToCard}
-          onOptionsPress={goToCard}
-        />
+        <Block title={exerciseName} icon="expand" onPress={goToCard} onOptionsPress={goToCard} />
       </Animated.View>
     );
   };

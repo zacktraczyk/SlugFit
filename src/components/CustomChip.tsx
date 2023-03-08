@@ -23,7 +23,7 @@ const Chip: React.FC<ChipProps> = ({ value, index, color, closeable = true, onRe
   });
 
   return (
-    <View className="border-width m-1 mt-3 inline flex flex-row rounded-md border border-solid border-slate-200 p-1 shadow-sm ">
+    <View className="border-width m-1 mt-3 flex flex-row rounded-md border border-solid border-slate-200 p-1 shadow-sm ">
       {color ? (
         <View style={styling.colorProp} className="mx-1 my-auto h-2 w-2 rounded-full" />
       ) : (
@@ -35,7 +35,7 @@ const Chip: React.FC<ChipProps> = ({ value, index, color, closeable = true, onRe
           className="my-auto mx-1"
           accessibilityRole="button"
           onPress={() => {
-            onRequestClose(value, index, color);
+            if (onRequestClose) onRequestClose(value, index, color);
           }}
         >
           <AntDesign name="close" size={12} color="grey" />

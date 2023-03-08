@@ -16,6 +16,7 @@ import { NavigatorParamList } from '../DrawerNavigator';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { getUserProfile, updateUserProfile } from '../../utils/db/profiles';
 import { ScrollView } from 'react-native-gesture-handler';
+import { ProfileType } from '../../types';
 
 type AccountSettingsProps = NativeStackScreenProps<NavigatorParamList, 'AccountSettings'>;
 
@@ -46,11 +47,11 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ navigation }) => {
     const fetchProfile = async () => {
       const data = await getUserProfile(session);
       if (data) {
-        setValue('username', data.username ? data.username : '');
-        setValue('full_name', data.full_name ? data.full_name : '');
-        setValue('avatar_url', data.avatar_url ? data.avatar_url : '');
-        setValue('website', data.website ? data.website : '');
-        setValue('bodyweight', data.bodyweight ? data.bodyweight : 0);
+        setValue('username', data.username ?? '');
+        setValue('full_name', data.full_name ?? '');
+        setValue('avatar_url', data.avatar_url ?? '');
+        setValue('website', data.website ?? '');
+        setValue('bodyweight', data.bodyweight ?? 0);
       }
     };
 
@@ -60,7 +61,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ navigation }) => {
 
   // when "save changes" is pressed, only update if there's no errors
   // if update is successful, navigate to prev screen
-  function onPressSubmitButton(data) {
+  function onPressSubmitButton(data: ProfileType) {
     if (!errors.username && !errors.full_name && !errors.bodyweight) {
       updateUserProfile(data, session);
       navigation.goBack();
@@ -102,7 +103,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ navigation }) => {
                       <TextInput
                         accessibilityLabel="Text input Input"
                         accessibilityHint="Input to change account name"
-                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 p-2 pb-4 text-xl"
+                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 pb-4 text-xl"
                         autoCapitalize="none"
                         returnKeyType="done"
                         onBlur={onBlur}
@@ -128,7 +129,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ navigation }) => {
                       <TextInput
                         accessibilityLabel="Text input Input"
                         accessibilityHint="Input to change account name"
-                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 p-2 pb-4 text-xl"
+                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 pb-4 text-xl"
                         returnKeyType="done"
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -153,7 +154,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ navigation }) => {
                       <TextInput
                         accessibilityLabel="Text input field"
                         accessibilityHint="Input to change account website"
-                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 p-2 pb-4 text-xl"
+                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 pb-4 text-xl"
                         returnKeyType="done"
                         keyboardType="numeric"
                         onBlur={onBlur}

@@ -112,7 +112,7 @@ const ConusmedExerciseStatsCard: React.FC<ConsumedExerciseStatsCard> = ({ exerci
     totalVolume: getTotalVolume(exercise.exerciseItems),
   };
 
-  const isExerciseAllBodyweight = ({ maxLb, maxIntensity, totalVolume }) => {
+  const isStatsAllBodyweight = ({ maxLb, maxIntensity, totalVolume }): boolean => {
     return maxLb == -1 && maxIntensity == -1 && totalVolume == -1;
   };
 
@@ -151,7 +151,7 @@ const ConusmedExerciseStatsCard: React.FC<ConsumedExerciseStatsCard> = ({ exerci
       </View>
 
       <View className="ml-4 grow">
-        {isExerciseAllBodyweight(overallStats) ? (
+        {isStatsAllBodyweight(overallStats) ? (
           <View>
             <Text className="text-center font-bebas text-gray-300">Body Weight</Text>
             <Text className="text-center font-bebas text-gray-300">(No Stats)</Text>
