@@ -1,7 +1,6 @@
 /* eslint-disable react-native-a11y/has-valid-accessibility-ignores-invert-colors */
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { useMyEditableWorkouts } from '../hooks/useMyEditableWorkouts';
 import { useAuth } from '../contexts/AuthProvider';
@@ -45,8 +44,8 @@ const CustomDrawer = () => {
   return (
     <View className="h-full w-full">
       {/**Banner + Profile Block */}
-      <LinearGradient className="mb-3 h-32" colors={['#888787', '#9A9A9A', '#FFFFFF']}>
-        <View className="flex h-full w-full flex-row border-b-2 border-neutral-300">
+      <View className="mb-3 h-32 bg-neutral-300">
+        <View className="flex h-full w-full flex-row border-b-4 border-neutral-100">
           <View className="my-auto">
             <TouchableOpacity
               accessibilityRole="button"
@@ -66,7 +65,7 @@ const CustomDrawer = () => {
                       }
                     : require('../assets/genericProfilePic.jpg')
                 }
-                className="mt-4 ml-4 h-[70] w-[70] rounded-full"
+                className="mt-4 ml-4 h-[60] w-[60] rounded-full"
               ></Image>
             </TouchableOpacity>
           </View>
@@ -75,8 +74,8 @@ const CustomDrawer = () => {
               {userData.full_name ? userData.full_name : 'NO NAME'}
             </Text>
             <View className="flex flex-row gap-1">
-              <Text className="font-bebas text-[10px]">{userData.bodyweight + ' lbs'}</Text>
-              <MaterialCommunityIcons name="weight-lifter" size={14} color="black" />
+              <Text className="font-bebas ">{userData.bodyweight + ' lbs'}</Text>
+              <MaterialCommunityIcons name="weight-lifter" size={16} color="black" />
             </View>
           </View>
           <View className="flex h-full flex-grow flex-row justify-end ">
@@ -91,7 +90,7 @@ const CustomDrawer = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </LinearGradient>
+      </View>
       {/**END OF BANNER + PROF BLOCK */}
       {/** WORKOUT + EXERCISE BLOCKS */}
       <View className="flex w-full flex-col px-4">
