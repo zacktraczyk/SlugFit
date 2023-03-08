@@ -12,7 +12,7 @@ const ErrorScreen: React.FC<ErrorScreenProps> = ({ error }) => {
   };
 
   return (
-    <View className="flex h-full flex-col items-center items-stretch bg-gray-100 p-7 pt-20 ">
+    <View className="flex h-full flex-col items-stretch bg-gray-100 p-7 pt-20 ">
       <View className="my-2 mt-0 h-5/6 w-full items-center space-y-3 rounded-xl bg-white p-8 shadow-lg">
         <Text className="py-1 text-center font-bebas text-6xl">Oops!</Text>
         <Text className="text-center font-bebas text-2xl">We ran into an error.</Text>

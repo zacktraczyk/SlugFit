@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
 
 interface CustomCheckBoxProps {
   checked: boolean;
-  onPress: (c: boolean) => void;
+  onPress: (event: GestureResponderEvent) => void;
   disable: boolean;
 }
 

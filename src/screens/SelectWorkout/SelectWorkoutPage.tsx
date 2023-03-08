@@ -1,7 +1,7 @@
 import React from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { NavigatorParamList } from '../DrawerNavigator';
-import { FlatList, StyleSheet, View, Alert } from 'react-native';
+import { FlatList, StyleSheet, View, Alert, ListRenderItem } from 'react-native';
 import { useAuth } from '../../contexts/AuthProvider';
 import Block from '../../components/blocks/Block';
 import { EditableWorkout } from '../../types';
@@ -39,7 +39,7 @@ const SelectWorkoutPage: React.FC<SelectWorkoutPageProps> = ({ navigation }) => 
     ]);
   };
 
-  const renderItem = ({ item }) => {
+  const renderItem: ListRenderItem<EditableWorkout> = ({ item }) => {
     const start = () => alertConfirmStart(item);
     return (
       <Block title={item.name} icon="chevron-forward" onPress={start} onOptionsPress={start} />

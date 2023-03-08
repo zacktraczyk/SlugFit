@@ -25,7 +25,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
 
   // Update Filteres Exercises and constrain search results to filtered
   // Exercises
-  const onSelectFilters = (filterArr) => {
+  const onSelectFilters = (filterArr: string[]) => {
     setFilters([...filterArr]);
 
     if (filterArr.length == 0) {
@@ -45,7 +45,7 @@ const ExerciseSearchBar: React.FC<ExerciseSearchBarProps> = ({ onSelectExercise 
   };
 
   // Search from already filtered exercises
-  const onSearchChangeText = (search) => {
+  const onSearchChangeText = (search: string) => {
     setSearchInput(search);
 
     const _searchResults = filteredExercises.filter((exercise) => {

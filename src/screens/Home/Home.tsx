@@ -1,6 +1,14 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useEffect } from 'react';
-import { Text, View, FlatList, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
+import {
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+  ListRenderItem,
+} from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import CompletedWorkoutBlock from '../../components/blocks/CompletedWorkoutBlock';
@@ -26,7 +34,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   }, [consumableWorkouts]);
 
   // render each workout for CompletedWorkoutBlock
-  const renderWorkoutBlock = ({ item }) => {
+  const renderWorkoutBlock: ListRenderItem<ConsumableWorkout> = ({ item }) => {
     return (
       <CompletedWorkoutBlock
         consumableWorkout={item}
