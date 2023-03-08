@@ -5,6 +5,23 @@ import { supabase } from '../../utils/supabaseClient';
 export const PROFILES_TABLE_NAME = 'profiles';
 
 /**
+ * Fetch Every User's Username & ID
+ * @returns
+ */
+
+export const getAllUserNames = async (): Promise<ProfileType[]> => {
+  const { data, error, status } = await supabase
+    .from(PROFILES_TABLE_NAME)
+    .select('username, id')
+    .not('full_name', 'is', null)
+    .order('username', { ascending: true });
+
+  if (error && status !== 406) throw error;
+
+  return data as ProfileType[];
+};
+
+/**
  * Fetch User's Profile Data
  * @param session
  * @returns
@@ -13,7 +30,7 @@ export const PROFILES_TABLE_NAME = 'profiles';
 export const getUserProfile = async (session: Session | null): Promise<ProfileType> => {
   const { data, error, status } = await supabase
     .from(PROFILES_TABLE_NAME)
-    .select(`username, full_name, avatar_url, website, bodyweight`)
+    .select(`id, username, full_name, avatar_url, website, bodyweight, friends`)
     .eq('id', session?.user.id)
     .single();
   if (error && status !== 406) throw error;
