@@ -8,7 +8,6 @@ import { useEditableWorkout } from '../../hooks/useEditableWorkout';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { createEditableExercise, deleteEditableExercise } from '../../utils/db/editableexercises';
 import { useAuth } from '../../contexts/AuthProvider';
-import updateWorkout from '../MyWorkouts/MyWorkouts';
 import ErrorBoundary from 'react-native-error-boundary';
 import ErrorScreen from '../../components/ErrorScreen';
 import { updateEditableWorkout } from '../../utils/db/editableworkouts';
@@ -17,11 +16,7 @@ type EditWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'EditWork
 
 const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) => {
   const { session } = useAuth();
-  const {
-    editableWorkout,
-    fetch: fetchEditableExercises,
-    loading,
-  } = useEditableWorkout(route.params.editableWorkoutId, true);
+  const { editableWorkout, loading } = useEditableWorkout(route.params.editableWorkoutId, true);
   const [exercises, setExercises] = useState<string[]>([]);
 
   useEffect(() => {

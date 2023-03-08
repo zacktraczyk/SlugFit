@@ -24,7 +24,7 @@ const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
       onSwipeComplete={() => setModalVisible(false)}
       swipeDirection="down"
     >
-      <View className="absolute top-3/4 h-full w-full divide-y rounded-t-3xl bg-white">
+      <View className="absolute bottom-0 w-full divide-y justify-self-center rounded-t-3xl bg-white">
         <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
         <TouchableOpacity
           accessibilityRole="button"
