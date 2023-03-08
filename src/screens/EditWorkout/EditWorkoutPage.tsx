@@ -50,21 +50,25 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
     });
   };
   const deleteExerciseBlock = async (exerciseName: string) => {
-    await deleteEditableExercise({
-      exerciseName,
-      editableWorkoutId: route.params.editableWorkoutId,
-    });
-    setExercises((_exercises) => _exercises.filter((ex) => ex !== ''));
+    if (editableWorkout.exercises) {
+      await deleteEditableExercise({
+        exerciseName,
+        editableWorkoutId: route.params.editableWorkoutId,
+      });
 
-    await updateEditableWorkout({
-      editableWorkoutId: route.params.editableWorkoutId,
-      payload: {
-        exercises: editableWorkout.exercises?.splice(
-          editableWorkout.exercises?.indexOf(exerciseName),
-          1
-        ),
-      },
-    });
+      await updateEditableWorkout({
+        editableWorkoutId: route.params.editableWorkoutId,
+        payload: {
+          exercises: editableWorkout.exercises.splice(
+            editableWorkout.exercises.indexOf(exerciseName),
+            1
+          ),
+        },
+      });
+      setExercises(
+        editableWorkout.exercises?.splice(editableWorkout.exercises?.indexOf(exerciseName), 1)
+      );
+    }
 
     //if (fetchEditableExercises) await fetchEditableExercises();
   };
