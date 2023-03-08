@@ -74,4 +74,5 @@ export type ProfileType = {
   avatar_url?: string;
   website?: string;
   bodyweight?: number;
+  friends?: string[];
 };

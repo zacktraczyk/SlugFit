@@ -133,7 +133,7 @@ export const useActiveWorkout: UseBoundStore<StoreApi<ActiveWorkoutState>> =
       if (!isReady || isActive) return;
       set(() => ({
         isActive: true,
-        stared_at: new Date(),
+        started_at: new Date(),
       }));
     },
 
