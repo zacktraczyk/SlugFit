@@ -76,10 +76,16 @@ const FriendSearchBar: React.FC = () => {
     }
   };
 
+  function closeResultModal() {
+    setSearchInput('');
+    setSearchOnFocus(false);
+    setCount(count + 1);
+  }
+
   return (
-    <View className="z-50 flex w-screen items-center bg-white">
+    <View className=" flex w-screen items-center bg-white">
       {/* Search Bar */}
-      <View className="mt-7 h-12 w-11/12 flex-row flex-row items-center justify-between rounded border border-slate-200 pl-4">
+      <View className="h-12 w-11/12 flex-row flex-row items-center justify-between rounded border border-slate-200 pl-4">
         <Ionicon
           name={'search-outline'}
           size={24}
@@ -101,7 +107,7 @@ const FriendSearchBar: React.FC = () => {
 
       {/* Results Modal */}
       {searchOnFocus && (
-        <View className="divide-y-10 absolute z-50 mt-20 h-60 w-11/12 overflow-scroll rounded border border-slate-200 bg-white">
+        <View className="divide-y-10 mt-2 h-60 w-11/12 overflow-scroll rounded border border-slate-200 bg-white">
           <ScrollView>
             <View className="m-5">
               {/* Search Results */}
@@ -146,7 +152,7 @@ const FriendSearchBar: React.FC = () => {
           <TouchableOpacity
             className="flex w-full items-center p-3"
             accessibilityRole="button"
-            onPress={() => setSearchOnFocus(false)}
+            onPress={() => closeResultModal()}
           >
             <Entypo name="chevron-thin-up" size={24} color="black" />
           </TouchableOpacity>
