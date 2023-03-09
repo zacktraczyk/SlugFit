@@ -1,5 +1,36 @@
-import { ConsumableExerciseData, ConsumableExerciseItem } from '../types';
+import { ChartDataPoint } from 'react-native-responsive-linechart';
+import { ConsumableExercise, ConsumableExerciseData, ConsumableExerciseItem } from '../types';
+import { getConsumableExercises } from './db/consumableexercises';
+import { milliToDays } from './parsing';
 import { isSet } from './typeCheck';
+
+export const enum MetricType {
+  INTENSITY = 'intensity',
+  WEIGHT = 'weight',
+  VOLUME = 'volume',
+}
+
+export enum Timeframe {
+  WEEK = 7,
+  MONTH = 31,
+  THREE_MONTHS = 90,
+  SIX_MONTHS = 180,
+  YEAR = 365,
+}
+
+export interface ExerciseAnalytics {
+  exerciseName: string;
+  metricType: MetricType;
+  graphData: ChartDataPoint[];
+}
+
+export type AnalyticsSelector = ({
+  metricType,
+  timeframe,
+}: {
+  metricType: MetricType;
+  timeframe: Timeframe;
+}) => ExerciseAnalytics;
 
 /**
  * Format LBs string
@@ -29,7 +60,7 @@ export const formatLbs = (lbs: number): string => {
  * @param {ConsumableExerciseItem[]} exercise an exercise
  * @returns {number} max pounds (-1 if bodyweight)
  */
-export const getMaxLbs = (exercise: ConsumableExerciseItem[]): number => {
+export const calculateMaxWeight = (exercise: ConsumableExerciseItem[]): number => {
   let maxWeight = 0;
   let bodyWeight = false;
 
@@ -57,12 +88,14 @@ export const getMaxLbs = (exercise: ConsumableExerciseItem[]): number => {
  * @param {ConsumableExerciseItem[]} exercise an exercise
  * @returns {number} 1rm in pounds (-1 if bodyweight)
  */
-export const getMaxIntensity = (exercise: ConsumableExerciseItem[]): number => {
+export const calculateMaxIntensity = (exercise: ConsumableExerciseItem[]): number => {
   let maxWeightSet: ConsumableExerciseData | undefined = undefined;
+  let bodyWeight = false;
 
   exercise.forEach((item) => {
     if (isSet(item.ref)) {
       if (item.data?.bodyweight) {
+        bodyWeight = true;
         return;
       }
 
@@ -78,11 +111,11 @@ export const getMaxIntensity = (exercise: ConsumableExerciseItem[]): number => {
 
   // No non bodyweight exercises found
   if (maxWeightSet === undefined) {
-    return -1;
+    return bodyWeight ? -1 : 0;
   }
 
   const { weight, reps } = maxWeightSet as ConsumableExerciseData;
-  return Math.round(Number(weight) * (36 / (37 - Number(reps)))) || 0;
+  return Math.round(Number(weight) / (1.0278 - 0.0278 * Number(reps))) || 0;
 };
 
 /**
@@ -91,7 +124,7 @@ export const getMaxIntensity = (exercise: ConsumableExerciseItem[]): number => {
  * @param {ConsumableExerciseItem[]} exercise an exercise
  * @returns {number} total volume in pounds (-1 if bodyweight)
  */
-export const getTotalVolume = (exercise: ConsumableExerciseItem[]): number => {
+export const calculateTotalVolume = (exercise: ConsumableExerciseItem[]): number => {
   let totalVolume = 0;
   let bodyWeight = false;
 
@@ -111,4 +144,56 @@ export const getTotalVolume = (exercise: ConsumableExerciseItem[]): number => {
   }
 
   return totalVolume || 0;
+};
+
+export const getAnalyticsForExercise = async (
+  exerciseName: string,
+  userId: string
+): Promise<AnalyticsSelector> => {
+  const exercises: ConsumableExercise[] = await getConsumableExercises({
+    userId,
+    exerciseName,
+  });
+
+  const today = new Date();
+
+  return (({ metricType, timeframe }: { metricType: MetricType; timeframe: Timeframe }) => {
+    const analytics: ExerciseAnalytics = {
+      exerciseName,
+      metricType,
+      graphData: exercises
+        .map((exercise) => {
+          const exerciseDate = new Date(exercise.created_at);
+          const dayDiff = milliToDays(today.getTime() - exerciseDate.getTime());
+          return {
+            ...exercise,
+            dayDiff,
+          };
+        })
+        .filter(({ dayDiff }) => {
+          return dayDiff <= timeframe;
+        })
+        .map((exercise) => {
+          let value = 0;
+          switch (metricType) {
+            case MetricType.INTENSITY:
+              value = Math.max(0, calculateMaxIntensity(exercise.exerciseItems));
+              break;
+            case MetricType.VOLUME:
+              value = Math.max(0, calculateTotalVolume(exercise.exerciseItems));
+              break;
+            case MetricType.WEIGHT:
+              value = Math.max(0, calculateMaxWeight(exercise.exerciseItems));
+              break;
+          }
+          return {
+            x: timeframe - exercise.dayDiff,
+            y: value,
+            meta: exercise,
+          };
+        }),
+    };
+
+    return analytics;
+  }) as AnalyticsSelector;
 };
