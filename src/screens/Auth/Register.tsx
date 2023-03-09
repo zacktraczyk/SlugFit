@@ -63,224 +63,208 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
       alert('Check your email to confirm your account');
       navigation.navigate('LoginScreen');
     } catch (error) {
-      let message;
-      if (error instanceof Error) message = error.message;
-      else message = String(error);
-      alert(message);
+      alert("We've Encountered An Error.\nPlease Try Again.");
     }
   };
 
   return (
     <ErrorBoundary FallbackComponent={ErrorScreen}>
-      <ScrollView>
-        <KeyboardAvoidingView behavior="padding">
-          <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
-            <View className="flex h-full flex-col items-stretch p-5">
-              {/* Loader */}
+      <KeyboardAvoidingView behavior="padding">
+        <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
+          <ScrollView className="h-full pt-10">
+            <View className="flex flex-col items-stretch justify-evenly p-5">
+              <Ionicon
+                onPress={() => navigation.navigate('LoginScreen')}
+                name={'arrow-back'}
+                size={30}
+              />
 
-              <View className="flex h-96 flex-col items-stretch pt-2">
-                <View>
-                  <View className="flex-row pt-10">
-                    <Ionicon
-                      onPress={() => navigation.navigate('LoginScreen')}
-                      name={'arrow-back'}
-                      size={30}
-                    />
-                  </View>
+              <View className="items-center py-3">
+                <Text className="text-center font-bebas text-4xl">Create Account</Text>
+              </View>
 
-                  <View className="items-center pb-5">
-                    <Text className="text-center font-bebas text-4xl">Create Account</Text>
-                  </View>
-
-                  <Text className="font-bebas text-xl">Name</Text>
-                  <Controller
-                    control={control}
-                    rules={{
-                      required: true,
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        accessibilityLabel="Text input field"
-                        accessibilityHint="Input email for register"
-                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
-                        returnKeyType="next"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
-                    )}
-                    name="full_name"
+              <Text className="font-bebas text-xl">Name</Text>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    accessibilityLabel="Text input field"
+                    accessibilityHint="Input email for register"
+                    className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
+                    returnKeyType="next"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
                   />
-                  <Text className="pb-4 text-red-500">
-                    {errors.full_name &&
-                      (errors.full_name.type === 'required'
-                        ? 'This field is required.'
-                        : 'Not a valid name.')}
-                  </Text>
+                )}
+                name="full_name"
+              />
+              <Text className="pb-4 text-red-500">
+                {errors.full_name &&
+                  (errors.full_name.type === 'required'
+                    ? 'Name is required.'
+                    : 'Not a valid name.')}
+              </Text>
 
-                  <Text className="font-bebas text-xl">User Name</Text>
-                  <Controller
-                    control={control}
-                    rules={{
-                      required: true,
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        accessibilityLabel="Text input field"
-                        accessibilityHint="Input email for register"
-                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
-                        autoCapitalize="none"
-                        returnKeyType="next"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
-                    )}
-                    name="username"
+              <Text className="font-bebas text-xl">User Name</Text>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    accessibilityLabel="Text input field"
+                    accessibilityHint="Input email for register"
+                    className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
+                    autoCapitalize="none"
+                    returnKeyType="next"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
                   />
-                  <Text className="pb-4 text-red-500">
-                    {errors.username &&
-                      (errors.username.type === 'required'
-                        ? 'This field is required.'
-                        : 'Not a valid username.')}
-                  </Text>
+                )}
+                name="username"
+              />
+              <Text className="pb-4 text-red-500">
+                {errors.username &&
+                  (errors.username.type === 'required'
+                    ? 'Username is required.'
+                    : 'Not a valid username.')}
+              </Text>
 
-                  <Text className="font-bebas text-xl">Body Weight</Text>
-                  <Controller
-                    control={control}
-                    rules={{
-                      required: true,
-                      pattern: /^[0-9]{1,}$/i,
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        accessibilityLabel="Text input field"
-                        accessibilityHint="Input email for register"
-                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
-                        autoCapitalize="none"
-                        keyboardType="numeric"
-                        returnKeyType="next"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value.toString()}
-                      />
-                    )}
-                    name="bodyweight"
+              <Text className="font-bebas text-xl">Body Weight</Text>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                  pattern: /^[0-9]{1,}$/i,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    accessibilityLabel="Text input field"
+                    accessibilityHint="Input email for register"
+                    className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
+                    autoCapitalize="none"
+                    keyboardType="numeric"
+                    returnKeyType="next"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value.toString()}
                   />
-                  <Text className="pb-4 text-red-500">
-                    {errors.bodyweight &&
-                      (errors.bodyweight.type === 'required'
-                        ? 'This field is required.'
-                        : 'Not a valid bodyweight.')}
-                  </Text>
+                )}
+                name="bodyweight"
+              />
+              <Text className="pb-4 text-red-500">
+                {errors.bodyweight &&
+                  (errors.bodyweight.type === 'required'
+                    ? 'Bodyweight is required.'
+                    : 'Not a valid bodyweight.')}
+              </Text>
 
-                  <Text className="font-bebas text-xl">Email</Text>
-                  <Controller
-                    control={control}
-                    rules={{
-                      required: true,
-                      pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        accessibilityLabel="Text input field"
-                        accessibilityHint="Input email for register"
-                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
-                        autoCapitalize="none"
-                        keyboardType="email-address"
-                        returnKeyType="next"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
-                    )}
-                    name="email"
+              <Text className="font-bebas text-xl">Email</Text>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                  pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    accessibilityLabel="Text input field"
+                    accessibilityHint="Input email for register"
+                    className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    returnKeyType="next"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
                   />
-                  <Text className="pb-4 text-red-500">
-                    {errors.email &&
-                      (errors.email.type === 'required'
-                        ? 'This field is required.'
-                        : 'Not a valid email.')}
-                  </Text>
-                </View>
+                )}
+                name="email"
+              />
+              <Text className="pb-4 text-red-500">
+                {errors.email &&
+                  (errors.email.type === 'required' ? 'Email is required.' : 'Not a valid email.')}
+              </Text>
 
-                <View>
-                  <Text className="font-bebas text-xl">Password</Text>
-                  <Controller
-                    control={control}
-                    rules={{
-                      required: true,
-                      minLength: 8,
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        accessibilityLabel="Text input field"
-                        accessibilityHint="Input password for register"
-                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
-                        secureTextEntry={true}
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
-                    )}
-                    name="password"
+              <Text className="font-bebas text-xl">Password</Text>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                  minLength: 8,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    accessibilityLabel="Text input field"
+                    accessibilityHint="Input password for register"
+                    className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
+                    secureTextEntry={true}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
                   />
-                  <Text className="pb-4 text-red-500">
-                    {errors.password &&
-                      (errors.password.type === 'required'
-                        ? 'This is required.'
-                        : 'Password must be at least 8 characters.')}
-                  </Text>
-                </View>
+                )}
+                name="password"
+              />
+              <Text className="pb-4 text-red-500">
+                {errors.password &&
+                  (errors.password.type === 'required'
+                    ? 'Password is required.'
+                    : 'Password must be at least 8 characters.')}
+              </Text>
 
-                <View>
-                  <Text className="font-bebas text-xl">Confirm Password</Text>
-                  <Controller
-                    control={control}
-                    rules={{
-                      required: true,
-                      minLength: 8,
-                      validate: {
-                        passwordEqual: (value) => {
-                          return value === getValues().password;
-                        },
-                      },
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        accessibilityLabel="Text input field"
-                        accessibilityHint="Input password confirmation for register"
-                        className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
-                        secureTextEntry={true}
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
-                    )}
-                    name="passwordConfirm"
+              <Text className="font-bebas text-xl">Confirm Password</Text>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                  minLength: 8,
+                  validate: {
+                    passwordEqual: (value) => {
+                      return value === getValues().password;
+                    },
+                  },
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    accessibilityLabel="Text input field"
+                    accessibilityHint="Input password confirmation for register"
+                    className="w-90 bg-white-500 my-2 mt-0 rounded-md border-2 border-gray-200 p-2 text-xl"
+                    secureTextEntry={true}
+                    returnKeyType="done"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
                   />
-                  <Text className="pb-4 text-red-500">
-                    {errors.passwordConfirm &&
-                      (errors.passwordConfirm.type === 'required'
-                        ? 'This is required.'
-                        : 'Passwords do not match.')}
-                  </Text>
-                </View>
+                )}
+                name="passwordConfirm"
+              />
+              <Text className="pb-4 text-red-500">
+                {errors.passwordConfirm &&
+                  (errors.passwordConfirm.type === 'required'
+                    ? 'Password is required.'
+                    : 'Passwords do not match.')}
+              </Text>
 
-                <View className="items-center pb-20">
-                  <TouchableOpacity
-                    accessibilityRole="button"
-                    className="w-60 rounded-lg bg-red-500 p-2"
-                    onPress={handleSubmit((data) => onSubmit(data))}
-                  >
-                    <Text className="text-center font-bebas text-2xl text-white">Register</Text>
-                  </TouchableOpacity>
-                </View>
+              <View className="items-center">
+                <TouchableOpacity
+                  accessibilityRole="button"
+                  className="w-60 rounded-lg bg-red-500 p-2"
+                  onPress={handleSubmit((data) => onSubmit(data))}
+                >
+                  <Text className="text-center font-bebas text-2xl text-white">Register</Text>
+                </TouchableOpacity>
               </View>
             </View>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-      </ScrollView>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </ErrorBoundary>
   );
 };
