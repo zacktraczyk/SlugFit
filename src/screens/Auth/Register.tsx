@@ -71,8 +71,8 @@ const Register: React.FC<LoginProps> = ({ navigation }) => {
     <ErrorBoundary FallbackComponent={ErrorScreen}>
       <KeyboardAvoidingView behavior="padding">
         <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
-          <ScrollView className="h-full pt-10">
-            <View className="flex flex-col items-stretch justify-evenly p-5">
+          <ScrollView className="h-full pt-16">
+            <View className="flex h-full flex-col items-stretch justify-evenly px-5 pb-28">
               <Ionicon
                 onPress={() => navigation.navigate('LoginScreen')}
                 name={'arrow-back'}
