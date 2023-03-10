@@ -5,16 +5,16 @@ import React from 'react';
 import Ionicon from '@expo/vector-icons/Ionicons';
 
 interface BlockActionsModalProps {
-  deleteWorkout: () => void;
+  deleteBlock: () => void;
   setModalVisible: (bool: boolean) => void;
-  renameWorkout: () => void;
-  duplicateWorkout: () => void;
+  renameBlock?: () => void;
+  duplicateBlock?: () => void;
 }
 const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
-  deleteWorkout,
+  deleteBlock,
   setModalVisible,
-  renameWorkout,
-  duplicateWorkout,
+  renameBlock,
+  duplicateBlock,
 }) => {
   return (
     <Modal
@@ -24,38 +24,42 @@ const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
       onSwipeComplete={() => setModalVisible(false)}
       swipeDirection="down"
     >
-      <View className="absolute top-3/4 h-full w-full divide-y rounded-t-3xl bg-white">
+      <View className="absolute bottom-0 w-full divide-y justify-self-center rounded-t-3xl bg-white">
         <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
         <TouchableOpacity
           accessibilityRole="button"
           className="flex flex-row items-center space-x-4 border-gray-200 p-2"
-          onPress={deleteWorkout}
+          onPress={deleteBlock}
         >
           <Ionicon name="trash" size={16} />
           <Text className="text-center text-lg font-bold">Delete</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          accessibilityRole="button"
-          className="flex flex-row items-center space-x-4 border-gray-200 p-2"
-          onPress={() => {
-            setModalVisible(false);
-            renameWorkout();
-          }}
-        >
-          <Ionicon name="pencil" size={16} />
-          <Text className="text-center text-lg font-bold">Rename</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          accessibilityRole="button"
-          className="flex flex-row items-center space-x-4 border-gray-200 p-2"
-          onPress={() => {
-            setModalVisible(false);
-            duplicateWorkout();
-          }}
-        >
-          <Ionicon name="duplicate" size={16} />
-          <Text className="text-center text-lg font-bold">Duplicate</Text>
-        </TouchableOpacity>
+        {renameBlock && (
+          <TouchableOpacity
+            accessibilityRole="button"
+            className="flex flex-row items-center space-x-4 border-gray-200 p-2"
+            onPress={() => {
+              setModalVisible(false);
+              renameBlock();
+            }}
+          >
+            <Ionicon name="pencil" size={16} />
+            <Text className="text-center text-lg font-bold">Rename</Text>
+          </TouchableOpacity>
+        )}
+        {duplicateBlock && (
+          <TouchableOpacity
+            accessibilityRole="button"
+            className="flex flex-row items-center space-x-4 border-gray-200 p-2"
+            onPress={() => {
+              setModalVisible(false);
+              duplicateBlock();
+            }}
+          >
+            <Ionicon name="duplicate" size={16} />
+            <Text className="text-center text-lg font-bold">Duplicate</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </Modal>
   );
