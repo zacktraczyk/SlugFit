@@ -64,15 +64,15 @@ const exercises: ConsumableExerciseItem[] = [
 ];
 
 describe('getMaxLbs', () => {
-  it('Test on sample exercises', () => {
+  it('should work on sample exercises', () => {
     expect(calculateMaxWeight(exercises.slice(0, 1))).toBe(50);
     expect(calculateMaxWeight(exercises.slice(0, 3))).toBe(60);
     expect(calculateMaxWeight(exercises)).toBe(60);
   });
-  it('Test on bodyweight exercise', () => {
+  it('should work on a bodyweight exercise', () => {
     expect(calculateMaxWeight([exercises[4]])).toBe(-1);
   });
-  it('Test on empty exercises', () => {
+  it('should work on empty exercises', () => {
     expect(calculateMaxWeight([])).toBe(0);
   });
 });
