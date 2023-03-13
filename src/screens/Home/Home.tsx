@@ -6,9 +6,6 @@ import {
   TouchableOpacity,
   RefreshControl,
   ListRenderItem,
-  Keyboard,
-  TouchableWithoutFeedback,
-  KeyboardAvoidingView,
   FlatList,
 } from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
@@ -150,8 +147,8 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
               />
             )}
             <View className="py-10">
-                <FriendSearchBar />
-              </View>
+              <FriendSearchBar />
+            </View>
           </>
         }
       />

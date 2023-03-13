@@ -33,10 +33,11 @@ const FriendSearchBar: React.FC = () => {
 
   useEffect(() => {
     const fetchUserNames = async () => {
+      if (!session) return;
       const data = await getAllUserNames();
       setUserNames(data);
       setSearchResults(data);
-      const data1 = await getUserProfile(session);
+      const data1 = await getUserProfile(session?.user.id);
       setUserData(data1);
     };
 

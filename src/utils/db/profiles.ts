@@ -33,7 +33,7 @@ export const getUserProfile = async (userId: string | undefined): Promise<Profil
   const { data, error, status } = await supabase
     .from(PROFILES_TABLE_NAME)
     .select(`id, username, full_name, avatar_url, website, bodyweight, friends`)
-    .eq('id', session?.user.id)
+    .eq('id', userId)
     .single();
   if (error && status !== 406) throw error;
 
