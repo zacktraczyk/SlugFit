@@ -47,7 +47,7 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, currentUserData,
   const [pictureUrl, setPictureUrl] = useState<string | undefined>(undefined);
 
   const removeFriend = async (friendId: string | undefined) => {
-    if (!friendId || !currentUserData) throw new Error('No friendId');
+    if (!friendId || !currentUserData) return undefined;
     try {
       console.log(currentUserData);
       currentUserData.friends?.splice(currentUserData.friends?.indexOf(friendId), 1);
@@ -90,7 +90,7 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, currentUserData,
         <View className="flex flex-shrink items-center justify-center">
           <TouchableOpacity accessibilityRole="button" onPress={() => setProfileModalVisible(true)}>
             <Ionicon name="ellipsis-vertical" size={24} />
-            {profileModalVisible && (
+            {profileModalVisible && currentUserData.friends && (
               <ProfileActionsModal
                 unfollowUser={() => {
                   removeFriend(userData.id);
