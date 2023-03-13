@@ -65,7 +65,7 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, currentUserData,
       alert(message);
     }
   };
-  const addWorkout = async();
+
   useEffect(() => {
     if (post && userData && userData.avatar_url) {
       const url = generateProfilePictureUrl(post.created_by, userData.avatar_url);
