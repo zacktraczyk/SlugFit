@@ -4,35 +4,24 @@ import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { useAuth } from '../../contexts/AuthProvider';
-import { ProfileType } from '../../types';
 import * as ImagePicker from 'expo-image-picker';
 import {
-  getUserProfile,
   updateProfilePicture,
   deleteProfilePicture,
+  generateProfilePictureUrl,
 } from '../../utils/db/profiles';
 import { ExerciseAnalyticsDisplay } from '../../components/analytics/ExerciseAnalyticsDisplay';
+import { useProfile } from '../../hooks/useProfile';
 
 type ProfileProps = NativeStackScreenProps<NavigatorParamList, 'Profile'>;
 
 const Profile: React.FC<ProfileProps> = ({ navigation }) => {
   const { session } = useAuth();
 
-  // save user's profile data
-  const [userData, setUserData] = useState<ProfileType>({});
+  const { userData } = useProfile(session?.user.id);
 
   // save user's profile picture
   const [image, setImage] = useState<string | undefined>(undefined);
-
-  // set user's profile data and profile picture
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const data = await getUserProfile(session);
-      setUserData(data);
-    };
-
-    fetchProfile().catch(console.error);
-  }, []);
 
   // Image Picker
   // lets user select an image from gallery and set as their profile picture
@@ -50,6 +39,15 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
       updateProfilePicture(result.assets[0].uri, session);
     }
   };
+
+  const [pictureUrl, setPictureUrl] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (session && userData && userData.avatar_url) {
+      const url = generateProfilePictureUrl(session?.user.id, userData.avatar_url);
+      setPictureUrl(url);
+    }
+  }, [session, userData]);
 
   return (
     <ScrollView className="h-full w-full bg-white">
@@ -76,13 +74,7 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
           <Image
             className="absolute top-[35px] h-40 w-40 justify-center rounded-xl border-4 border-white shadow-2xl"
             accessibilityIgnoresInvertColors
-            source={{
-              uri:
-                'https://veorawmuwkuyzbxadxgv.supabase.co/storage/v1/object/public/avatars/' +
-                session?.user.id +
-                '/' +
-                userData.avatar_url,
-            }}
+            source={{ uri: pictureUrl }}
           />
 
           <Image

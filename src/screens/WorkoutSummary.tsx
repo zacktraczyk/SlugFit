@@ -21,7 +21,7 @@ type ProfileProps = NativeStackScreenProps<NavigatorParamList, 'WorkoutSummary'>
 
 const WorkoutSummary: React.FC<ProfileProps> = ({ route }) => {
   const { session } = useAuth();
-  const { consumableWorkoutId } = route.params;
+  const { consumableWorkoutId, userId } = route.params;
   const { consumableWorkout } = useConsumableWorkout(consumableWorkoutId);
   const [localConsumableWorkout, localExercises] = useActiveWorkout((state) => [
     state.workout,
@@ -32,11 +32,16 @@ const WorkoutSummary: React.FC<ProfileProps> = ({ route }) => {
   useEffect(() => {
     if (consumableWorkoutId === undefined) return;
     const fetch = async () => {
-      if (!session) return;
-      setExercises(await getConsumableExercises({ userId: session.user.id, consumableWorkoutId }));
+      if (userId !== undefined) {
+        setExercises(await getConsumableExercises({ userId: userId, consumableWorkoutId }));
+      } else if (session !== undefined && session !== null) {
+        setExercises(
+          await getConsumableExercises({ userId: session?.user.id, consumableWorkoutId })
+        );
+      }
     };
     fetch();
-  }, [consumableWorkoutId, session]);
+  }, [consumableWorkoutId, session, userId]);
 
   if (consumableWorkoutId) {
     return <WorkoutSummaryComponent consumableWorkout={consumableWorkout} exercises={exercises} />;
