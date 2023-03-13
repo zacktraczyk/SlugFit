@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { Dimensions, Text, View } from 'react-native';
 import { Chart, Line, ChartDataPoint } from 'react-native-responsive-linechart';
+import { useAuth } from '../../contexts/AuthProvider';
+import { LineHandle } from 'react-native-responsive-linechart/lib/Line';
+import { GraphTooltip } from './GraphTooltip';
 import {
+  AnalyticsSelector,
   ExerciseAnalytics,
   getAnalyticsForExercise,
   MetricType,
   Timeframe,
-} from '../../utils/analytics';
-import { useAuth } from '../../contexts/AuthProvider';
-import { AnalyticsSelector } from '../../utils/analytics';
-import { LineHandle } from 'react-native-responsive-linechart/lib/Line';
-import { GraphTooltip } from './GraphTooltip';
+} from '../../utils/exerciseStats';
 
 const width = Dimensions.get('window').width;
 
@@ -33,10 +33,7 @@ const ExerciseLine: React.ForwardRefExoticComponent<ExerciseLineProps & LineProp
 
       useEffect(() => {
         const fetch = async () => {
-          const selector = await getAnalyticsForExercise({
-            exerciseName,
-            userId: session?.user.id,
-          });
+          const selector = await getAnalyticsForExercise(exerciseName, session?.user.id ?? '');
           analyticsSelector.current = selector;
           setSelectorIsSet(true);
         };

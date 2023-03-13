@@ -7,7 +7,12 @@ import { ConsumableExercise } from '../types';
 import { getConsumableExercises } from '../utils/db/consumableexercises';
 import { useAuth } from '../contexts/AuthProvider';
 import { isSet } from '../utils/typeCheck';
-import { formatLbs, getMaxIntensity, getMaxLbs, getTotalVolume } from '../utils/exerciseStats';
+import {
+  calculateMaxIntensity,
+  calculateMaxWeight,
+  calculateTotalVolume,
+  formatLbs,
+} from '../utils/exerciseStats';
 import { isConsumableExerciseEmpty } from '../utils/parsing';
 import { useActiveWorkout, LocalConsumableExercise } from '../hooks/useActiveWorkout';
 import { ConsumableWorkout } from '../types';
@@ -112,9 +117,9 @@ interface ConsumedExerciseStatsCard {
 
 const ConusmedExerciseStatsCard: React.FC<ConsumedExerciseStatsCard> = ({ exercise }) => {
   const overallStats = {
-    maxLb: getMaxLbs(exercise.exerciseItems),
-    maxIntensity: getMaxIntensity(exercise.exerciseItems),
-    totalVolume: getTotalVolume(exercise.exerciseItems),
+    maxLb: calculateMaxWeight(exercise.exerciseItems),
+    maxIntensity: calculateMaxIntensity(exercise.exerciseItems),
+    totalVolume: calculateTotalVolume(exercise.exerciseItems),
   };
 
   const isStatsAllBodyweight = ({ maxLb, maxIntensity, totalVolume }): boolean => {

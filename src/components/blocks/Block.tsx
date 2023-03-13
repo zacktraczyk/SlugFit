@@ -4,7 +4,7 @@ import Ionicon from '@expo/vector-icons/Ionicons';
 import { BlockContainer } from './BlockContainer';
 import MaterialCommunityIcon from '@expo/vector-icons/MaterialCommunityIcons';
 
-interface BlockProps {
+export interface BlockProps {
   title: string; // Name of the block
   subtitle?: string;
   onPress?: () => void; // Handler for when the main block body is pressed
