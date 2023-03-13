@@ -6,11 +6,11 @@ import { NavigatorParamList } from '../DrawerNavigator';
 import ExerciseBlock from '../../components/blocks/ExerciseBlock';
 import { useEditableWorkout } from '../../hooks/useEditableWorkout';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { createEditableExercise } from '../../utils/db/editableexercises';
+import { createEditableExercise, deleteEditableExercise } from '../../utils/db/editableexercises';
 import { useAuth } from '../../contexts/AuthProvider';
-import { updateEditableWorkout } from '../../utils/db/editableworkouts';
 import ErrorBoundary from 'react-native-error-boundary';
 import ErrorScreen from '../../components/ErrorScreen';
+import { updateEditableWorkout } from '../../utils/db/editableworkouts';
 
 type EditWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'EditWorkoutPage'>;
 
@@ -44,6 +44,22 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
       },
     });
   };
+  const deleteExerciseBlock = async (exerciseName: string) => {
+    if (editableWorkout.exercises) {
+      await deleteEditableExercise({
+        exerciseName,
+        editableWorkoutId: route.params.editableWorkoutId,
+      });
+      editableWorkout.exercises?.splice(editableWorkout.exercises?.indexOf(exerciseName), 1);
+      await updateEditableWorkout({
+        editableWorkoutId: route.params.editableWorkoutId,
+        payload: {
+          exercises: editableWorkout.exercises,
+        },
+      });
+      setExercises(editableWorkout.exercises);
+    }
+  };
 
   const addTemporaryEditableExerciseBlock = () => {
     if (!exercises.find((ex) => ex === '')) {
@@ -65,6 +81,7 @@ const EditWorkoutPage: React.FC<EditWorkoutPageProps> = ({ navigation, route }) 
         exerciseName={item}
         update={updateEditableExercise}
         onPress={navigateToEditableExercise}
+        deleteExerciseBlock={deleteExerciseBlock}
       />
     );
   };

@@ -60,10 +60,10 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
 
       {modalVisible && (
         <BlockActionsModal
-          deleteWorkout={() => deleteWorkout(workout.id)}
+          deleteBlock={() => deleteWorkout(workout.id)}
           setModalVisible={(bool: boolean) => setModalVisible(bool)}
-          renameWorkout={() => setEditing(workout.id)}
-          duplicateWorkout={() => {
+          renameBlock={() => setEditing(workout.id)}
+          duplicateBlock={() => {
             duplicateWorkout(workout.id);
           }}
         />
