@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { MetricType } from '../../utils/analytics';
+import { MetricType } from '../../utils/exerciseStats';
 
 interface MetricTypeFilterProps {
   metricType: MetricType;
