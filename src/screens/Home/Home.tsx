@@ -100,18 +100,20 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   };
 
   const renderFriendsPost = useCallback(({ item }: { item: ConsumableWorkout }) => {
-    return (
-      <FriendsPost
-        post={item}
-        currentUserData={userData}
-        onPress={() => {
-          navigation.navigate('WorkoutSummary', {
-            consumableWorkoutId: item.id,
-            userId: item.created_by,
-          });
-        }}
-      />
-    );
+    if (userData) {
+      return (
+        <FriendsPost
+          post={item}
+          currentUserData={userData}
+          onPress={() => {
+            navigation.navigate('WorkoutSummary', {
+              consumableWorkoutId: item.id,
+              userId: item.created_by,
+            });
+          }}
+        />
+      );
+    }
   }, []);
 
   return (
@@ -126,7 +128,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
         ListHeaderComponent={
           <>
             <View className="flex-row justify-between px-3 pt-3.5">
-              <Text className="pt-1 text-base font-bebas">Completed Workouts</Text>
+              <Text className="pt-1 font-bebas text-base">Completed Workouts</Text>
               <TouchableOpacity accessibilityRole="button" onPress={() => toggleFunction()}>
                 <Ionicon name={'calendar-sharp'} size={24} color={'#323232'} />
               </TouchableOpacity>
@@ -137,7 +139,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
               </View>
             ) : completedWorkouts.length === 0 ? (
               <View className="items-center pt-3.5 pb-6">
-                <Text className="text-xl text-gray-400 font-bebas">No completed workouts.</Text>
+                <Text className="font-bebas text-xl text-gray-400">No completed workouts.</Text>
               </View>
             ) : (
               <FlatList
