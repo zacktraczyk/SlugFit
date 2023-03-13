@@ -22,33 +22,33 @@ const ProfileActionsModal: React.FC<ProfileActionsModalProps> = ({
       onSwipeComplete={() => setModalVisible(false)}
       swipeDirection="down"
     >
-      <View className="absolute bottom-0 w-full bg-white divide-y justify-self-center rounded-t-3xl">
-        <View className="self-center w-16 h-1 my-3 bg-gray-400 rounded-lg"></View>
+      <View className="absolute bottom-0 w-full divide-y justify-self-center rounded-t-3xl bg-white">
+        <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
 
         {unfollowUser && (
           <TouchableOpacity
             accessibilityRole="button"
-            className="flex flex-row items-center p-2 space-x-4 border-gray-200"
+            className="flex flex-row items-center space-x-4 border-gray-200 p-2"
             onPress={() => {
               setModalVisible(false);
               unfollowUser();
             }}
           >
             <Ionicon name="pencil" size={16} />
-            <Text className="text-lg font-bold text-center">Unfollow</Text>
+            <Text className="text-center text-lg font-bold">Unfollow</Text>
           </TouchableOpacity>
         )}
         {addWorkout && (
           <TouchableOpacity
             accessibilityRole="button"
-            className="flex flex-row items-center p-2 space-x-4 border-gray-200"
+            className="flex flex-row items-center space-x-4 border-gray-200 p-2"
             onPress={() => {
               setModalVisible(false);
               addWorkout();
             }}
           >
             <Ionicon name="pencil" size={16} />
-            <Text className="text-lg font-bold text-center">Add To My Workouts</Text>
+            <Text className="text-center text-lg font-bold">Add To My Workouts</Text>
           </TouchableOpacity>
         )}
       </View>
