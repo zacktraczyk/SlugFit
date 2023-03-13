@@ -58,6 +58,7 @@ const FriendSearchBar: React.FC = () => {
   // Add an id to friends list
   const addFriend = async (friendId: string) => {
     setCount(count + 1);
+
     try {
       userData.friends?.push(friendId);
 
@@ -84,9 +85,9 @@ const FriendSearchBar: React.FC = () => {
   }
 
   return (
-    <View className="flex items-center w-screen bg-white ">
+    <View className="flex w-screen items-center bg-white ">
       {/* Search Bar */}
-      <View className="flex-row items-center justify-between w-11/12 h-12 pl-4 border rounded border-slate-200">
+      <View className="h-12 w-11/12 flex-row items-center justify-between rounded border border-slate-200 pl-4">
         <Ionicon
           name={'search-outline'}
           size={24}
@@ -96,7 +97,7 @@ const FriendSearchBar: React.FC = () => {
         <TextInput
           accessibilityLabel="Text input field"
           accessibilityHint="Input characters to search for a username"
-          className="h-full px-5 grow"
+          className="h-full grow px-5"
           autoCapitalize="none"
           placeholder="  Add friends by username"
           returnKeyType="done"
@@ -108,7 +109,7 @@ const FriendSearchBar: React.FC = () => {
 
       {/* Results Modal */}
       {searchOnFocus && (
-        <View className="w-11/12 mt-2 overflow-scroll bg-white border rounded divide-y-10 h-60 border-slate-200">
+        <View className="divide-y-10 mt-2 h-60 w-11/12 overflow-scroll rounded border border-slate-200 bg-white">
           <ScrollView>
             <View className="m-5">
               {/* Search Results */}
@@ -117,11 +118,11 @@ const FriendSearchBar: React.FC = () => {
                   return (
                     <View
                       key={item.id}
-                      className="flex-row p-2 px-3 mb-1 border rounded border-slate-200"
+                      className="mb-1 flex-row rounded border border-slate-200 p-2 px-3"
                     >
-                      <Text className="text-lg font-bebas">{item.username}</Text>
+                      <Text className="font-bebas text-lg">{item.username}</Text>
 
-                      <View className="flex-1 w-full"></View>
+                      <View className="w-full flex-1"></View>
 
                       {userData.friends?.includes(item.id) ? (
                         <Text className="pt-1.5 text-xs font-medium">Already Added</Text>
@@ -151,7 +152,7 @@ const FriendSearchBar: React.FC = () => {
             </View>
           </ScrollView>
           <TouchableOpacity
-            className="flex items-center w-full p-3"
+            className="flex w-full items-center p-3"
             accessibilityRole="button"
             onPress={() => closeResultModal()}
           >
