@@ -1,21 +1,22 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { ConsumableWorkout, ConsumableExercise } from '../types';
+import { ConsumableWorkout, ConsumableExercise, ProfileType } from '../types';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import { generateProfilePictureUrl } from '../utils/db/profiles';
 import { useProfile } from '../hooks/useProfile';
 import { formatDate, countSetsInConsumableExercise, timeBetween } from '../utils/parsing';
 import { getConsumableExercises } from '../utils/db/consumableexercises';
-
+import { supabase } from '../utils/supabaseClient';
+import ProfileActionsModal from './modals/ProfileActionsModal';
 interface FriendsPostProps {
   post: ConsumableWorkout;
+  currentUserData: ProfileType;
   onPress: () => void;
 }
-
-export const FriendsPost: React.FC<FriendsPostProps> = ({ post, onPress }) => {
+export const FriendsPost: React.FC<FriendsPostProps> = ({ post, currentUserData, onPress }) => {
   const { userData } = useProfile(post.created_by);
   const [exercises, setExercises] = useState<ConsumableExercise[]>([]);
-
+  const [profileModalVisible, setProfileModalVisible] = useState(false);
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -45,6 +46,26 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, onPress }) => {
 
   const [pictureUrl, setPictureUrl] = useState<string | undefined>(undefined);
 
+  const removeFriend = async (friendId: string | undefined) => {
+    if (!friendId || !currentUserData) return undefined;
+    try {
+      currentUserData.friends?.splice(currentUserData.friends?.indexOf(friendId), 1);
+      const { error } = await supabase
+        .from('profiles')
+        .update({ friends: currentUserData.friends })
+        .eq('id', currentUserData.id);
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      let message;
+      if (error instanceof Error) message = error.message;
+      else message = String(error);
+      alert(message);
+    }
+  };
+
   useEffect(() => {
     if (post && userData && userData.avatar_url) {
       const url = generateProfilePictureUrl(post.created_by, userData.avatar_url);
@@ -53,7 +74,7 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, onPress }) => {
   }, [post, userData]);
 
   return (
-    <View className="flex h-48 w-11/12 flex-col items-center justify-center self-center rounded bg-white shadow-sm shadow-gray-100">
+    <View className="min-h-48 flex w-11/12 flex-grow flex-col items-center justify-center self-center rounded bg-white shadow-sm shadow-gray-100">
       <View className="flex w-full flex-row rounded-t border-t border-l border-r border-gray-200 p-2">
         <Image
           source={{ uri: pictureUrl }}
@@ -66,8 +87,17 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, onPress }) => {
           <Text className="text-sm font-light">@{userData.username}</Text>
         </View>
         <View className="flex flex-shrink items-center justify-center">
-          <TouchableOpacity accessibilityRole="button">
+          <TouchableOpacity accessibilityRole="button" onPress={() => setProfileModalVisible(true)}>
             <Ionicon name="ellipsis-vertical" size={24} />
+            {profileModalVisible && currentUserData.friends && (
+              <ProfileActionsModal
+                unfollowUser={() => {
+                  removeFriend(userData.id);
+                  console.log(userData.id);
+                }}
+                setModalVisible={setProfileModalVisible}
+              />
+            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -93,7 +123,7 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, onPress }) => {
       </View>
       <View
         accessibilityRole="button"
-        className="flex w-full flex-1 flex-row items-center justify-center rounded-b border border-gray-200"
+        className="flex w-full flex-grow flex-row items-center justify-center rounded-b border border-gray-200"
       >
         <TouchableOpacity
           accessibilityRole="button"
