@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { ChartDataPoint } from 'react-native-responsive-linechart';
-import { MetricType } from '../../utils/analytics';
+import { MetricType } from '../../utils/exerciseStats';
 import { formatDate } from '../../utils/parsing';
 
 interface SelectedDataDisplayProps {
