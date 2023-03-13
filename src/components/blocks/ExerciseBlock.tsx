@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ExerciseSearchBar from '../ExerciseSearchBar';
 import Block from './Block';
+import BlockActionsModal from '../modals/BlockActionsModal';
 
 interface ExerciseCardProps {
   exerciseName: string;
   update: (toExerciseName: string) => void;
   onPress: (exerciseName: string) => void;
+  deleteExerciseBlock: (exerciseName: string) => Promise<void>;
 }
 
-const ExerciseBlock: React.FC<ExerciseCardProps> = ({ exerciseName, update, onPress }) => {
+const ExerciseBlock: React.FC<ExerciseCardProps> = ({
+  exerciseName,
+  update,
+  onPress,
+  deleteExerciseBlock,
+}) => {
+  const [modalVisible, setModalVisible] = useState(false);
   if (exerciseName === '') {
     return (
       <ExerciseSearchBar
@@ -20,12 +28,23 @@ const ExerciseBlock: React.FC<ExerciseCardProps> = ({ exerciseName, update, onPr
   }
 
   return (
-    <Block
-      title={exerciseName}
-      onPress={() => {
-        onPress(exerciseName);
-      }}
-    />
+    <>
+      <Block
+        title={exerciseName}
+        onPress={() => {
+          onPress(exerciseName);
+        }}
+        onOptionsPress={() => {
+          setModalVisible(true);
+        }}
+      />
+      {modalVisible && (
+        <BlockActionsModal
+          deleteBlock={() => deleteExerciseBlock(exerciseName)}
+          setModalVisible={(bool: boolean) => setModalVisible(bool)}
+        />
+      )}
+    </>
   );
 };
 
