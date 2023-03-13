@@ -49,9 +49,7 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, currentUserData,
   const removeFriend = async (friendId: string | undefined) => {
     if (!friendId || !currentUserData) return undefined;
     try {
-      console.log(currentUserData);
       currentUserData.friends?.splice(currentUserData.friends?.indexOf(friendId), 1);
-      console.log(currentUserData.friends);
       const { error } = await supabase
         .from('profiles')
         .update({ friends: currentUserData.friends })
@@ -67,6 +65,7 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, currentUserData,
       alert(message);
     }
   };
+  const addWorkout = async();
   useEffect(() => {
     if (post && userData && userData.avatar_url) {
       const url = generateProfilePictureUrl(post.created_by, userData.avatar_url);
