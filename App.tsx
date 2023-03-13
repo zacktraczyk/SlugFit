@@ -8,6 +8,7 @@ import { AuthProvider } from './src/contexts/AuthProvider';
 import AuthNavigator from './src/screens/Auth/AuthNavigator';
 import { supabase } from './src/utils/supabaseClient';
 import DrawerNavigator from './src/screens/DrawerNavigator';
+// import StorybookUI from './storybook';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,4 +44,8 @@ const App: React.FC = () => {
   );
 };
 
+// Uncomment Below to Open StorybookUI
+// export default StorybookUI;
+
+// Comment Below to Open StorybookUI
 export default App;

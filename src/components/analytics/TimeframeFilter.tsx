@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-import { Timeframe } from '../../utils/analytics';
+import { Timeframe } from '../../utils/exerciseStats';
 
 interface TimeframeFilterProps {
   timeframe: Timeframe;

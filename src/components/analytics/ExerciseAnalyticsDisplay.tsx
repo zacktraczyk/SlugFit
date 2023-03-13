@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, Dimensions } from 'react-native';
 import { ChartDataPoint } from 'react-native-responsive-linechart';
-import { MetricType, Timeframe } from '../../utils/analytics';
+import { MetricType, Timeframe } from '../../utils/exerciseStats';
 import { AnalyticsGraph } from './AnalyticsGraph';
 import { MetricTypeFilter } from './MetricTypeFilter';
 import { SelectedDataDisplay } from './SelectedDataDisplay';
