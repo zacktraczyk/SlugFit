@@ -1,6 +1,7 @@
 import { ProfileType } from '../../types';
 import { Session } from '@supabase/supabase-js';
 import { supabase } from '../../utils/supabaseClient';
+import { CONSUMABLE_WORKOUTS_TABLE_NAME } from './consumableworkouts';
 
 export const PROFILES_TABLE_NAME = 'profiles';
 
@@ -27,7 +28,8 @@ export const getAllUserNames = async (): Promise<ProfileType[]> => {
  * @returns
  */
 
-export const getUserProfile = async (session: Session | null): Promise<ProfileType> => {
+export const getUserProfile = async (userId: string | undefined): Promise<ProfileType> => {
+  if (userId === undefined) return {};
   const { data, error, status } = await supabase
     .from(PROFILES_TABLE_NAME)
     .select(`id, username, full_name, avatar_url, website, bodyweight, friends`)
@@ -36,6 +38,25 @@ export const getUserProfile = async (session: Session | null): Promise<ProfileTy
   if (error && status !== 406) throw error;
 
   return data as ProfileType;
+};
+
+export const getFriendsPosts = async (userId: string | undefined, limit: number) => {
+  if (userId === undefined) return [];
+
+  const { friends } = await getUserProfile(userId);
+
+  if (friends === undefined) throw new Error('Friends undefined');
+
+  const { data, error } = await supabase
+    .from(CONSUMABLE_WORKOUTS_TABLE_NAME)
+    .select('*')
+    .in('created_by', friends)
+    .order('created_at', { ascending: true })
+    .limit(limit);
+
+  if (error) throw error;
+
+  return data;
 };
 
 /**
@@ -179,4 +200,17 @@ export const updateAvatarUrl = async (
     alert(message);
     console.log(error);
   }
+};
+
+export const generateProfilePictureUrl = (
+  userId: string | undefined,
+  avatar_url: string | undefined
+): string | undefined => {
+  if (userId === undefined || avatar_url === undefined) return undefined;
+  return (
+    'https://veorawmuwkuyzbxadxgv.supabase.co/storage/v1/object/public/avatars/' +
+    userId +
+    '/' +
+    avatar_url
+  );
 };

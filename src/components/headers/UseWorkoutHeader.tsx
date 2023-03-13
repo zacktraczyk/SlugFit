@@ -8,6 +8,7 @@ import {
   LocalConsumableExercise,
   useActiveWorkout,
 } from '../../hooks/useActiveWorkout';
+import { formattedTimeBetweenToString } from '../../utils/parsing';
 
 interface UseWorkoutHeaderProps {
   isCardView?: boolean;
@@ -73,21 +74,12 @@ const UseWorkoutHeader: React.FC<UseWorkoutHeaderProps> = ({
   const [started_at, exercises] = useActiveWorkout((state) => [state.started_at, state.exercises]);
   const [currentIndex, setCurrentIndex] = useState(index);
   const [direction, setDirection] = useState<'left' | 'right' | undefined>('left');
-  const [hours, setHours] = useState('0');
-  const [minutes, setMinutes] = useState('00');
-  const [seconds, setSeconds] = useState('00');
+  const [elapsedTime, setElapsedTime] = useState<string>('');
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (started_at !== undefined) {
-        let totalSeconds = (Date.now() - new Date(started_at).getTime()) / 1000;
-        const _hours = totalSeconds / 3600;
-        totalSeconds %= 3600;
-        const _minutes = totalSeconds / 60;
-        totalSeconds %= 60;
-        setHours(Math.floor(_hours).toString().padStart(1, '0'));
-        setMinutes(Math.floor(_minutes).toString().padStart(2, '0'));
-        setSeconds(Math.floor(totalSeconds).toString().padStart(2, '0'));
+        setElapsedTime(formattedTimeBetweenToString(started_at, new Date()));
       }
     }, 1000);
     return () => {
@@ -122,9 +114,7 @@ const UseWorkoutHeader: React.FC<UseWorkoutHeaderProps> = ({
           <Text className="text-lg font-medium">{consumableWorkout.name}</Text>
         </View>
         <View className="flex flex-1 flex-col items-center justify-center pt-2 pb-2">
-          <Text className="text-sm font-light">{`${
-            hours !== '0' ? hours + ':' : ''
-          }${minutes}:${seconds}`}</Text>
+          <Text className="text-sm font-light">{elapsedTime}</Text>
         </View>
         <View className="flex flex-1 items-center justify-center">
           <TouchableOpacity accessibilityRole="button" className="p-0" onPress={onStopPress}>
