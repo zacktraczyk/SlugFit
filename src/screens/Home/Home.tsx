@@ -18,6 +18,7 @@ import { ConsumableWorkout } from '../../types';
 import { formatDateToISO } from '../../utils/parsing';
 import ErrorBoundary from 'react-native-error-boundary';
 import ErrorScreen from '../../components/ErrorScreen';
+import FriendSearchBar from '../../components/FriendSeachBar';
 import { useFriendsFeed } from '../../hooks/useFriendsFeed';
 import { FriendsPost } from '../../components/FriendsPost';
 
@@ -145,6 +146,9 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
                 className="flex-none pt-3.5 pb-6"
               />
             )}
+            <View className="py-10">
+              <FriendSearchBar />
+            </View>
           </>
         }
       />
