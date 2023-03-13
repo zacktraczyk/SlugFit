@@ -1,7 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { NavigatorParamList } from '../DrawerNavigator';
-import { View, StyleSheet, Dimensions, FlatList, Alert, ListRenderItem } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  FlatList,
+  Alert,
+  ListRenderItem,
+  ViewToken,
+} from 'react-native';
 import AnimatedExerciseCardContainer from '../../components/AnimatedExerciseCardContainer';
 import UseWorkoutHeader from '../../components/headers/UseWorkoutHeader';
 import Animated, { FadeInLeft } from 'react-native-reanimated';
@@ -12,11 +20,15 @@ import { useActiveWorkout } from '../../hooks/useActiveWorkout';
 type UseWorkoutPageProps = NativeStackScreenProps<NavigatorParamList, 'UseWorkout'>;
 
 const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) => {
-  const [consumableWorkout, stop] = useActiveWorkout((state) => [state.workout, state.stop]);
+  const [consumableWorkout, isActive, stop] = useActiveWorkout((state) => [
+    state.workout,
+    state.isActive,
+    state.stop,
+  ]);
   const [visibleIndex, setVisibleIndex] = useState(0);
   const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 90 });
-  const onViewableItemsChanged = useRef(({ viewableItems }) => {
-    if (viewableItems && viewableItems.length > 0) {
+  const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    if (viewableItems && viewableItems.length > 0 && viewableItems[0].index) {
       setVisibleIndex(viewableItems[0].index);
     }
   });
@@ -66,7 +78,7 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
 
   return (
     <>
-      {consumableWorkout && (
+      {consumableWorkout && isActive && (
         <UseWorkoutHeader
           consumableWorkout={consumableWorkout}
           index={visibleIndex}
@@ -78,24 +90,26 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
         />
       )}
 
-      <View className="h-full w-full flex-1 bg-slate-50">
-        <FlatList
-          ref={flatlistRef}
-          data={consumableWorkout.exercises}
-          keyExtractor={(item) => item}
-          renderItem={cardView ? renderCardItem : renderListItem}
-          horizontal={cardView}
-          snapToAlignment="end"
-          viewabilityConfig={viewabilityConfig.current}
-          onViewableItemsChanged={onViewableItemsChanged.current}
-          decelerationRate={'fast'}
-          className="w-full"
-          style={styles.flatlist}
-          pagingEnabled={true}
-          showsHorizontalScrollIndicator={false}
-          keyboardShouldPersistTaps="always"
-        />
-      </View>
+      {consumableWorkout && isActive && (
+        <View className="h-full w-full flex-1 bg-slate-50">
+          <FlatList
+            ref={flatlistRef}
+            data={consumableWorkout.exercises}
+            keyExtractor={(item) => item}
+            renderItem={cardView ? renderCardItem : renderListItem}
+            horizontal={cardView}
+            snapToAlignment="end"
+            viewabilityConfig={viewabilityConfig.current}
+            onViewableItemsChanged={onViewableItemsChanged.current}
+            decelerationRate={'fast'}
+            className="w-full"
+            style={styles.flatlist}
+            pagingEnabled={true}
+            showsHorizontalScrollIndicator={false}
+            keyboardShouldPersistTaps="always"
+          />
+        </View>
+      )}
     </>
   );
 };
