@@ -6,12 +6,12 @@ import Ionicon from '@expo/vector-icons/Ionicons';
 
 interface ProfileActionsModalProps {
   unfollowUser: () => void;
-  addWorkout: () => void;
+  addWorkout?: () => void;
   setModalVisible: (bool: boolean) => void;
 }
-const ProfileActionsModal: React.FC<BlockActionsModalProps> = ({
+const ProfileActionsModal: React.FC<ProfileActionsModalProps> = ({
   unfollowUser,
-  addWorkout, 
+  addWorkout,
   setModalVisible,
 }) => {
   return (
@@ -56,4 +56,4 @@ const ProfileActionsModal: React.FC<BlockActionsModalProps> = ({
   );
 };
 
-export default BlockActionsModal;
+export default ProfileActionsModal;

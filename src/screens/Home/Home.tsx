@@ -21,11 +21,13 @@ import ErrorScreen from '../../components/ErrorScreen';
 import FriendSearchBar from '../../components/FriendSeachBar';
 import { useFriendsFeed } from '../../hooks/useFriendsFeed';
 import { FriendsPost } from '../../components/FriendsPost';
+import { useProfile } from '../../hooks/useProfile';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { session } = useAuth();
+  const { userData } = useProfile(session?.user.id);
   const { posts: friendsPosts, fetch: fetchFriendsPosts } = useFriendsFeed(session?.user.id);
   const { consumableWorkouts, loading, fetch: fetchMyWorkouts } = useMyConsumableWorkouts(session);
   const [completedWorkouts, setCompletedWorkouts] = useState<ConsumableWorkout[]>([]);
@@ -101,6 +103,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
     return (
       <FriendsPost
         post={item}
+        currentUserData={userData}
         onPress={() => {
           navigation.navigate('WorkoutSummary', {
             consumableWorkoutId: item.id,
@@ -123,7 +126,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
         ListHeaderComponent={
           <>
             <View className="flex-row justify-between px-3 pt-3.5">
-              <Text className="pt-1 font-bebas text-base">Completed Workouts</Text>
+              <Text className="pt-1 text-base font-bebas">Completed Workouts</Text>
               <TouchableOpacity accessibilityRole="button" onPress={() => toggleFunction()}>
                 <Ionicon name={'calendar-sharp'} size={24} color={'#323232'} />
               </TouchableOpacity>
@@ -134,7 +137,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
               </View>
             ) : completedWorkouts.length === 0 ? (
               <View className="items-center pt-3.5 pb-6">
-                <Text className="font-bebas text-xl text-gray-400">No completed workouts.</Text>
+                <Text className="text-xl text-gray-400 font-bebas">No completed workouts.</Text>
               </View>
             ) : (
               <FlatList
