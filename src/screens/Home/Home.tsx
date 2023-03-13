@@ -21,11 +21,13 @@ import ErrorScreen from '../../components/ErrorScreen';
 import FriendSearchBar from '../../components/FriendSeachBar';
 import { useFriendsFeed } from '../../hooks/useFriendsFeed';
 import { FriendsPost } from '../../components/FriendsPost';
+import { useProfile } from '../../hooks/useProfile';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { session } = useAuth();
+  const { userData, refresh: refreshUserData } = useProfile(session?.user.id);
   const { posts: friendsPosts, fetch: fetchFriendsPosts } = useFriendsFeed(session?.user.id);
   const { consumableWorkouts, loading, fetch: fetchMyWorkouts } = useMyConsumableWorkouts(session);
   const [completedWorkouts, setCompletedWorkouts] = useState<ConsumableWorkout[]>([]);
@@ -95,21 +97,28 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   const refresh = () => {
     if (fetchMyWorkouts) fetchMyWorkouts();
     if (fetchFriendsPosts) fetchFriendsPosts();
+    if (refreshUserData) refreshUserData();
   };
 
-  const renderFriendsPost = useCallback(({ item }: { item: ConsumableWorkout }) => {
-    return (
-      <FriendsPost
-        post={item}
-        onPress={() => {
-          navigation.navigate('WorkoutSummary', {
-            consumableWorkoutId: item.id,
-            userId: item.created_by,
-          });
-        }}
-      />
-    );
-  }, []);
+  const renderFriendsPost = useCallback(
+    ({ item }: { item: ConsumableWorkout }) => {
+      if (userData) {
+        return (
+          <FriendsPost
+            post={item}
+            currentUserData={userData}
+            onPress={() => {
+              navigation.navigate('WorkoutSummary', {
+                consumableWorkoutId: item.id,
+                userId: item.created_by,
+              });
+            }}
+          />
+        );
+      }
+    },
+    [userData]
+  );
 
   return (
     <ErrorBoundary FallbackComponent={ErrorScreen}>

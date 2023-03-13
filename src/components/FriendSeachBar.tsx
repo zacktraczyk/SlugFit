@@ -58,6 +58,7 @@ const FriendSearchBar: React.FC = () => {
   // Add an id to friends list
   const addFriend = async (friendId: string) => {
     setCount(count + 1);
+
     try {
       userData.friends?.push(friendId);
 
@@ -84,9 +85,9 @@ const FriendSearchBar: React.FC = () => {
   }
 
   return (
-    <View className=" flex w-screen items-center bg-white">
+    <View className="flex w-screen items-center bg-white ">
       {/* Search Bar */}
-      <View className="h-12 w-11/12 flex-row flex-row items-center justify-between rounded border border-slate-200 pl-4">
+      <View className="h-12 w-11/12 flex-row items-center justify-between rounded border border-slate-200 pl-4">
         <Ionicon
           name={'search-outline'}
           size={24}
