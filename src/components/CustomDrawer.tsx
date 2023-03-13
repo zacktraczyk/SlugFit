@@ -19,7 +19,8 @@ const CustomDrawer = () => {
   //loads user profile data
   React.useEffect(() => {
     const fetchProfile = async () => {
-      const data = await getUserProfile(session);
+      if (!session) return;
+      const data = await getUserProfile(session?.user.id);
       setUserData(data);
     };
 
@@ -34,7 +35,8 @@ const CustomDrawer = () => {
     if (fetch != undefined) {
       fetch();
     }
-    getUserProfile(session)
+    if (!session) return;
+    getUserProfile(session?.user.id)
       .then((data) => {
         setUserData(data);
       })
