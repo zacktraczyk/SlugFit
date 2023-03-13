@@ -123,7 +123,7 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, currentUserData,
       </View>
       <View
         accessibilityRole="button"
-        className="flex w-full flex-1 flex-row items-center justify-center rounded-b border border-gray-200"
+        className="flex w-full flex-grow flex-row items-center justify-center rounded-b border border-gray-200"
       >
         <TouchableOpacity
           accessibilityRole="button"
