@@ -1,4 +1,11 @@
-export function isEditableExercise(obj: any) {
+import {
+  ConsumableExercise,
+  ConsumableExerciseItem,
+  EditableExercise,
+  EditableExerciseItem,
+} from '../types';
+
+export function isEditableExercise(obj: EditableExercise | ConsumableExercise) {
   return (
     'exerciseName' in obj &&
     'exerciseItems' in obj &&
@@ -7,7 +14,7 @@ export function isEditableExercise(obj: any) {
     'editableWorkoutId' in obj
   );
 }
-export function isConsumableExercise(obj: any) {
+export function isConsumableExercise(obj: EditableExercise | ConsumableExercise) {
   return (
     'exerciseName' in obj &&
     'exerciseItems' in obj &&
@@ -16,15 +23,15 @@ export function isConsumableExercise(obj: any) {
     'consumableWorkoutId' in obj
   );
 }
-export function isConsumableExerciseItem(obj: any) {
+export function isConsumableExerciseItem(obj: ConsumableExerciseItem | EditableExerciseItem) {
   return 'data' in obj && 'ref' in obj && (isSet(obj.ref) || isNote(obj.ref) || isRest(obj.ref));
 }
-export function isSet(obj: any) {
+export function isSet(obj: EditableExerciseItem) {
   return 'id' in obj && 'reps' in obj && 'rpe' in obj && 'orm' in obj && 'warmup' in obj;
 }
-export function isNote(obj: any) {
+export function isNote(obj: EditableExerciseItem) {
   return 'id' in obj && 'text' in obj;
 }
-export function isRest(obj: any) {
+export function isRest(obj: EditableExerciseItem) {
   return 'id' in obj && 'minutes' in obj && 'seconds' in obj;
 }

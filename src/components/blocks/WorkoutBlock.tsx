@@ -1,6 +1,6 @@
 import React, { SetStateAction, useState } from 'react';
 import { TextInput } from 'react-native';
-import DoneButton from '../DoneButton';
+import DoneButton from '../buttons/DoneButton';
 import { EditableWorkout } from '../../types';
 import Block from './Block';
 import { BlockContainer } from './BlockContainer';
@@ -60,10 +60,10 @@ const WorkoutBlock: React.FC<WorkoutBlockProps> = ({
 
       {modalVisible && (
         <BlockActionsModal
-          deleteWorkout={() => deleteWorkout(workout.id)}
+          deleteBlock={() => deleteWorkout(workout.id)}
           setModalVisible={(bool: boolean) => setModalVisible(bool)}
-          renameWorkout={() => setEditing(workout.id)}
-          duplicateWorkout={() => {
+          renameBlock={() => setEditing(workout.id)}
+          duplicateBlock={() => {
             duplicateWorkout(workout.id);
           }}
         />

@@ -1,9 +1,10 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import TabNavigator from './TabNavigator';
-import AccountSettings from './Account/AccountSettings';
 import UseWorkoutPage from './UseWorkout/UseWorkout';
 import Settings from './Settings/Settings';
+import CustomDrawer from '../components/CustomDrawer';
+import AccountSettings from './Account/AccountSettings';
 
 export type NavigatorParamList = {
   Tabs: undefined;
@@ -11,8 +12,8 @@ export type NavigatorParamList = {
   Home: undefined;
   HomeStack: undefined;
   SelectWorkout: undefined;
-  WorkoutSummary: { consumableWorkoutId: string };
-  UseWorkout: { consumableWorkoutId: string };
+  WorkoutSummary: { consumableWorkoutId?: string; userId?: string };
+  UseWorkout: { userId: string };
   MyWorkouts: undefined;
   MyWorkoutsStack: undefined;
   EditWorkoutPage: { editableWorkoutId: string; editableWorkoutName: string; exerciseName: string };
@@ -34,6 +35,7 @@ function DrawerNavigator() {
         drawerPosition: 'left',
         headerShown: false,
       })}
+      drawerContent={() => <CustomDrawer />}
     >
       <Drawer.Screen name="Tabs" component={TabNavigator} />
       <Drawer.Screen name="AccountSettings" component={AccountSettings} />

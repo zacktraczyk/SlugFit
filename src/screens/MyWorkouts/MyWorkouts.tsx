@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { KeyboardAvoidingView, FlatList, Platform, StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, FlatList, Platform, StyleSheet, ListRenderItem } from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
-import AddButton from '../../components/AddButton';
+import AddButton from '../../components/buttons/AddButton';
 import WorkoutBlock from '../../components/blocks/WorkoutBlock';
 import { useAuth } from '../../contexts/AuthProvider';
 import { useMyEditableWorkouts } from '../../hooks/useMyEditableWorkouts';
@@ -63,7 +63,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
     });
   };
 
-  const renderWorkoutBlock = ({ item }) => {
+  const renderWorkoutBlock: ListRenderItem<EditableWorkout> = ({ item }) => {
     return (
       <WorkoutBlock
         editing={editingWorkout}

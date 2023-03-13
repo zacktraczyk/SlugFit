@@ -1,6 +1,13 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useEffect } from 'react';
-import { Text, View, FlatList, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  RefreshControl,
+  ListRenderItem,
+  FlatList,
+} from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import Ionicon from '@expo/vector-icons/Ionicons';
 import CompletedWorkoutBlock from '../../components/blocks/CompletedWorkoutBlock';
@@ -11,13 +18,16 @@ import { ConsumableWorkout } from '../../types';
 import { formatDateToISO } from '../../utils/parsing';
 import ErrorBoundary from 'react-native-error-boundary';
 import ErrorScreen from '../../components/ErrorScreen';
-import ComponentWithError from '../../components/ComponentWithError';
+import FriendSearchBar from '../../components/FriendSeachBar';
+import { useFriendsFeed } from '../../hooks/useFriendsFeed';
+import { FriendsPost } from '../../components/FriendsPost';
 
 type HomeProps = NativeStackScreenProps<NavigatorParamList, 'Home'>;
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { session } = useAuth();
-  const { consumableWorkouts, loading, error, fetch } = useMyConsumableWorkouts(session);
+  const { posts: friendsPosts, fetch: fetchFriendsPosts } = useFriendsFeed(session?.user.id);
+  const { consumableWorkouts, loading, fetch: fetchMyWorkouts } = useMyConsumableWorkouts(session);
   const [completedWorkouts, setCompletedWorkouts] = useState<ConsumableWorkout[]>([]);
 
   useEffect(() => {
@@ -27,7 +37,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   }, [consumableWorkouts]);
 
   // render each workout for CompletedWorkoutBlock
-  const renderWorkoutBlock = ({ item }) => {
+  const renderWorkoutBlock: ListRenderItem<ConsumableWorkout> = ({ item }) => {
     return (
       <CompletedWorkoutBlock
         consumableWorkout={item}
@@ -82,50 +92,66 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
     );
   };
 
+  const refresh = () => {
+    if (fetchMyWorkouts) fetchMyWorkouts();
+    if (fetchFriendsPosts) fetchFriendsPosts();
+  };
+
+  const renderFriendsPost = useCallback(({ item }: { item: ConsumableWorkout }) => {
+    return (
+      <FriendsPost
+        post={item}
+        onPress={() => {
+          navigation.navigate('WorkoutSummary', {
+            consumableWorkoutId: item.id,
+            userId: item.created_by,
+          });
+        }}
+      />
+    );
+  }, []);
+
   return (
     <ErrorBoundary FallbackComponent={ErrorScreen}>
-      <ScrollView
+      <FlatList
         className="h-full bg-white"
-        refreshControl={<RefreshControl refreshing={loading} onRefresh={fetch} />}
-      >
-        <View className="flex-row justify-between px-3 pt-3.5">
-          <Text className="pt-1 font-bebas text-base">Completed Workouts</Text>
-          <TouchableOpacity accessibilityRole="button" onPress={() => toggleFunction()}>
-            <Ionicon name={'calendar-sharp'} size={24} color={'#323232'} />
-          </TouchableOpacity>
-        </View>
-
-        {showCalendar ? (
-          <View className="items-center">
-            <Text>{renderWorkoutCalender()}</Text>
-          </View>
-        ) : completedWorkouts.length === 0 ? (
-          <View className="items-center pt-3.5 pb-6">
-            <Text className="font-bebas text-xl text-gray-400">No completed workouts.</Text>
-          </View>
-        ) : (
-          <FlatList
-            data={completedWorkouts}
-            renderItem={renderWorkoutBlock}
-            keyExtractor={(item) => item.id}
-            horizontal={true}
-            keyboardShouldPersistTaps="always"
-            className="flex-none pt-3.5 pb-6"
-          />
-        )}
-
-        <View className="flex-col items-center justify-center pt-10">
-          <TouchableOpacity
-            accessibilityRole="button"
-            className="my-2 mt-0 w-60 items-center rounded-lg bg-red-500 p-2"
-            onPress={() => {
-              navigation.navigate('SelectWorkout');
-            }}
-          >
-            <Text className="text-center font-bebas text-2xl text-white">Start A Workout</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+        refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} />}
+        data={friendsPosts}
+        keyExtractor={(post) => post.id}
+        renderItem={renderFriendsPost}
+        ItemSeparatorComponent={() => <View className="h-5"></View>}
+        ListHeaderComponent={
+          <>
+            <View className="flex-row justify-between px-3 pt-3.5">
+              <Text className="pt-1 font-bebas text-base">Completed Workouts</Text>
+              <TouchableOpacity accessibilityRole="button" onPress={() => toggleFunction()}>
+                <Ionicon name={'calendar-sharp'} size={24} color={'#323232'} />
+              </TouchableOpacity>
+            </View>
+            {showCalendar ? (
+              <View className="items-center">
+                <Text>{renderWorkoutCalender()}</Text>
+              </View>
+            ) : completedWorkouts.length === 0 ? (
+              <View className="items-center pt-3.5 pb-6">
+                <Text className="font-bebas text-xl text-gray-400">No completed workouts.</Text>
+              </View>
+            ) : (
+              <FlatList
+                data={completedWorkouts}
+                renderItem={renderWorkoutBlock}
+                keyExtractor={(item) => item.id}
+                horizontal={true}
+                keyboardShouldPersistTaps="always"
+                className="flex-none pt-3.5 pb-6"
+              />
+            )}
+            <View className="py-10">
+              <FriendSearchBar />
+            </View>
+          </>
+        }
+      />
     </ErrorBoundary>
   );
 };

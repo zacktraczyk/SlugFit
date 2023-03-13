@@ -1,6 +1,37 @@
 import { ConsumableExercise, ConsumableExerciseItem, ConsumableWorkout } from '../types';
 import { isSet } from './typeCheck';
 import { getConsumableExercise } from './db/consumableexercises';
+import { LocalConsumableExercise } from '../hooks/useActiveWorkout';
+
+export const AbbreviatedMonths = [
+  'JAN',
+  'FEB',
+  'MAR',
+  'APR',
+  'MAY',
+  'JUNE',
+  'JULY',
+  'AUG',
+  'SEPT',
+  'OCT',
+  'NOV',
+  'DEC',
+];
+
+export const Months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
 
 export const isCompletedSet = (s: ConsumableExerciseItem) => {
   return (
@@ -82,7 +113,9 @@ export const countStartedSetsInConsumableExercise = (
  * @param {ConsumableExercise} exercise
  * @returns {boolean} true if at least 1 non-empty set in exercise
  */
-export const isConsumableExerciseEmpty = (exercise: ConsumableExercise): boolean => {
+export const isConsumableExerciseEmpty = (
+  exercise: ConsumableExercise | LocalConsumableExercise
+): boolean => {
   return countStartedSetsInConsumableExercise(exercise.exerciseItems) == 0;
 };
 
@@ -104,53 +137,48 @@ export const formatDateToISO = (date: Date) => {
 // breaks down "ended_at" attribute into month, date, & year
 // month is converted from numeric to string abreviation, ie. 01 -> JAN
 
-export const formatDate = (date) => {
+export const formatDate = (date: Date | undefined | null, useFull = false) => {
   if (date === undefined || date === null) return '';
   date = new Date(date);
-  let month = '';
-
-  switch (date.getMonth().toString()) {
-    case '0':
-      month = 'JAN';
-      break;
-    case '1':
-      month = 'FEB';
-      break;
-    case '2':
-      month = 'MAR';
-      break;
-    case '3':
-      month = 'APR';
-      break;
-    case '4':
-      month = 'MAY';
-      break;
-    case '5':
-      month = 'JUNE';
-      break;
-    case '6':
-      month = 'JULY';
-      break;
-    case '7':
-      month = 'AUG';
-      break;
-    case '8':
-      month = 'SEPT';
-      break;
-    case '9':
-      month = 'OCT';
-      break;
-    case '10':
-      month = 'NOV';
-      break;
-    default:
-      month = 'DEC';
-  }
+  const month = useFull ? Months[date.getMonth()] : AbbreviatedMonths[date.getMonth()];
 
   const day = date.getDate().toString();
   const year = date.getFullYear().toString();
 
   return month + ' ' + day + ', ' + year;
 };
+export const formatDateTime = (date) => {
+  if (date === undefined || date === null) return '';
+  date = new Date(date);
+  return date.toLocaleString('en-US', {
+    timeZone: 'America/Los_Angeles',
+  });
+};
 
 export const milliToDays = (milliseconds: number) => milliseconds / 1000 / 60 / 60 / 24;
+
+export const timeBetween = (d1: Date, d2: Date) => {
+  let seconds = (new Date(d2).getTime() - new Date(d1).getTime()) / 1000;
+  const hours = Math.floor(seconds / 3600);
+  seconds %= 3600;
+  const minutes = Math.floor(seconds / 60);
+  seconds %= 60;
+  seconds = Math.floor(seconds);
+  return { hours, minutes, seconds };
+};
+
+export const formattedTimeBetween = (d1: Date, d2: Date) => {
+  const { hours: _h, minutes: _m, seconds: _s } = timeBetween(d1, d2);
+
+  return {
+    hours: _h.toString().padStart(1, '0'),
+    minutes: _m.toString().padStart(2, '0'),
+    seconds: _s.toString().padStart(2, '0'),
+  };
+};
+
+export const formattedTimeBetweenToString = (d1: Date, d2: Date) => {
+  const { hours, minutes, seconds } = formattedTimeBetween(d1, d2);
+
+  return `${hours !== '0' ? hours + ':' : ''}${minutes}:${seconds}`;
+};

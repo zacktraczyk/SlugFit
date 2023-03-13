@@ -1,5 +1,9 @@
 export type EditableExerciseItem = ExerciseSet | ExerciseRest | ExerciseNote;
 
+export interface ExerciseTemplate {
+  name: string;
+  muscle_group: string;
+}
 export interface EditableExercise {
   exerciseName: string; // Primary Key, Relation
   editableWorkoutId: string; // Primary Key, Relation
@@ -65,9 +69,11 @@ export interface ConsumableWorkout {
 }
 
 export type ProfileType = {
+  id?: string;
   username?: string;
   full_name?: string;
   avatar_url?: string;
   website?: string;
   bodyweight?: number;
+  friends?: string[];
 };
