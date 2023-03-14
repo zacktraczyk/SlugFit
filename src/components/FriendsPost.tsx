@@ -79,6 +79,7 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, currentUserData,
         <Image
           source={{ uri: pictureUrl }}
           accessibilityIgnoresInvertColors
+          defaultSource={require('../assets/genericProfilePic.jpg')}
           className="h-12 w-12 rounded-full"
         />
 
