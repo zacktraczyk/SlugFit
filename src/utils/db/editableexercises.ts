@@ -1,5 +1,10 @@
 import { supabase } from '../supabaseClient';
-import { EditableExercise, EditableExerciseItem, ExerciseTemplate } from '../../types';
+import {
+  ConsumableExercise,
+  EditableExercise,
+  EditableExerciseItem,
+  ExerciseTemplate,
+} from '../../types';
 
 export const EDITABLE_EXERCISES_TABLE_NAME = 'editableexercises';
 
@@ -160,5 +165,24 @@ export const duplicateEditableExercise = async ({
     editableWorkoutId: toEditableWorkoutId,
     userId,
     exerciseItems: editableExercise.exerciseItems,
+  });
+};
+
+export const duplicateConsumableExercise = async ({
+  exerciseName,
+  toEditableWorkoutId,
+  userId,
+  consumableExercise,
+}: {
+  exerciseName: string;
+  toEditableWorkoutId: string;
+  userId: string;
+  consumableExercise: ConsumableExercise;
+}) => {
+  await createEditableExercise({
+    exerciseName,
+    editableWorkoutId: toEditableWorkoutId,
+    userId,
+    exerciseItems: consumableExercise.exerciseItems.map((value) => value.ref),
   });
 };

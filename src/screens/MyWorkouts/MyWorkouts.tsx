@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { KeyboardAvoidingView, FlatList, Platform, StyleSheet, ListRenderItem } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  FlatList,
+  Platform,
+  StyleSheet,
+  ListRenderItem,
+  RefreshControl,
+} from 'react-native';
 import { NavigatorParamList } from '../DrawerNavigator';
 import AddButton from '../../components/buttons/AddButton';
 import WorkoutBlock from '../../components/blocks/WorkoutBlock';
@@ -13,7 +20,6 @@ import {
   updateEditableWorkout,
   deleteEditableWorkout,
 } from '../../utils/db/editableworkouts';
-import Spinner from 'react-native-loading-spinner-overlay/lib';
 import ErrorBoundary from 'react-native-error-boundary';
 import ErrorScreen from '../../components/ErrorScreen';
 
@@ -76,7 +82,9 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
       />
     );
   };
-
+  const refresh = () => {
+    if (fetchEditableWorkouts) fetchEditableWorkouts();
+  };
   return (
     <ErrorBoundary FallbackComponent={ErrorScreen}>
       <KeyboardAvoidingView
@@ -85,6 +93,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
         enabled={!loading}
       >
         <FlatList
+          refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} />}
           data={editableWorkouts}
           renderItem={renderWorkoutBlock}
           keyExtractor={(item) => item.id}
@@ -93,8 +102,6 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
           keyboardShouldPersistTaps="always"
         />
         <AddButton onPress={addWorkoutBlock} />
-
-        <Spinner visible={loading} />
       </KeyboardAvoidingView>
     </ErrorBoundary>
   );
