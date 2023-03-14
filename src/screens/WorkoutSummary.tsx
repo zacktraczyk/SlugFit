@@ -122,7 +122,15 @@ const ConusmedExerciseStatsCard: React.FC<ConsumedExerciseStatsCard> = ({ exerci
     totalVolume: calculateTotalVolume(exercise.exerciseItems),
   };
 
-  const isStatsAllBodyweight = ({ maxLb, maxIntensity, totalVolume }): boolean => {
+  const isStatsAllBodyweight = ({
+    maxLb,
+    maxIntensity,
+    totalVolume,
+  }: {
+    maxLb: number;
+    maxIntensity: number;
+    totalVolume: number;
+  }): boolean => {
     return maxLb == -1 && maxIntensity == -1 && totalVolume == -1;
   };
 

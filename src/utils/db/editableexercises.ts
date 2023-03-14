@@ -149,6 +149,11 @@ export const duplicateEditableExercise = async ({
   fromEditableWorkoutId,
   toEditableWorkoutId,
   userId,
+}: {
+  exerciseName: string;
+  fromEditableWorkoutId: string;
+  toEditableWorkoutId: string;
+  userId: string;
 }) => {
   const editableExercise = await getEditableExercise({
     exerciseName,

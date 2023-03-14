@@ -36,7 +36,13 @@ export const ExerciseAnalyticsDisplay: React.FC<ExerciseAnalyticsDisplayProps> =
     setExerciseNames((_exerciseNames) => _exerciseNames.filter((name) => name !== exerciseName));
   };
 
-  const renderExerciseNameChip = ({ item: exerciseName, index }) => {
+  const renderExerciseNameChip = ({
+    item: exerciseName,
+    index,
+  }: {
+    item: string;
+    index: number;
+  }) => {
     return (
       <View
         key={exerciseName}

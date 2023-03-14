@@ -65,7 +65,7 @@ export const createConsumableExercise = async ({
       consumableWorkoutId,
       created_by: userId,
       exerciseItems: editableWorkoutId
-        ? editableExercise.exerciseItems.map((item) => ({ data: {}, ref: item }))
+        ? editableExercise?.exerciseItems.map((item) => ({ data: {}, ref: item }))
         : exerciseItems,
     })
     .select('*')

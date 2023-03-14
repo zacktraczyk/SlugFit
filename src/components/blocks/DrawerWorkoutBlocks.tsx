@@ -50,7 +50,6 @@ const DrawerWorkoutBlock: React.FC<DrawerWorkoutBlockProps> = ({
                     editableExerciseNavigate(editableWorkout.id, editableWorkout.name, item);
                   }}
                   accessibilityRole="button"
-                  onaccessibilityRole="button"
                   className="flex h-[50] flex-row"
                 >
                   <View className="my-auto">
