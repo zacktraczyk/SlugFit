@@ -10,6 +10,7 @@ import WorkoutSummary from '../WorkoutSummary';
 import DiscardButton from '../../components/buttons/DiscardButton';
 import SaveButton from '../../components/buttons/SaveButton';
 import MaterialIcon from '@expo/vector-icons/MaterialIcons';
+import ToggleDrawerButton from '../../components/buttons/ToggleDrawerButton';
 
 type HomeStackProps = NativeStackScreenProps<NavigatorParamList, 'HomeStack'>;
 
@@ -22,6 +23,13 @@ const HomeStack: React.FC<HomeStackProps> = () => {
         name="Home"
         component={Home}
         options={({ navigation }) => ({
+          headerLeft: () => (
+            <ToggleDrawerButton
+              toggleDrawer={() => {
+                navigation.toggleDrawer();
+              }}
+            />
+          ),
           headerRight: () => (
             <TouchableOpacity
               accessibilityRole="button"
