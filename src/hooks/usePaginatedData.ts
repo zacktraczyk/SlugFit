@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
+import { PostgrestError } from '@supabase/supabase-js';
+import { PostgrestQueryBuilder } from '@supabase/postgrest-js';
 
 /*
 EXAMPLE USAGE
@@ -26,7 +28,7 @@ export interface QueryObject<T extends object> {
  */
 export const usePaginatedData = <T extends object>(queryObject: QueryObject<T>, size: number) => {
   const [paginatedData, setPaginatedData] = useState<Array<T>>([]);
-  const [error, setError] = useState<Error | undefined>(undefined);
+  const [error, setError] = useState<PostgrestError | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [index, setIndex] = useState(0);
 
@@ -34,6 +36,7 @@ export const usePaginatedData = <T extends object>(queryObject: QueryObject<T>, 
     let queryBuilder;
     if (queryObject.filters) {
       queryBuilder = queryObject.filters.reduce((acc, [filter, ...args]) => {
+        // @ts-expect-error ts can't parse that acc[filter] is a function
         return acc[filter](...args);
       }, supabase.from(queryObject.tableName).select(queryObject.select));
     } else {
@@ -59,12 +62,12 @@ export const usePaginatedData = <T extends object>(queryObject: QueryObject<T>, 
     // Send query to supabase
     const limit = index + size - 1;
     const { data, error } = await queryBuilder.range(index, limit);
-    const count = data.length;
+    const count = data?.length;
     if (error) {
       setError(error);
       return;
     }
-    if (count > 0) {
+    if (count && count > 0) {
       setPaginatedData(paginatedData.concat(data as T));
       setIndex(index + count);
     }

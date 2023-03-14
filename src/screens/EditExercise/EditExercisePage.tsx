@@ -34,7 +34,8 @@ const EditExercisePage: React.FC<EditExercisePageProps> = ({ route }) => {
   const updateCard = async (id: number, property: string, val: string | boolean | number) => {
     const _exerciseItems = exerciseItems.map((item) => {
       if (item.id === id) {
-        const _exerciseItem = { ...item };
+        const _exerciseItem = { ...item } as EditableExerciseItem;
+        // @ts-expect-error doesn't recognize property as a key of item
         _exerciseItem[property] = val;
         return _exerciseItem;
       }
