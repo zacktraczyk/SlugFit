@@ -28,7 +28,12 @@ const UseWorkoutPage: React.FC<UseWorkoutPageProps> = ({ navigation, route }) =>
   const [visibleIndex, setVisibleIndex] = useState(0);
   const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 90 });
   const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
-    if (viewableItems && viewableItems.length > 0 && viewableItems[0].index) {
+    if (
+      viewableItems &&
+      viewableItems.length > 0 &&
+      viewableItems[0].index !== undefined &&
+      viewableItems[0].index !== null
+    ) {
       setVisibleIndex(viewableItems[0].index);
     }
   });
