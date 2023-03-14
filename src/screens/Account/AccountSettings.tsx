@@ -45,7 +45,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ navigation }) => {
     if (!session) return;
 
     const fetchProfile = async () => {
-      const data = await getUserProfile(session);
+      const data = await getUserProfile(session.user.id);
       if (data) {
         setValue('username', data.username ?? '');
         setValue('full_name', data.full_name ?? '');

@@ -6,19 +6,18 @@ import Ionicon from '@expo/vector-icons/Ionicons';
 import { useAuth } from '../../contexts/AuthProvider';
 import * as ImagePicker from 'expo-image-picker';
 import {
+  getUserProfile,
   updateProfilePicture,
   deleteProfilePicture,
   generateProfilePictureUrl,
 } from '../../utils/db/profiles';
 import { ExerciseAnalyticsDisplay } from '../../components/analytics/ExerciseAnalyticsDisplay';
-import { useProfile } from '../../hooks/useProfile';
+import { ProfileType } from '../../types';
 
 type ProfileProps = NativeStackScreenProps<NavigatorParamList, 'Profile'>;
 
 const Profile: React.FC<ProfileProps> = ({ navigation }) => {
   const { session } = useAuth();
-
-  const { userData } = useProfile(session?.user.id);
 
   // save user's profile picture
   const [image, setImage] = useState<string | undefined>(undefined);
@@ -42,12 +41,22 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
 
   const [pictureUrl, setPictureUrl] = useState<string | undefined>(undefined);
 
+  // save user's profile data
+  const [userData1, setUserData] = useState<ProfileType>({});
+
   useEffect(() => {
-    if (session && userData && userData.avatar_url) {
-      const url = generateProfilePictureUrl(session?.user.id, userData.avatar_url);
+    const fetchUserNames = async () => {
+      if (!session) return;
+      const data1 = await getUserProfile(session?.user.id);
+      setUserData(data1);
+    };
+
+    if (session && userData1 && userData1.avatar_url) {
+      const url = generateProfilePictureUrl(session?.user.id, userData1.avatar_url);
       setPictureUrl(url);
     }
-  }, [session, userData]);
+    fetchUserNames().catch(console.error);
+  }, [session, userData1]);
 
   return (
     <ScrollView className="h-full w-full bg-white">
@@ -64,7 +73,7 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
         </View>
 
         <View className="items-center justify-center">
-          <Text className="pb-4 font-bebas text-3xl text-white">{userData.username}</Text>
+          <Text className="pb-4 font-bebas text-3xl text-white">{userData1.username}</Text>
 
           <Image
             className="shadow-1xl h-40 w-40 justify-center rounded-xl border-4 border-white"
@@ -96,7 +105,7 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
 
       <View className="flex-column items-center pt-[95px]">
         <View className="flex-row">
-          <Text className="pl-9 font-bebas text-4xl text-black">{userData.full_name} </Text>
+          <Text className="pl-9 font-bebas text-4xl text-black">{userData1.full_name} </Text>
           <TouchableOpacity accessibilityRole="button">
             <Ionicon
               name={'pencil-sharp'}
@@ -106,7 +115,7 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
-        <Text className="pb-6 font-bebas text-2xl text-gray-400">{userData.bodyweight} lbs</Text>
+        <Text className="pb-6 font-bebas text-2xl text-gray-400">{userData1.bodyweight} lbs</Text>
       </View>
 
       <Text className="pl-4 font-bebas text-3xl">Workout Analytics</Text>
