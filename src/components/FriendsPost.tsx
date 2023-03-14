@@ -93,7 +93,6 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, currentUserData,
               <ProfileActionsModal
                 unfollowUser={() => {
                   removeFriend(userData.id);
-                  console.log(userData.id);
                 }}
                 setModalVisible={setProfileModalVisible}
               />

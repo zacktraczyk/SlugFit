@@ -155,7 +155,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
               />
             )}
             <View className="py-10">
-              <FriendSearchBar />
+              <FriendSearchBar userData={userData} />
             </View>
           </>
         }
