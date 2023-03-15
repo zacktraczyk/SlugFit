@@ -34,8 +34,8 @@ const ProfileActionsModal: React.FC<ProfileActionsModalProps> = ({
               unfollowUser();
             }}
           >
-            <Ionicon name="pencil" size={16} />
-            <Text className="text-center text-lg font-bold">Unfollow</Text>
+            <Ionicon name="remove-circle" size={16} />
+            <Text className="text-center text-lg font-bold">Remove Friend</Text>
           </TouchableOpacity>
         )}
         {addWorkout && (
@@ -47,7 +47,7 @@ const ProfileActionsModal: React.FC<ProfileActionsModalProps> = ({
               addWorkout();
             }}
           >
-            <Ionicon name="pencil" size={16} />
+            <Ionicon name="duplicate" size={16} />
             <Text className="text-center text-lg font-bold">Add To My Workouts</Text>
           </TouchableOpacity>
         )}
