@@ -26,14 +26,6 @@ const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
     >
       <View className="absolute bottom-0 w-full divide-y justify-self-center rounded-t-3xl bg-white">
         <View className="my-3 h-1 w-16 self-center rounded-lg bg-gray-400"></View>
-        <TouchableOpacity
-          accessibilityRole="button"
-          className="flex flex-row items-center space-x-4 border-gray-200 p-2"
-          onPress={deleteBlock}
-        >
-          <Ionicon name="trash" size={16} />
-          <Text className="text-center text-lg font-bold">Delete</Text>
-        </TouchableOpacity>
         {renameBlock && (
           <TouchableOpacity
             accessibilityRole="button"
@@ -60,6 +52,14 @@ const BlockActionsModal: React.FC<BlockActionsModalProps> = ({
             <Text className="text-center text-lg font-bold">Duplicate</Text>
           </TouchableOpacity>
         )}
+        <TouchableOpacity
+          accessibilityRole="button"
+          className="mb-12 flex flex-row items-center space-x-4 border-gray-200 p-2"
+          onPress={deleteBlock}
+        >
+          <Ionicon name="trash" size={16} />
+          <Text className="text-center text-lg font-bold">Delete</Text>
+        </TouchableOpacity>
       </View>
     </Modal>
   );

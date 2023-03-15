@@ -31,22 +31,22 @@ const CardActionsModal: React.FC<BlockActionsModalProps> = ({
           className="flex flex-row items-center space-x-4 border-gray-200 p-2"
           onPress={() => {
             setVisible(false);
-            deleteExerciseItem();
+            duplicateExerciseItem();
           }}
         >
-          <Ionicon name="trash" size={16} />
-          <Text className="text-center text-lg font-bold">Delete</Text>
+          <Ionicon name="duplicate" size={16} />
+          <Text className="text-center text-lg font-bold">Duplicate</Text>
         </TouchableOpacity>
         <TouchableOpacity
           accessibilityRole="button"
           className="flex flex-row items-center space-x-4 border-gray-200 p-2"
           onPress={() => {
             setVisible(false);
-            duplicateExerciseItem();
+            deleteExerciseItem();
           }}
         >
-          <Ionicon name="duplicate" size={16} />
-          <Text className="text-center text-lg font-bold">Duplicate</Text>
+          <Ionicon name="trash" size={16} />
+          <Text className="text-center text-lg font-bold">Delete</Text>
         </TouchableOpacity>
       </View>
     </Modal>
