@@ -93,7 +93,7 @@ const MyWorkouts: React.FC<MyWorkoutsProps> = ({ navigation }) => {
         enabled={!loading}
       >
         <FlatList
-          refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} />}
+          refreshControl={<RefreshControl refreshing={loading || false} onRefresh={refresh} />}
           data={editableWorkouts}
           renderItem={renderWorkoutBlock}
           keyExtractor={(item) => item.id}

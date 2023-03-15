@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllUserNames, getUserProfile } from '../utils/db/profiles';
+import { getAllUserNames } from '../utils/db/profiles';
 import { ProfileType } from '../types';
 import { useAuth } from '../contexts/AuthProvider';
 import { View, Text, TouchableOpacity } from 'react-native';
@@ -10,14 +10,15 @@ import { supabase } from '../utils/supabaseClient';
 
 const MAX_SEARCH_RESULTS = 50;
 
-const FriendSearchBar: React.FC = () => {
+interface FriendsSearchBarProps {
+  userData: ProfileType;
+}
+
+const FriendSearchBar: React.FC<FriendsSearchBarProps> = ({ userData }) => {
   const { session } = useAuth();
 
   // save every user's username
   const [userNames, setUserNames] = useState<ProfileType[]>([]);
-
-  // save user's profile data
-  const [userData, setUserData] = useState<ProfileType>({});
 
   // current text field input
   const [searchInput, setSearchInput] = useState('');
@@ -37,8 +38,6 @@ const FriendSearchBar: React.FC = () => {
       const data = await getAllUserNames();
       setUserNames(data);
       setSearchResults(data);
-      const data1 = await getUserProfile(session?.user.id);
-      setUserData(data1);
     };
 
     fetchUserNames().catch(console.error);
@@ -124,7 +123,7 @@ const FriendSearchBar: React.FC = () => {
 
                       <View className="w-full flex-1"></View>
 
-                      {userData.friends?.includes(item.id) ? (
+                      {userData.friends?.includes(item.id as string) ? (
                         <Text className="pt-1.5 text-xs font-medium">Already Added</Text>
                       ) : (
                         <View>
@@ -133,7 +132,7 @@ const FriendSearchBar: React.FC = () => {
                           ) : (
                             <TouchableOpacity
                               accessibilityRole="button"
-                              onPress={() => addFriend(item.id)}
+                              onPress={() => addFriend(item.id as string)}
                               className="pt-1"
                             >
                               <Ionicon name={'person-add'} size={20} color={'#323232'} />

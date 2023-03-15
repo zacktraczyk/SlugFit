@@ -18,5 +18,5 @@ storiesOf('Buttons', module)
   .add('DoneButton', () => <DoneButton onPress={() => alert('Button Clicked')} />)
   .add('SaveButton', () => <SaveButton goHome={() => alert('Button Clicked')} />)
   .add('ToggleDrawerButton', () => (
-    <ToggleDrawerButton navigation={{ toggleDrawer: () => alert('Button Clicked') }} />
+    <ToggleDrawerButton toggleDrawer={() => alert('Button Clicked')} />
   ));

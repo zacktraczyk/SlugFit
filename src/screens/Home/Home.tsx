@@ -58,8 +58,9 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
 
   // Render user's "completed workouts" calender
   const renderWorkoutCalender = () => {
-    const dates = {};
-
+    const dates: {
+      [key: string]: { selected?: boolean; marked?: boolean; selectedColor?: string };
+    } = {};
     // mark all dates in data
     for (let i = 0; i < completedWorkouts.length; i += 1) {
       const workout = completedWorkouts[i];
@@ -102,20 +103,18 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
 
   const renderFriendsPost = useCallback(
     ({ item }: { item: ConsumableWorkout }) => {
-      if (userData) {
-        return (
-          <FriendsPost
-            post={item}
-            currentUserData={userData}
-            onPress={() => {
-              navigation.navigate('WorkoutSummary', {
-                consumableWorkoutId: item.id,
-                userId: item.created_by,
-              });
-            }}
-          />
-        );
-      }
+      return (
+        <FriendsPost
+          post={item}
+          currentUserData={userData}
+          onPress={() => {
+            navigation.navigate('WorkoutSummary', {
+              consumableWorkoutId: item.id,
+              userId: item.created_by,
+            });
+          }}
+        />
+      );
     },
     [userData]
   );
@@ -156,7 +155,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
               />
             )}
             <View className="py-10">
-              <FriendSearchBar />
+              <FriendSearchBar userData={userData} />
             </View>
           </>
         }

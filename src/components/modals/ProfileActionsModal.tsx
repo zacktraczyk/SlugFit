@@ -41,7 +41,7 @@ const ProfileActionsModal: React.FC<ProfileActionsModalProps> = ({
         {addWorkout && (
           <TouchableOpacity
             accessibilityRole="button"
-            className="flex flex-row items-center space-x-4 border-gray-200 p-2"
+            className="mb-12 flex flex-row items-center space-x-4 border-gray-200 p-2"
             onPress={() => {
               setModalVisible(false);
               addWorkout();

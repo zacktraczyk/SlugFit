@@ -147,7 +147,7 @@ export const formatDate = (date: Date | undefined | null, useFull = false) => {
 
   return month + ' ' + day + ', ' + year;
 };
-export const formatDateTime = (date) => {
+export const formatDateTime = (date: Date | undefined | null) => {
   if (date === undefined || date === null) return '';
   date = new Date(date);
   return date.toLocaleString('en-US', {
