@@ -114,6 +114,11 @@ export const AnalyticsGraph: React.FC<AnalyticsGraphProps> = ({
   }, [exerciseNames, metricType, timeframe, colors]);
 
   return exerciseNames.length > 0 ? (
+    /**
+     * Type error here due to library prop types not including React.PropsWithChildren
+     * To fix, go to Chart.d.ts (command + click on Chart) and change line 25 to
+     * `declare const Chart: React.FC<Props & React.PropsWithChildren>;`
+     */
     <Chart
       style={{
         height: (width / 12) * 10,

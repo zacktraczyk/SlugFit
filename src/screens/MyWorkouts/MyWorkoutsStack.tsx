@@ -8,6 +8,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import EditWorkoutPage from '../EditWorkout/EditWorkoutPage';
 import EditExercisePage from '../EditExercise/EditExercisePage';
 import BreadcrumbHeader from '../../components/headers/BreadcrumbsHeader';
+import { RouteProp } from '@react-navigation/native';
 
 type MyWorkoutsStackProps = NativeStackScreenProps<NavigatorParamList, 'MyWorkoutsStack'>;
 
@@ -19,9 +20,21 @@ const MyWorkoutsStack: React.FC<MyWorkoutsStackProps> = () => {
       screenOptions={({ route, navigation }) => ({
         headerLeft: () => (
           <>
-            <ToggleDrawerButton navigation={navigation} />
+            <ToggleDrawerButton
+              toggleDrawer={() => {
+                navigation.toggleDrawer();
+              }}
+            />
             <View className="w-2"></View>
-            <BreadcrumbHeader navigation={navigation} route={route} />
+            <BreadcrumbHeader
+              navigation={navigation}
+              route={
+                route as RouteProp<
+                  Pick<NavigatorParamList, 'MyWorkouts' | 'EditWorkoutPage' | 'EditExercisePage'>,
+                  'MyWorkouts' | 'EditWorkoutPage' | 'EditExercisePage'
+                >
+              }
+            />
           </>
         ),
         title: '',

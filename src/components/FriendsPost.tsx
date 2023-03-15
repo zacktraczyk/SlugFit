@@ -5,9 +5,11 @@ import Ionicon from '@expo/vector-icons/Ionicons';
 import { generateProfilePictureUrl } from '../utils/db/profiles';
 import { useProfile } from '../hooks/useProfile';
 import { formatDate, countSetsInConsumableExercise, timeBetween } from '../utils/parsing';
-import { getConsumableExercises } from '../utils/db/consumableexercises';
+import { getConsumableExercise, getConsumableExercises } from '../utils/db/consumableexercises';
 import { supabase } from '../utils/supabaseClient';
 import ProfileActionsModal from './modals/ProfileActionsModal';
+import { createEditableWorkout, updateEditableWorkout } from '../utils/db/editableworkouts';
+import { duplicateConsumableExercise } from '../utils/db/editableexercises';
 interface FriendsPostProps {
   post: ConsumableWorkout;
   currentUserData: ProfileType;
@@ -65,7 +67,36 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, currentUserData,
       alert(message);
     }
   };
+  const addWorkout = async () => {
+    const currentDate = new Date();
+    if (currentUserData.id) {
+      const workout = await createEditableWorkout({ userId: currentUserData.id, name: post.name });
+      updateEditableWorkout({
+        editableWorkoutId: workout.id,
+        payload: {
+          created_at: currentDate,
+          exercises: post.exercises,
+        },
+      });
 
+      const promises: Promise<void>[] = [];
+      for (const editableExerciseName of post.exercises) {
+        const consumableExercise = await getConsumableExercise({
+          exerciseName: editableExerciseName,
+          consumableWorkoutId: post.id,
+        });
+        promises.push(
+          duplicateConsumableExercise({
+            exerciseName: editableExerciseName,
+            toEditableWorkoutId: workout.id,
+            userId: currentUserData.id,
+            consumableExercise: consumableExercise,
+          })
+        );
+      }
+      await Promise.all(promises);
+    }
+  };
   useEffect(() => {
     if (post && userData && userData.avatar_url) {
       const url = generateProfilePictureUrl(post.created_by, userData.avatar_url);
@@ -79,6 +110,7 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, currentUserData,
         <Image
           source={{ uri: pictureUrl }}
           accessibilityIgnoresInvertColors
+          defaultSource={require('../assets/genericProfilePic.jpg')}
           className="h-12 w-12 rounded-full"
         />
 
@@ -93,8 +125,8 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, currentUserData,
               <ProfileActionsModal
                 unfollowUser={() => {
                   removeFriend(userData.id);
-                  console.log(userData.id);
                 }}
+                addWorkout={addWorkout}
                 setModalVisible={setProfileModalVisible}
               />
             )}
@@ -123,7 +155,7 @@ export const FriendsPost: React.FC<FriendsPostProps> = ({ post, currentUserData,
       </View>
       <View
         accessibilityRole="button"
-        className="flex w-full flex-grow flex-row items-center justify-center rounded-b border border-gray-200"
+        className="flex w-full flex-1 flex-row items-center justify-center rounded-b border border-gray-200"
       >
         <TouchableOpacity
           accessibilityRole="button"

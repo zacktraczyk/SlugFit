@@ -34,20 +34,20 @@ const ProfileActionsModal: React.FC<ProfileActionsModalProps> = ({
               unfollowUser();
             }}
           >
-            <Ionicon name="pencil" size={16} />
-            <Text className="text-center text-lg font-bold">Unfollow</Text>
+            <Ionicon name="remove-circle" size={16} />
+            <Text className="text-center text-lg font-bold">Remove Friend</Text>
           </TouchableOpacity>
         )}
         {addWorkout && (
           <TouchableOpacity
             accessibilityRole="button"
-            className="flex flex-row items-center space-x-4 border-gray-200 p-2"
+            className="mb-12 flex flex-row items-center space-x-4 border-gray-200 p-2"
             onPress={() => {
               setModalVisible(false);
               addWorkout();
             }}
           >
-            <Ionicon name="pencil" size={16} />
+            <Ionicon name="duplicate" size={16} />
             <Text className="text-center text-lg font-bold">Add To My Workouts</Text>
           </TouchableOpacity>
         )}

@@ -76,14 +76,10 @@ const Profile: React.FC<ProfileProps> = ({ navigation }) => {
           <Text className="pb-4 font-bebas text-3xl text-white">{userData1.username}</Text>
 
           <Image
-            className="shadow-1xl h-40 w-40 justify-center rounded-xl border-4 border-white"
-            accessibilityIgnoresInvertColors
-            source={require('../../assets/genericProfilePic.jpg')}
-          />
-          <Image
-            className="absolute top-[35px] h-40 w-40 justify-center rounded-xl border-4 border-white shadow-2xl"
+            className="h-40 w-40 justify-center rounded-xl border-4 border-white shadow-2xl"
             accessibilityIgnoresInvertColors
             source={{ uri: pictureUrl }}
+            defaultSource={require('../../assets/genericProfilePic.jpg')}
           />
 
           <Image

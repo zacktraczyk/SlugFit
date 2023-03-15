@@ -9,9 +9,12 @@ import DrawerWorkoutBlock from './blocks/DrawerWorkoutBlocks';
 import { Ionicons } from '@expo/vector-icons';
 import { getUserProfile } from '../utils/db/profiles';
 import { ProfileType } from '../types';
+import { NavigatorParamList } from '../screens/DrawerNavigator';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const CustomDrawer = () => {
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<NavigatorParamList, 'MyWorkouts', undefined>>();
   const { session } = useAuth();
   const { editableWorkouts, fetch } = useMyEditableWorkouts(session);
   const [userData, setUserData] = React.useState<ProfileType>({});
@@ -100,38 +103,30 @@ const CustomDrawer = () => {
           <TouchableOpacity
             accessibilityRole="button"
             onPress={() => {
-              navigation.navigate('MyWorkoutsStack', {
-                screen: 'MyWorkouts',
-              });
+              navigation.navigate('MyWorkoutsStack');
             }}
           >
             <Text className=" font-bebas text-lg text-neutral-500">My Workouts</Text>
           </TouchableOpacity>
         </View>
         <ScrollView>
-          {editableWorkouts.map((workout) => {
+          {editableWorkouts?.map((workout) => {
             return (
               <DrawerWorkoutBlock
                 key={workout.id}
                 editableWorkout={workout}
                 editableWorkoutNavigate={(id, workoutName) => {
-                  navigation.navigate('MyWorkoutsStack', {
-                    screen: 'EditWorkoutPage',
-                    params: {
-                      editableWorkoutId: id,
-                      editableWorkoutName: workoutName,
-                      exerciseName: '',
-                    },
+                  navigation.navigate('EditWorkoutPage', {
+                    editableWorkoutId: id,
+                    editableWorkoutName: workoutName,
+                    exerciseName: '',
                   });
                 }}
                 editableExerciseNavigate={(id, workoutName, exercise) => {
-                  navigation.navigate('MyWorkoutsStack', {
-                    screen: 'EditExercisePage',
-                    params: {
-                      editableWorkoutId: id,
-                      editableWorkoutName: workoutName,
-                      exerciseName: exercise,
-                    },
+                  navigation.navigate('EditExercisePage', {
+                    editableWorkoutId: id,
+                    editableWorkoutName: workoutName,
+                    exerciseName: exercise,
                   });
                 }}
               />
