@@ -3,6 +3,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { Image } from 'react-native';
 // import Google font through expo
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 
@@ -70,12 +71,11 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
   return (
     <ErrorBoundary FallbackComponent={ErrorScreen}>
       <View className="flex h-full flex-col items-stretch justify-center p-5">
-        <View>
-          <Text className="pt-1 text-center font-bebas text-8xl">SlugFit</Text>
-          <Text className="text-center font-bebas text-2xl text-stone-700">
-            We see mass in your future
-          </Text>
-        </View>
+        <Image
+          className="h-48 w-48 self-center"
+          source={require('../../assets/Slugfit.png')}
+          accessibilityIgnoresInvertColors
+        />
         <KeyboardAvoidingView behavior="padding">
           <TouchableWithoutFeedback accessibilityRole="button" onPress={Keyboard.dismiss}>
             <View className="flex h-96 flex-col items-stretch justify-evenly">
