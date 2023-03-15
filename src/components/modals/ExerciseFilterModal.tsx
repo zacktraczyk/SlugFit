@@ -93,18 +93,41 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
               </View>
               <View className="mt-4 flex flex-row justify-between px-8">
                 <View className="flex flex-1 flex-col">
-                  {PRIMARYFILTER.slice(PRIMARYFILTER.length / 2, PRIMARYFILTER.length).map(
+                  {PRIMARYFILTER.slice(
+                    Math.floor(PRIMARYFILTER.length / 2),
+                    PRIMARYFILTER.length
+                  ).map((item, index) => {
+                    return (
+                      <View key={item} className="mt-4 flex flex-grow flex-row justify-start">
+                        <Checkbox
+                          disable={false}
+                          checked={selectedPrimary[index + Math.floor(PRIMARYFILTER.length / 2)]}
+                          onPress={() => {
+                            setSelectedPrimary((prevArray) => {
+                              const tempArray = [...prevArray];
+                              tempArray[index + Math.floor(PRIMARYFILTER.length / 2)] =
+                                !prevArray[index + Math.floor(PRIMARYFILTER.length / 2)];
+                              return tempArray;
+                            });
+                          }}
+                        />
+                        <Text className="my-auto ml-1 font-bebas">{item}</Text>
+                      </View>
+                    );
+                  })}
+                </View>
+                <View className="flex flex-1 flex-col ">
+                  {PRIMARYFILTER.slice(0, Math.floor(PRIMARYFILTER.length / 2)).map(
                     (item, index) => {
                       return (
-                        <View key={item} className="mt-4 flex flex-grow flex-row justify-start">
+                        <View key={item} className="mt-4 flex flex-row justify-start">
                           <Checkbox
                             disable={false}
-                            checked={selectedPrimary[index + PRIMARYFILTER.length / 2]}
+                            checked={selectedPrimary[index]}
                             onPress={() => {
                               setSelectedPrimary((prevArray) => {
                                 const tempArray = [...prevArray];
-                                tempArray[index + PRIMARYFILTER.length / 2] =
-                                  !prevArray[index + PRIMARYFILTER.length / 2];
+                                tempArray[index] = !prevArray[index];
                                 return tempArray;
                               });
                             }}
@@ -114,26 +137,6 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
                       );
                     }
                   )}
-                </View>
-                <View className="flex flex-1 flex-col ">
-                  {PRIMARYFILTER.slice(0, PRIMARYFILTER.length / 2).map((item, index) => {
-                    return (
-                      <View key={item} className="mt-4 flex flex-row justify-start">
-                        <Checkbox
-                          disable={false}
-                          checked={selectedPrimary[index]}
-                          onPress={() => {
-                            setSelectedPrimary((prevArray) => {
-                              const tempArray = [...prevArray];
-                              tempArray[index] = !prevArray[index];
-                              return tempArray;
-                            });
-                          }}
-                        />
-                        <Text className="my-auto ml-1 font-bebas">{item}</Text>
-                      </View>
-                    );
-                  })}
                 </View>
               </View>
 
@@ -143,18 +146,43 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
               </View>
               <View className="mt-4 flex flex-row justify-between px-8">
                 <View className="flex flex-1 flex-col">
-                  {SECONDARYFILTER.slice(SECONDARYFILTER.length / 2, SECONDARYFILTER.length).map(
+                  {SECONDARYFILTER.slice(
+                    Math.floor(SECONDARYFILTER.length / 2),
+                    SECONDARYFILTER.length
+                  ).map((item, index) => {
+                    return (
+                      <View key={item} className="mt-4 flex flex-grow flex-row justify-start">
+                        <Checkbox
+                          disable={false}
+                          checked={
+                            selectedSecondary[index + Math.floor(SECONDARYFILTER.length / 2)]
+                          }
+                          onPress={() => {
+                            setSelectedSecondary((prevArray) => {
+                              const tempArray = [...prevArray];
+                              tempArray[index + Math.floor(SECONDARYFILTER.length / 2)] =
+                                !prevArray[index + Math.floor(SECONDARYFILTER.length / 2)];
+                              return tempArray;
+                            });
+                          }}
+                        />
+                        <Text className="my-auto ml-1 font-bebas">{item}</Text>
+                      </View>
+                    );
+                  })}
+                </View>
+                <View className="flex flex-1 flex-col">
+                  {SECONDARYFILTER.slice(0, Math.floor(SECONDARYFILTER.length / 2)).map(
                     (item, index) => {
                       return (
                         <View key={item} className="mt-4 flex flex-grow flex-row justify-start">
                           <Checkbox
                             disable={false}
-                            checked={selectedSecondary[index + SECONDARYFILTER.length / 2]}
+                            checked={selectedSecondary[index]}
                             onPress={() => {
                               setSelectedSecondary((prevArray) => {
                                 const tempArray = [...prevArray];
-                                tempArray[index + SECONDARYFILTER.length / 2] =
-                                  !prevArray[index + SECONDARYFILTER.length / 2];
+                                tempArray[index] = !prevArray[index];
                                 return tempArray;
                               });
                             }}
@@ -164,26 +192,6 @@ const ExerciseFilterModal: React.FC<ExerciseFilterModalProps> = ({ onClose }) =>
                       );
                     }
                   )}
-                </View>
-                <View className="flex flex-1 flex-col">
-                  {SECONDARYFILTER.slice(0, SECONDARYFILTER.length / 2).map((item, index) => {
-                    return (
-                      <View key={item} className="mt-4 flex flex-grow flex-row justify-start">
-                        <Checkbox
-                          disable={false}
-                          checked={selectedSecondary[index]}
-                          onPress={() => {
-                            setSelectedSecondary((prevArray) => {
-                              const tempArray = [...prevArray];
-                              tempArray[index] = !prevArray[index];
-                              return tempArray;
-                            });
-                          }}
-                        />
-                        <Text className="my-auto ml-1 font-bebas">{item}</Text>
-                      </View>
-                    );
-                  })}
                 </View>
               </View>
             </ScrollView>
