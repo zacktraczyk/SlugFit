@@ -73,7 +73,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
       <View className="flex h-full flex-col items-stretch justify-center p-5">
         <Image
           className="h-48 w-48 self-center"
-          source={require('../../assets/Slugfit.png')}
+          source={require('../../assets/Slugfit_logo-v4.png')}
           accessibilityIgnoresInvertColors
         />
         <KeyboardAvoidingView behavior="padding">
