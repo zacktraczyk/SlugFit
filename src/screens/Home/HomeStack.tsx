@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Image, Text, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigatorParamList } from '../DrawerNavigator';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -28,6 +28,13 @@ const HomeStack: React.FC<HomeStackProps> = () => {
               toggleDrawer={() => {
                 navigation.toggleDrawer();
               }}
+            />
+          ),
+          headerTitle: () => (
+            <Image
+              className="ml-2 h-16 w-16 self-center"
+              source={require('../../assets/Slugfit.png')}
+              accessibilityIgnoresInvertColors
             />
           ),
           headerRight: () => (
