@@ -103,7 +103,7 @@ const CustomDrawer = () => {
           <TouchableOpacity
             accessibilityRole="button"
             onPress={() => {
-              navigation.navigate('MyWorkoutsStack');
+              navigation.navigate('MyWorkouts');
             }}
           >
             <Text className=" font-bebas text-lg text-neutral-500">My Workouts</Text>

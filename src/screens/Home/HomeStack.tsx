@@ -24,18 +24,18 @@ const HomeStack: React.FC<HomeStackProps> = () => {
         component={Home}
         options={({ navigation }) => ({
           headerLeft: () => (
-            <ToggleDrawerButton
-              toggleDrawer={() => {
-                navigation.toggleDrawer();
-              }}
-            />
-          ),
-          headerTitle: () => (
-            <Image
-              className="ml-2 h-16 w-16 self-center"
-              source={require('../../assets/Slugfit.png')}
-              accessibilityIgnoresInvertColors
-            />
+            <>
+              <ToggleDrawerButton
+                toggleDrawer={() => {
+                  navigation.toggleDrawer();
+                }}
+              />
+              <Image
+                className="ml-2 h-8 w-8 self-center"
+                source={require('../../assets/Slugfit_logo-v4.png')}
+                accessibilityIgnoresInvertColors
+              />
+            </>
           ),
           headerRight: () => (
             <TouchableOpacity
